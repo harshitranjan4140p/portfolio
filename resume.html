@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="assets/game_cover.png" type="image/png">
     <meta property="og:title" content="Resume | Harshit Ranjan">
-    <meta property="og:description" content="Resume of Harshit Ranjan, Game Developer &amp; Founder of Patliputra Games.">
+    <meta property="og:description" content="Resume of Harshit Ranjan, Game Developer & Founder of Patliputra Games.">
     <meta property="og:image" content="assets/game_cover.png">
     <meta property="og:type" content="website">
 
@@ -22,267 +22,326 @@
       gtag('js', new Date());
       gtag('config', 'G-8127JMNLCV');
     </script>
+    
     <style>
-        .resume-page {
-            padding: 80px 0;
-            max-width: 800px;
-            margin: 0 auto;
+        :root {
+            --bg-color: #191724;
+            --surface-color: #1f1d2e;
+            --accent-color: #ea9a97;
+            --name-color: #f6c177;
+            --text-primary: #e0def4;
+            --text-secondary: #908caa;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
-        .resume-header {
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 30px;
-            margin-bottom: 40px;
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Urbanist', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .resume-page {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navigation */
+        .resume-nav {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: center;
+            margin-bottom: 50px;
+            gap: 15px;
         }
-        .resume-header h1 {
-            font-size: 3rem;
-            color: var(--name-color);
-            margin: 0;
-        }
-        .resume-contact {
-            text-align: right;
+
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: 8px;
             font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .resume-section {
-            margin-bottom: 40px;
-        }
-        .resume-section h2 {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            cursor: pointer;
+            font-family: 'Urbanist', sans-serif;
         }
-        .resume-section h2::after {
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .print-btn {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header */
+        .resume-header {
+            text-align: center;
+            margin-bottom: 60px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 40px;
+        }
+
+        .resume-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--name-color);
+            margin: 0 0 10px 0;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .resume-header .title {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .resume-contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .resume-contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .resume-socials {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: scale(1.1);
+        }
+
+        /* Sections */
+        .resume-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::after {
             content: '';
             flex: 1;
             height: 1px;
-            background: rgba(255,255,255,0.1);
-        }
-        .resume-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        .resume-item {
-            margin-bottom: 15px;
-        }
-        .resume-item h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-        .resume-item p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .skills-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .skill-tag {
-            padding: 5px 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 4px;
-            font-size: 0.85rem;
-        }
-        .interests-text {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-        .resume-social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            justify-content: flex-end;
-        }
-        @media (max-width: 600px) {
-            .resume-social-links {
-                justify-content: flex-start;
-            }
-        }
-        .back-btn {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            z-index: 100;
-        }
-        .print-btn {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: 100;
+            background: var(--border-color);
         }
 
+        .experience-item, .education-item {
+            margin-bottom: 30px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .item-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .item-header .date {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .item-subheader {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .item-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            max-width: 90%;
+        }
+
+        /* Skills Grid */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-group h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .skill-item {
+            margin-bottom: 15px;
+        }
+
+        .skill-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .skill-bar-bg {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #f6c177);
+            border-radius: 3px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .resume-page {
+                padding: 40px 20px;
+            }
+
+            .resume-nav {
+                flex-direction: column;
+                gap: 15px;
+                margin-bottom: 40px;
+            }
+
+            .btn-nav {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .resume-header h1 {
+                font-size: 2.2rem; /* Much smaller for mobile */
+                word-wrap: break-word;
+                line-height: 1.2;
+            }
+
+            .resume-header .title {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+
+            .resume-contact-info {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+                letter-spacing: 2px;
+            }
+
+            .item-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .item-header .date {
+                font-size: 0.8rem;
+            }
+
+            .item-desc {
+                max-width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
         @media print {
-            .back-btn, .print-btn, .bg-artifacts, .cursor-dot, .cursor-outline, .grain-overlay, .scanlines, .scroll-progress, .context-menu {
+            .resume-nav, .bg-artifacts, .grain-overlay, .scanlines, .cursor-dot, .cursor-outline, .destruction-popup, .guilt-popup, .final-sequence {
                 display: none !important;
             }
             body {
-                background: white !important;
-                color: black !important;
-                font-family: 'Arial', sans-serif;
-                font-size: 10pt;
-                margin: 0.5in;
+                background: white;
+                color: black;
                 padding: 0;
-                cursor: default !important;
             }
             .resume-page {
                 padding: 0;
-                margin: 0;
                 max-width: 100%;
-                box-shadow: none !important;
-            }
-            .resume-header {
-                border-bottom: 2px solid #333;
-                padding-bottom: 15px;
-                margin-bottom: 20px;
-                display: block; /* Stack header for print */
-                text-align: center;
             }
             .resume-header h1 {
-                font-size: 28pt !important;
-                color: black !important;
-                margin-bottom: 5px;
+                color: black;
             }
-            .resume-contact {
-                text-align: center;
-                margin-top: 10px;
-                display: flex;
-                justify-content: center;
-                gap: 15px;
-                font-size: 9pt;
+            .section-title {
+                color: black;
+                border-bottom: 1px solid #ccc;
             }
-            .resume-social-links {
-                display: none; /* Hide interactive icons in print */
+            .section-title::after {
+                display: none;
             }
-            .resume-section {
-                margin-bottom: 20px;
-                page-break-inside: avoid;
-            }
-            .resume-section h2 {
-                font-size: 14pt !important;
-                color: black !important;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 5px;
-                margin-bottom: 12px;
-                text-transform: uppercase;
-            }
-            .resume-grid {
-                grid-template-columns: 1fr 1fr !important;
-                gap: 20px;
-            }
-            .resume-item h3 {
-                font-size: 11pt !important;
-                color: #000;
-                margin-bottom: 3px;
-            }
-            .resume-item p {
-                font-size: 9.5pt !important;
-                color: #444 !important;
-                line-height: 1.4;
-            }
-            .skill-bar {
-                background: #f0f0f0 !important;
-                border: 1px solid #ddd !important;
-                height: 6px !important;
-            }
-            .skill-progress {
-                background: #333 !important;
-                box-shadow: none !important;
-                width: var(--print-width) !important; /* Set via JS or just show full */
-            }
-            .skills-grid {
-                grid-template-columns: 1fr 1fr 1fr !important;
-                gap: 15px !important;
-            }
-        }
-            .resume-grid {
-                gap: 15px;
-            }
-            /* Prevent orphan lines and large gaps */
-            * {
-                page-break-inside: auto;
-            }
-            h2, h3 {
-                page-break-after: avoid;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .resume-page {
-                padding: 100px 20px 40px 20px;
-            }
-            .resume-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 20px;
-                border-bottom: 1px solid rgba(234, 154, 151, 0.3);
-                padding-bottom: 25px;
-            }
-            .resume-header h1 {
-                font-size: 2.2rem;
-                letter-spacing: -0.5px;
-            }
-            .resume-header p {
-                font-size: 0.95rem;
-            }
-            .resume-contact {
-                text-align: center;
-                width: 100%;
-            }
-            .resume-social-links {
-                justify-content: center;
-                margin-top: 20px;
-            }
-            .resume-section h2 {
-                font-size: 1.25rem;
-                letter-spacing: 1px;
-            }
-            .resume-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .back-btn {
-                top: 20px;
-                left: 20px;
-                padding: 8px 15px;
-                font-size: 0.8rem;
-                background: rgba(25, 23, 36, 0.8);
-                backdrop-filter: blur(10px);
-            }
-            .print-btn {
-                top: 20px;
-                right: 20px;
-                padding: 8px 15px;
-                font-size: 0.8rem;
-                background: rgba(234, 154, 151, 0.1);
-                color: var(--accent-color);
-                border: 1px solid var(--accent-color);
-                backdrop-filter: blur(10px);
-            }
-            .skill-info {
-                font-size: 0.85rem;
-            }
-        }
-
-        /* iOS Specific & Global Polish */
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
         }
     </style>
 </head>
@@ -290,158 +349,166 @@
     <div class="grain-overlay"></div>
     <div class="scanlines"></div>
     <div class="bg-artifacts"></div>
-    <!-- Hidden measurer for robust role width calculation -->
-    <span id="role-measurer" style="position: absolute; visibility: hidden; white-space: nowrap; font-family: 'Urbanist', sans-serif; font-size: 1.05rem; font-weight: 700;"></span>
-
-    <a href="index.html" class="btn btn-outline back-btn">← Back</a>
-
-    <button onclick="window.print()" class="btn print-btn">Print / Save PDF</button>
 
     <main class="resume-page reveal visible">
+        <!-- Navigation -->
+        <nav class="resume-nav">
+            <a href="index.html" class="btn-nav back-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Home
+            </a>
+            <button onclick="window.print()" class="btn-nav print-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                Print / Save PDF
+            </button>
+        </nav>
+
+        <!-- Header -->
         <header class="resume-header">
-            <div>
-                <h1>Harshit Ranjan</h1>
-                <p style="color: var(--accent-color); font-weight: bold; margin-top: 5px;">Game Developer | Founder, Patliputra Games</p>
+            <h1>Harshit Ranjan</h1>
+            <div class="title">Game Developer | Founder, Patliputra Games</div>
+            
+            <div class="resume-contact-info">
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    +91 8733877017
+                </span>
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    harshitranjan4140p@gmail.com
+                </span>
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Gujarat, India
+                </span>
             </div>
-            <div class="resume-contact">
-                <p>+91 8733877017</p>
-                <p>harshitranjan4140p@gmail.com</p>
-                <p>Gujarat, India</p>
-                <div class="resume-social-links">
-                    <a href="https://www.linkedin.com/in/harshit-ranjan-874659375/" class="social-btn" title="LinkedIn" target="_blank">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                    </a>
-                    <a href="https://www.instagram.com/harshit_ranjan_0/" class="social-btn" title="Instagram" target="_blank">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </a>
-                    <a href="https://github.com/harshitranjan4140p" class="social-btn" title="GitHub" target="_blank">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                    </a>
-                </div>
+
+            <div class="resume-socials">
+                <a href="https://www.linkedin.com/in/harshit-ranjan-874659375/" class="social-link" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+                <a href="https://www.instagram.com/harshit_ranjan_0/" class="social-link" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://github.com/harshitranjan4140p" class="social-link" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
             </div>
         </header>
 
+        <!-- Education -->
         <section class="resume-section">
-            <h2>Education</h2>
-            <div class="resume-item">
-                <h3>Class 12 (PCM CS)</h3>
-                <p>Green Valley School for Children | Gandhinagar, Gujarat</p>
+            <h2 class="section-title">Education</h2>
+            <div class="education-item">
+                <div class="item-header">
+                    <h3>Class 12 (PCM CS)</h3>
+                    <div class="date">Completed</div>
+                </div>
+                <div class="item-subheader">Green Valley School for Children | Gandhinagar, Gujarat</div>
             </div>
         </section>
 
+        <!-- Experience -->
         <section class="resume-section">
-            <h2>Experience</h2>
-            <div class="resume-item">
-                <h3>Freelance Game Developer</h3>
-                <p>Worked on <strong>30+ freelance projects</strong> including <strong>5 international projects</strong>.</p>
-                <p>Specialized in rapid prototyping, multiplayer systems, and physics-based interactions.</p>
+            <h2 class="section-title">Experience</h2>
+            <div class="experience-item">
+                <div class="item-header">
+                    <h3>Freelance Game Developer</h3>
+                    <div class="date">Present</div>
+                </div>
+                <div class="item-subheader">Remote</div>
+                <p class="item-desc">
+                    Worked on <strong>30+ freelance projects</strong> including <strong>5 international projects</strong>. Specialized in rapid prototyping, multiplayer systems, and physics-based interactions.
+                </p>
             </div>
         </section>
 
+        <!-- Selected Projects -->
         <section class="resume-section">
-            <h2>Selected Projects</h2>
-            <div class="resume-grid">
-                <div class="resume-item">
+            <h2 class="section-title">Selected Projects</h2>
+            <div class="skills-container">
+                <div class="experience-item">
                     <h3>Online FPS Multiplayer</h3>
-                    <p>Competitive shooter built with <strong>Photon Pun 2</strong> for robust network synchronization.</p>
+                    <p class="item-desc">Competitive shooter built with <strong>Photon Pun 2</strong> for robust network synchronization.</p>
                 </div>
-                <div class="resume-item">
+                <div class="experience-item">
                     <h3>Thief Long Hand Puzzle</h3>
-                    <p>Physics-based puzzle game with unique mechanics. <strong>Available on Play Store.</strong></p>
+                    <p class="item-desc">Physics-based puzzle game with unique mechanics. <strong>Available on Play Store.</strong></p>
                 </div>
-                <div class="resume-item">
+                <div class="experience-item">
                     <h3>Ashes: RPG Adventure</h3>
-                    <p>A story-driven medieval action game featuring immersive environment systems.</p>
+                    <p class="item-desc">A story-driven medieval action game featuring immersive environment systems.</p>
                 </div>
-                <div class="resume-item">
+                <div class="experience-item">
                     <h3>Cube Runner</h3>
-                    <p>A fast-paced infinite runner testing reflexes and spatial awareness. Built for high-speed engagement.</p>
+                    <p class="item-desc">A fast-paced infinite runner testing reflexes and spatial awareness.</p>
                 </div>
             </div>
         </section>
 
+        <!-- Skills -->
         <section class="resume-section">
-            <h2>Technical Skills</h2>
-            <div class="skills-grid">
-                <div class="skill-item">
-                    <div class="skill-info"><span>Unity & C#</span><span>95%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skill-group">
+                    <div class="skill-item">
+                        <div class="skill-label"><span>Unity & C#</span><span>95%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 95%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-label"><span>Photon Pun 2</span><span>85%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 85%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-label"><span>Unreal Engine (C++)</span><span>60%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 60%;"></div></div>
+                    </div>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-info"><span>Photon Pun 2</span><span>85%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-info"><span>Unreal Engine (C++)</span><span>60%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 60%;"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-info"><span>Flutter & Dart</span><span>80%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-info"><span>Blender (3D)</span><span>75%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 75%;"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-info"><span>Web Development</span><span>85%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
+                <div class="skill-group">
+                    <div class="skill-item">
+                        <div class="skill-label"><span>Flutter & Dart</span><span>80%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 80%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-label"><span>Blender (3D)</span><span>75%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 75%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-label"><span>Web Development</span><span>85%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 85%;"></div></div>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- Interests -->
         <section class="resume-section">
-            <h2>Interests & Expertise</h2>
-            <p class="interests-text">
-                <strong>Content Creation:</strong> Passionate about Vlogging and producing Devlogs, sharing development insights with <strong>international exposure</strong>. <br>
-                <strong>Gaming:</strong> Deeply inspired by story-driven titles like <em>Red Dead Redemption 2, Detroit: Become Human, Sekiro, The Last of Us,</em> and <em>Spider-Man</em> series. <br>
-                <strong>Tech:</strong> Passionate about Robotics, AR/VR, Smart AR Glasses, Arduino, and Raspberry Pi development. <br>
+            <h2 class="section-title">Interests & Expertise</h2>
+            <p class="item-desc" style="line-height: 1.8;">
+                <strong>Content Creation:</strong> Passionate about Vlogging and producing Devlogs, sharing development insights with international exposure. <br><br>
+                <strong>Gaming:</strong> Deeply inspired by story-driven titles like Red Dead Redemption 2, Detroit: Become Human, Sekiro, The Last of Us, and Spider-Man series. <br><br>
+                <strong>Tech:</strong> Passionate about Robotics, AR/VR, Smart AR Glasses, Arduino, and Raspberry Pi development. <br><br>
                 <strong>Hobbies:</strong> Competitive Chess player, Badminton, and Swimming.
             </p>
         </section>
     </main>
 
-    <!-- Page Transition Overlay -->
+    <!-- Essential Scripts & Overlays (Maintained for functionality) -->
     <div class="page-transition-overlay" id="pageOverlay"></div>
-
-    <!-- Custom Context Menu -->
     <div id="custom-context-menu" class="context-menu">
-        <div class="context-menu-item" data-action="back">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Back
-        </div>
-        <div class="context-menu-item" data-action="reload">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-            Reload
-        </div>
+        <div class="context-menu-item" data-action="back">Back</div>
+        <div class="context-menu-item" data-action="reload">Reload</div>
         <div class="context-menu-divider"></div>
-        <div class="context-menu-item" data-action="top">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-            Scroll to Top
-        </div>
-        <div class="context-menu-item" data-action="home">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Back to Home
-        </div>
-        <div class="context-menu-divider"></div>
-        <div class="context-menu-item" data-action="copy-email">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-            Copy Email
-        </div>
+        <div class="context-menu-item" data-action="top">Top</div>
+        <div class="context-menu-item" data-action="home">Home</div>
     </div>
-
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
-
-    <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
-
-    <!-- Back to Top -->
-    <a href="#" class="back-to-top" id="backToTop" aria-label="Back to top">↑</a>
-
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
     <script src="script.js"></script>
 
-    <!-- Destruction Mode Popup -->
+    <!-- Global State Popups (Maintained for 'Destruction Mode') -->
     <div class="destruction-popup">
         <h2>DO YOU WANT DESTRUCTION?</h2>
         <p>God of Destruction. God of War.</p>
@@ -450,20 +517,15 @@
             <button class="btn-no">NO</button>
         </div>
     </div>
-    <!-- Final Guilt Popup -->
     <div class="guilt-popup">
         <p>You deleted us. Why would you do it? We could have been friends, but you chose otherwise. There are consequences to your actions. Remember that.</p>
         <div id="shutdown-countdown" style="margin-top: 20px; color: #ff0000; font-family: 'Urbanist', sans-serif; font-size: 3rem; font-weight: 800;">15</div>
     </div>
-
-    <!-- Final Eye Sequence -->
     <div class="final-sequence">
         <div class="eye-text">We are watching you</div>
         <div class="monolith">
             <div class="eye-white">
-                <div class="pupil">
-                    <div class="pupil-reflection"></div>
-                </div>
+                <div class="pupil"><div class="pupil-reflection"></div></div>
             </div>
             <div class="eye-lid-top"></div>
             <div class="eye-lid-bottom"></div>
