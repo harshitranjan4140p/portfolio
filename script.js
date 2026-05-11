@@ -621,6 +621,47 @@ document.addEventListener('DOMContentLoaded', () => {
             })), 400))), 1000);
         }, 1000);
     }
+
+    /* 
+    ==========================================================================
+    ANALYTICS EVENT TRACKING
+    ==========================================================================
+    */
+    const trackEvent = (name, params = {}) => {
+        if (typeof gtag === 'function') {
+            gtag('event', name, params);
+        }
+    };
+
+    // Track Resume Clicks
+    document.querySelectorAll('a[href="resume.html"], .context-menu-item[data-action="resume"]').forEach(el => {
+        el.addEventListener('click', () => {
+            trackEvent('view_resume', {
+                location: el.tagName === 'A' ? 'nav/hero' : 'context_menu'
+            });
+        });
+    });
+
+    // Track Social Link Clicks
+    document.querySelectorAll('.social-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const platform = btn.getAttribute('title') || 'Unknown';
+            trackEvent('social_click', {
+                platform: platform,
+                url: btn.getAttribute('href')
+            });
+        });
+    });
+
+    // Track Destruction Mode Trigger
+    const destructionYesBtn = document.querySelector('.btn-yes');
+    if (destructionYesBtn) {
+        const originalBtnYes = destructionYesBtn.onclick;
+        destructionYesBtn.onclick = (e) => {
+            trackEvent('destruction_mode_start');
+            if (originalBtnYes) originalBtnYes(e);
+        };
+    }
 });
 
 // ── DevTools Protection ──────────────────────────────────────────────

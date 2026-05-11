@@ -13,6 +13,15 @@
     <meta property="og:description" content="Resume of Harshit Ranjan, Game Developer &amp; Founder of Patliputra Games.">
     <meta property="og:image" content="assets/game_cover.png">
     <meta property="og:type" content="website">
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8127JMNLCV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8127JMNLCV');
+    </script>
     <style>
         .resume-page {
             padding: 80px 0;
@@ -209,25 +218,71 @@
         }
 
         @media (max-width: 600px) {
+            .resume-page {
+                padding: 100px 20px 40px 20px;
+            }
             .resume-header {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                text-align: center;
                 gap: 20px;
+                border-bottom: 1px solid rgba(234, 154, 151, 0.3);
+                padding-bottom: 25px;
+            }
+            .resume-header h1 {
+                font-size: 2.2rem;
+                letter-spacing: -0.5px;
+            }
+            .resume-header p {
+                font-size: 0.95rem;
             }
             .resume-contact {
-                text-align: left;
+                text-align: center;
+                width: 100%;
+            }
+            .resume-social-links {
+                justify-content: center;
+                margin-top: 20px;
+            }
+            .resume-section h2 {
+                font-size: 1.25rem;
+                letter-spacing: 1px;
             }
             .resume-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
-            .back-btn, .print-btn {
-                position: static;
-                margin-bottom: 20px;
-                display: inline-block;
+            .back-btn {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 0.8rem;
+                background: rgba(25, 23, 36, 0.8);
+                backdrop-filter: blur(10px);
             }
-            .resume-page {
-                padding: 40px 20px;
+            .print-btn {
+                top: 20px;
+                right: 20px;
+                padding: 8px 15px;
+                font-size: 0.8rem;
+                background: rgba(234, 154, 151, 0.1);
+                color: var(--accent-color);
+                border: 1px solid var(--accent-color);
+                backdrop-filter: blur(10px);
             }
+            .skill-info {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* iOS Specific & Global Polish */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
     </style>
 </head>
