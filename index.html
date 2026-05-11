@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harshit Ranjan | Game Developer</title>
+    <meta name="description" content="Portfolio of Harshit Ranjan, Game Developer and founder of Patliputra Games.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preload" href="assets/avatar.png" as="image">
+    <link rel="icon" href="assets/game_cover.png" type="image/png">
+    <meta property="og:title" content="Harshit Ranjan | Game Developer">
+    <meta property="og:description" content="Portfolio of Harshit Ranjan, Game Developer &amp; Founder of Patliputra Games.">
+    <meta property="og:image" content="assets/game_cover.png">
+    <meta property="og:type" content="website">
+</head>
+<body>
+    <div class="grain-overlay"></div>
+    <div class="scanlines"></div>
+    <div class="bg-artifacts"></div>
+    <!-- Hidden measurer for robust role width calculation -->
+    <span id="role-measurer" style="position: absolute; visibility: hidden; white-space: nowrap; font-family: 'Urbanist', sans-serif; font-size: 1.05rem; font-weight: 700;"></span>
+    
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero reveal" id="about">
+            <div class="hero-content">
+                <h1>Hi there!<br>I'm <span class="highlight-name">Harshit Ranjan</span>.</h1>
+                <p class="subtitle">I am a <span class="dynamic-role-container"><span id="dynamic-role" class="dynamic-role">Game Developer</span></span> from Bihar, India. <br>Founder of <strong>Patliputra Games</strong>.</p>
+                
+                <div class="msme-info">
+                    <p>MSME Registered in Gujarat: UDYAM-GJ-09-0069684</p>
+                </div>
+                <div class="contact-links reveal">
+                    <a href="mailto:harshitranjan4140p@gmail.com" class="btn">harshitranjan4140p@gmail.com ↗</a>
+                    <a href="resume.html" class="btn btn-outline">Resume ↓</a>
+                </div>
+
+                <div class="social-links reveal">
+                    <a href="https://www.linkedin.com/in/harshit-ranjan-874659375/" class="social-btn" title="LinkedIn" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                    <a href="https://www.instagram.com/harshit_ranjan_0/" class="social-btn" title="Instagram" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                    <a href="https://github.com/harshitranjan4140p" class="social-btn" title="GitHub" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/avatar.png" alt="Harshit Ranjan" fetchpriority="high" decoding="async">
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <h2 class="section-title reveal">Selected Works</h2>
+
+            <!-- 
+                DEVELOPER NOTE: ADD NEW PROJECTS HERE
+                1. Use the <article class="project-card reveal"> structure.
+                2. For portrait/mobile projects, add the "portrait" class to .project-media.
+                3. Use "reverse" class on .project-card for alternating layout.
+                4. Data attributes:
+                   - data-thumbnail: Static image (PNG/JPG)
+                   - data-gif: GIF fallback
+                   - data-video: High-performance MP4 video (Priority)
+            -->
+
+            <!-- Project 1 -->
+            <article class="project-card reveal">
+                <div class="project-media">
+                    <!-- Placeholder for GIF -->
+                    <!-- REPLACE: Put your image in assets/project1.png -->
+                    <img src="assets/project1.png" alt="Online FPS Multiplayer Shooter" class="project-img" 
+                         data-thumbnail="assets/project1.png" 
+                         data-gif="assets/game1.gif" 
+                         data-video="assets/game1.mp4" 
+                         loading="lazy">
+
+                </div>
+                <div class="project-info">
+                    <h3 class="glitch-text">Online FPS Multiplayer Shooter</h3>
+                    <p class="project-desc">A competitive multiplayer experience powered by <strong>Photon Pun 2</strong>, featuring fast-paced combat and robust network synchronization.</p>
+                    <div class="project-tags">
+                        <span>Photon Pun 2</span>
+                        <span>FPS</span>
+                        <span>Networking</span>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=MAhPNKZ_MHE" class="btn btn-outline" target="_blank">View Details ↗</a>
+                </div>
+            </article>
+
+            <!-- Project 2 -->
+            <article class="project-card reverse reveal">
+                <div class="project-media portrait">
+                    <!-- REPLACE: Put your image in assets/project2.png -->
+                    <img src="assets/project2.png" alt="Thief Long Hand Puzzle" class="project-img" 
+                         data-thumbnail="assets/project2.png" 
+                         data-gif="assets/game2.gif" 
+                         data-video="assets/game2.mp4" 
+                         loading="lazy">
+
+                </div>
+                <div class="project-info">
+                    <h3 class="glitch-text">Thief Long Hand Puzzle</h3>
+                    <p class="project-desc">A clever physics-based puzzle game challenging your spatial logic. <strong>Available on Play Store.</strong></p>
+                    <div class="project-tags">
+                        <span>Puzzle</span>
+                        <span>Play Store</span>
+                        <span>Logic</span>
+                    </div>
+                    <a href="https://play.google.com/store/apps/details?id=com.thief.puzzle.escape.game&pli=1" class="btn btn-outline" target="_blank">View Details ↗</a>
+                </div>
+            </article>
+
+            <!-- Project 3 -->
+            <article class="project-card reveal">
+                <div class="project-media">
+                    <!-- REPLACE: Put your image in assets/project3.png -->
+                    <img src="assets/project3.png" alt="Ashes: RPG Adventure" class="project-img" 
+                         data-thumbnail="assets/project3.png" 
+                         data-gif="assets/game3.gif" 
+                         data-video="assets/game3.mp4" 
+                         loading="lazy">
+
+                </div>
+                <div class="project-info">
+                    <h3 class="glitch-text">Ashes: RPG Adventure</h3>
+                    <p class="project-desc">A story-driven medieval action game featuring deep lore, character progression, and immersive environments.</p>
+                    <div class="project-tags">
+                        <span>Action RPG</span>
+                        <span>Medieval</span>
+                        <span>Story-driven</span>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=qu9_ICrAAc8" class="btn btn-outline" target="_blank">View Details ↗</a>
+                </div>
+            </article>
+
+            <!-- Project 4 -->
+            <article class="project-card reverse reveal">
+                <div class="project-media portrait">
+                    <img src="assets/project4.png" alt="Ragdoll Ball Game" class="project-img" 
+                         data-thumbnail="assets/project4.png" 
+                         data-gif="assets/game4.gif" 
+                         data-video="assets/game4.mp4" 
+                         loading="lazy" decoding="async">
+                </div>
+                <div class="project-info">
+                    <h3 class="glitch-text">Ragdoll Ball Game</h3>
+                    <p class="project-desc">Physics-based chaotic fun exploring ragdoll mechanics and dynamic object interactions.</p>
+                    <div class="project-tags">
+                        <span>Physics</span>
+                        <span>Casual</span>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1GfCZ3f_H86bOCknX3-3AgwR3Nx9ybrqs/view?usp=sharing" class="btn btn-outline" target="_blank">View Details ↗</a>
+                </div>
+            </article>
+
+            <!-- Project 5 -->
+            <article class="project-card reveal">
+                <div class="project-media">
+                    <!-- REPLACE: Put your image in assets/project5.png -->
+                    <img src="assets/project5.png" alt="Cube Runner" class="project-img" 
+                         data-thumbnail="assets/project5.png" 
+                         data-gif="assets/game5.gif" 
+                         data-video="assets/game5.mp4" 
+                         loading="lazy">
+
+                </div>
+                <div class="project-info">
+                    <h3 class="glitch-text">Cube Runner</h3>
+                    <p class="project-desc">A fast-paced infinite runner testing your reflexes and spatial awareness.</p>
+                    <div class="project-tags">
+                        <span>Arcade</span>
+                        <span>Runner</span>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=omsdky5n_2Q" class="btn btn-outline" target="_blank">View Details ↗</a>
+                </div>
+            </article>
+
+            <!-- Project 6 -->
+            <article class="project-card reverse reveal">
+                <div class="project-media">
+                    <!-- REPLACE: Put your image in assets/project6.png -->
+                    <img src="assets/project6.png" alt="Wannabe GTA 6" class="project-img" 
+                         data-thumbnail="assets/project6.png" 
+                         data-gif="assets/game6.gif" 
+                         data-video="assets/game6.mp4" 
+                         loading="lazy">
+
+                </div>
+                <div class="project-info">
+                    <h3 class="glitch-text">Wannabe GTA 6</h3>
+                    <p class="project-desc">An ambitious open-world sandbox project exploring complex AI, vehicle physics, and large-scale environments.</p>
+                    <div class="project-tags">
+                        <span>Open World</span>
+                        <span>Sandbox</span>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=NeQqgua8t_c" class="btn btn-outline" target="_blank">View Details ↗</a>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="footer-content container">
+            <h2>Let's build something together.</h2>
+            <a href="mailto:harshitranjan4140p@gmail.com" class="hero-email">harshitranjan4140p@gmail.com</a>
+            <div class="social-links footer-socials">
+                <a href="https://www.linkedin.com/in/harshit-ranjan-874659375/" class="social-btn" title="LinkedIn" target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+                <a href="https://www.instagram.com/harshit_ranjan_0/" class="social-btn" title="Instagram" target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://github.com/harshitranjan4140p" class="social-btn" title="GitHub" target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Harshit Ranjan. Patliputra Games.</p>
+                <p>MSME Registered in Gujarat: UDYAM-GJ-09-0069684</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Page Transition Overlay -->
+    <div class="page-transition-overlay" id="pageOverlay"></div>
+
+    <!-- Custom Context Menu -->
+    <div id="custom-context-menu" class="context-menu">
+        <div class="context-menu-item" data-action="back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back
+        </div>
+        <div class="context-menu-item" data-action="reload">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Reload
+        </div>
+        <div class="context-menu-divider"></div>
+        <div class="context-menu-item" data-action="top">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            Scroll to Top
+        </div>
+        <div class="context-menu-item" data-action="resume">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            View Resume
+        </div>
+        <div class="context-menu-divider"></div>
+        <div class="context-menu-item" data-action="copy-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+            Copy Email
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Back to Top -->
+    <a href="#about" class="back-to-top" id="backToTop" aria-label="Back to top">↑</a>
+
+    <script src="script.js"></script>
+
+    <!-- Destruction Mode Popup -->
+    <div class="destruction-popup">
+        <h2>DO YOU WANT DESTRUCTION?</h2>
+        <p>God of Destruction. God of War.</p>
+        <div class="destruction-btns">
+            <button class="btn-yes">YES</button>
+            <button class="btn-no">NO</button>
+        </div>
+    </div>
+    <!-- Final Guilt Popup -->
+    <div class="guilt-popup">
+        <p>You deleted us. Why would you do it? We could have been friends, but you chose otherwise. There are consequences to your actions. Remember that.</p>
+        <div id="shutdown-countdown" style="margin-top: 20px; color: #ff0000; font-family: 'Urbanist', sans-serif; font-size: 3rem; font-weight: 800;">15</div>
+    </div>
+
+    <!-- Final Eye Sequence -->
+    <div class="final-sequence">
+        <div class="eye-text">We are watching you</div>
+        <div class="monolith">
+            <div class="eye-white">
+                <div class="pupil">
+                    <div class="pupil-reflection"></div>
+                </div>
+            </div>
+            <div class="eye-lid-top"></div>
+            <div class="eye-lid-bottom"></div>
+        </div>
+    </div>
+</body>
+</html>
