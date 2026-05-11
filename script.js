@@ -342,51 +342,113 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* 
     ==========================================================================
-    PROJECT MEDIA SWAPPER
+    PROJECT MEDIA SWAPPER (OPTIMIZED)
     ==========================================================================
+    Loads videos in the background as they approach the viewport to ensure 
+    instant playback on hover without causing performance lag.
     */
     let userMutedPreference = true;
-    document.querySelectorAll('.project-card').forEach(card => {
-        const img = card.querySelector('.project-img');
-        if (!img) return;
-        const videoSrc = img.dataset.video, gifSrc = img.dataset.gif, thumbSrc = img.dataset.thumbnail || img.src;
-        let videoElement = null, muteBtn = null;
-        const muteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
-        const unmuteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
-
-        card.addEventListener('mouseenter', () => {
-            if (videoSrc) {
-                if (!videoElement) {
-                    videoElement = document.createElement('video');
-                    videoElement.src = videoSrc;
-                    videoElement.autoplay = true; videoElement.loop = true; videoElement.muted = userMutedPreference; videoElement.playsInline = true;
-                    Object.assign(videoElement.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', objectFit: 'cover', opacity: '0', transition: 'opacity 0.4s ease', zIndex: '1' });
-                    muteBtn = document.createElement('button');
-                    muteBtn.className = 'mute-btn';
-                    muteBtn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon;
-                    muteBtn.onclick = (e) => {
-                        e.stopPropagation(); e.preventDefault();
-                        userMutedPreference = !userMutedPreference;
-                        videoElement.muted = userMutedPreference;
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    if (projectCards.length > 0) {
+        const videoLoader = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const card = entry.target;
+                    const img = card.querySelector('.project-img');
+                    if (!img) return;
+                    
+                    const videoSrc = img.dataset.video;
+                    if (videoSrc && !card.dataset.videoInited) {
+                        // Mark as inited to prevent duplicate work
+                        card.dataset.videoInited = "true";
+                        
+                        // Create video element in background
+                        const video = document.createElement('video');
+                        video.src = videoSrc;
+                        video.preload = "auto";
+                        video.loop = true;
+                        video.muted = userMutedPreference;
+                        video.playsInline = true;
+                        Object.assign(video.style, {
+                            position: 'absolute',
+                            inset: '0',
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            opacity: '0',
+                            transition: 'opacity 0.4s ease',
+                            zIndex: '1',
+                            pointerEvents: 'none'
+                        });
+                        
+                        // Create mute button
+                        const muteBtn = document.createElement('button');
+                        muteBtn.className = 'mute-btn';
+                        const muteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+                        const unmuteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
                         muteBtn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon;
-                    };
-                    img.parentElement.appendChild(videoElement);
-                    img.parentElement.appendChild(muteBtn);
-                    videoElement.oncanplay = () => videoElement.style.opacity = '1';
-                } else {
-                    videoElement.muted = userMutedPreference;
-                    if (muteBtn) muteBtn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon;
-                    videoElement.style.opacity = '1';
-                    videoElement.play().catch(() => {});
+                        
+                        muteBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            userMutedPreference = !userMutedPreference;
+                            // Update all videos' mute state
+                            document.querySelectorAll('video').forEach(v => v.muted = userMutedPreference);
+                            document.querySelectorAll('.mute-btn').forEach(btn => {
+                                btn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon;
+                            });
+                        };
+                        
+                        img.parentElement.appendChild(video);
+                        img.parentElement.appendChild(muteBtn);
+                        
+                        // Reference for hover logic
+                        card.videoElement = video;
+                        card.muteBtn = muteBtn;
+                        
+                        video.oncanplay = () => {
+                            // Video is ready to be shown
+                            if (card.isHovering) {
+                                video.style.opacity = '1';
+                                video.play().catch(() => {});
+                            }
+                        };
+                    }
                 }
-            } else if (gifSrc) img.src = gifSrc;
-        });
+            });
+        }, { rootMargin: '200px 0px', threshold: 0.01 });
 
-        card.addEventListener('mouseleave', () => {
-            if (videoElement) { videoElement.style.opacity = '0'; videoElement.pause(); }
-            else if (gifSrc) img.src = thumbSrc;
+        projectCards.forEach(card => {
+            const img = card.querySelector('.project-img');
+            const videoSrc = img?.dataset.video;
+            const gifSrc = img?.dataset.gif;
+            const thumbSrc = img?.dataset.thumbnail || img?.src;
+
+            // Start observing for background load
+            videoLoader.observe(card);
+
+            card.addEventListener('mouseenter', () => {
+                card.isHovering = true;
+                if (card.videoElement) {
+                    card.videoElement.style.opacity = '1';
+                    card.videoElement.play().catch(() => {});
+                } else if (gifSrc && img) {
+                    img.src = gifSrc;
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.isHovering = false;
+                if (card.videoElement) {
+                    card.videoElement.style.opacity = '0';
+                    card.videoElement.pause();
+                } else if (gifSrc && img) {
+                    img.src = thumbSrc;
+                }
+            });
         });
-    });
+    }
 
     /* 
     ==========================================================================
