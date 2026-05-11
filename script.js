@@ -12,36 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
         repulsionStrength: 40
     };
 
-    /* 
-    ==========================================================================
-    PERFORMANCE DETECTION
-    ==========================================================================
-    Detects if the user's device is struggling with background artifacts.
-    */
-    let frameTimes = [];
-    let lastFrameTime = performance.now();
-    let performanceCheckActive = true;
+    // Global trackers for new features
+    const konamiCode = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+    let konamiIdx = 0;
+    const palettes = [
+        { accent: '#ea9a97', name: '#f6c177' }, // Default Peach/Gold
+        { accent: '#31748f', name: '#9ccfd8' }, // Pine/Foam (Blue)
+        { accent: '#eb6f92', name: '#c4a7e7' }, // Love/Iris (Pink/Purple)
+        { accent: '#f6c177', name: '#ebbcba' }, // Gold/Rose
+        { accent: '#9ccfd8', name: '#31748f' }  // Foam/Pine
+    ];
+    let currentPaletteIdx = 0;
 
-    function checkPerformance() {
-        if (!performanceCheckActive) return;
-        const now = performance.now();
-        const delta = now - lastFrameTime;
-        lastFrameTime = now;
-        if (delta > 0) frameTimes.push(delta);
-        
-        if (frameTimes.length > 100) {
-            const avgFrameTime = frameTimes.reduce((a, b) => a + b) / frameTimes.length;
-            if (avgFrameTime > 33) { // < 30 FPS
-                console.warn("Performance drop detected. Optimizing background.");
-                const container = document.querySelector('.bg-artifacts');
-                if (container) container.innerHTML = '';
-            }
-            performanceCheckActive = false;
-        } else {
-            requestAnimationFrame(checkPerformance);
-        }
-    }
-    requestAnimationFrame(checkPerformance);
+    /* Performance detection removed as requested */
 
     /* 
     ==========================================================================
@@ -100,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const updateHovers = () => {
-            document.querySelectorAll('a, button, .project-card, .btn, .back-to-top, .context-menu-item').forEach(el => {
+            document.querySelectorAll('a, button, .project-card, .btn, .back-to-top, .context-menu-item, .social-btn, .social-link, .btn-nav').forEach(el => {
                 if (el.dataset.hasCursorListener) return;
                 el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
                 el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -108,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
         updateHovers();
-        // Re-run for dynamic elements
         const hoverObserver = new MutationObserver(updateHovers);
         hoverObserver.observe(document.body, { childList: true, subtree: true });
     }
@@ -254,18 +236,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const skillObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
-                const bar = entry.target.querySelector('.skill-progress');
-                const label = entry.target.querySelector('.skill-info span:last-child');
+                const bar = entry.target.querySelector('.skill-progress, .skill-bar-fill');
+                const label = entry.target.querySelector('.skill-info span:last-child, .skill-label span:last-child');
                 if (bar && label) {
                     const targetWidth = bar.style.width || '0%';
                     const targetNum = parseInt(targetWidth);
                     bar.style.width = '0%';
                     bar.style.transition = 'none';
                     const startTime = performance.now();
-                    const duration = 1500;
+                    const duration = 2000; // Slightly slower for better look
                     const tick = (now) => {
                         const progress = Math.min((now - startTime) / duration, 1);
-                        const eased = 1 - Math.pow(1 - progress, 3); 
+                        const eased = 1 - Math.pow(1 - progress, 4); // Smoother quartic ease-out
                         const current = eased * targetNum;
                         label.textContent = Math.round(current) + '%';
                         bar.style.width = current + '%';
@@ -275,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 skillObserver.unobserve(entry.target);
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.2 });
         skillItems.forEach(item => skillObserver.observe(item));
     }
 
@@ -314,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     const isResume = document.querySelector('.resume-page') !== null;
-    initArtifacts(window.innerWidth <= 900 ? 60 : (isResume ? 350 : 500));
+    initArtifacts(window.innerWidth <= 900 ? 200 : (isResume ? 300 : 600));
 
     let mX = -1000, mY = -1000, ticking = false;
     window.addEventListener('mousemove', (e) => {
@@ -323,118 +305,139 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateArtifacts() {
+        if (!ticking) return;
         const vh = window.innerHeight;
-        document.querySelectorAll('.mouse-reactive').forEach(el => {
+        const vw = window.innerWidth;
+        const reactives = document.querySelectorAll('.mouse-reactive');
+        const radiusSq = CONFIG.repulsionRadius * CONFIG.repulsionRadius;
+
+        for (let i = 0; i < reactives.length; i++) {
+            const el = reactives[i];
             const rect = el.getBoundingClientRect();
-            if (rect.bottom < -50 || rect.top > vh + 50) return;
+            
+            // Skip if off-screen (with buffer)
+            if (rect.bottom < -100 || rect.top > vh + 100 || rect.right < -100 || rect.left > vw + 100) continue;
+            
             const dx = mX - (rect.left + rect.width / 2);
             const dy = mY - (rect.top + rect.height / 2);
             const distSq = dx * dx + dy * dy;
-            if (distSq < CONFIG.repulsionRadius * CONFIG.repulsionRadius) {
+
+            if (distSq < radiusSq) {
                 const distance = Math.sqrt(distSq);
                 const angle = Math.atan2(dy, dx);
                 const force = (CONFIG.repulsionRadius - distance) / CONFIG.repulsionRadius;
-                el.style.transform = `translate(${(-Math.cos(angle) * force * CONFIG.repulsionStrength).toFixed(1)}px, ${(-Math.sin(angle) * force * CONFIG.repulsionStrength).toFixed(1)}px)`;
-            } else if (el.style.transform !== '') el.style.transform = 'translate(0, 0)';
-        });
+                const tx = (-Math.cos(angle) * force * CONFIG.repulsionStrength).toFixed(1);
+                const ty = (-Math.sin(angle) * force * CONFIG.repulsionStrength).toFixed(1);
+                el.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+            } else if (el.style.transform !== '' && el.style.transform !== 'translate3d(0px, 0px, 0px)') {
+                el.style.transform = 'translate3d(0, 0, 0)';
+            }
+        }
         ticking = false;
     }
 
     /* 
     ==========================================================================
-    PROJECT MEDIA SWAPPER (OPTIMIZED)
+    PROJECT MEDIA SWAPPER (IDLE-SEQUENTIAL WITH PRIORITY)
     ==========================================================================
-    Loads videos in the background as they approach the viewport to ensure 
-    instant playback on hover without causing performance lag.
+    Optimized for production: Prioritizes hovered content and loads the rest 
+    sequentially when the browser is idle to ensure a lag-free experience.
     */
     let userMutedPreference = true;
     const projectCards = document.querySelectorAll('.project-card');
-    
+    const loadQueue = [];
+
+    const initVideo = (card, priority = false) => {
+        if (card.dataset.videoInited) {
+            if (priority && card.videoElement) card.videoElement.preload = "auto";
+            return;
+        }
+        
+        const img = card.querySelector('.project-img');
+        if (!img) return;
+        
+        const videoSrc = img.dataset.video;
+        const thumbSrc = img.dataset.thumbnail || img.src;
+        if (!videoSrc) return;
+
+        card.dataset.videoInited = "true";
+        const video = document.createElement('video');
+        video.src = videoSrc;
+        video.preload = priority ? "auto" : "metadata"; // High priority gets full preload
+        video.loop = true;
+        video.muted = userMutedPreference;
+        video.playsInline = true;
+        video.poster = thumbSrc;
+        
+        Object.assign(video.style, {
+            position: 'absolute', inset: '0', width: '100%', height: '100%',
+            objectFit: 'cover', opacity: '0', zIndex: '1', pointerEvents: 'none',
+            transition: 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+        
+        const muteBtn = document.createElement('button');
+        muteBtn.className = 'mute-btn';
+        const muteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+        const unmuteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+        muteBtn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon;
+        
+        muteBtn.onclick = (e) => {
+            e.stopPropagation(); e.preventDefault();
+            userMutedPreference = !userMutedPreference;
+            document.querySelectorAll('video').forEach(v => v.muted = userMutedPreference);
+            document.querySelectorAll('.mute-btn').forEach(btn => btn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon);
+        };
+        
+        img.parentElement.appendChild(video);
+        img.parentElement.appendChild(muteBtn);
+        card.videoElement = video;
+    };
+
+    // Sequential Idle Loader
+    const processQueue = () => {
+        if (loadQueue.length === 0) return;
+        const nextCard = loadQueue.shift();
+        if (!nextCard.dataset.videoInited) {
+            initVideo(nextCard, false);
+            // Wait for some data to be buffered before next one
+            nextCard.videoElement.onloadedmetadata = () => {
+                setTimeout(() => {
+                    if (window.requestIdleCallback) requestIdleCallback(processQueue);
+                    else setTimeout(processQueue, 1000);
+                }, 500);
+            };
+        } else processQueue();
+    };
+
     if (projectCards.length > 0) {
-        const videoLoader = new IntersectionObserver((entries) => {
+        const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const card = entry.target;
-                    const img = card.querySelector('.project-img');
-                    if (!img) return;
-                    
-                    const videoSrc = img.dataset.video;
-                    if (videoSrc && !card.dataset.videoInited) {
-                        // Mark as inited to prevent duplicate work
-                        card.dataset.videoInited = "true";
-                        
-                        // Create video element in background
-                        const video = document.createElement('video');
-                        video.src = videoSrc;
-                        video.preload = "auto";
-                        video.loop = true;
-                        video.muted = userMutedPreference;
-                        video.playsInline = true;
-                        Object.assign(video.style, {
-                            position: 'absolute',
-                            inset: '0',
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            opacity: '0',
-                            transition: 'opacity 0.4s ease',
-                            zIndex: '1',
-                            pointerEvents: 'none'
-                        });
-                        
-                        // Create mute button
-                        const muteBtn = document.createElement('button');
-                        muteBtn.className = 'mute-btn';
-                        const muteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
-                        const unmuteIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
-                        muteBtn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon;
-                        
-                        muteBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            userMutedPreference = !userMutedPreference;
-                            // Update all videos' mute state
-                            document.querySelectorAll('video').forEach(v => v.muted = userMutedPreference);
-                            document.querySelectorAll('.mute-btn').forEach(btn => {
-                                btn.innerHTML = userMutedPreference ? muteIcon : unmuteIcon;
-                            });
-                        };
-                        
-                        img.parentElement.appendChild(video);
-                        img.parentElement.appendChild(muteBtn);
-                        
-                        // Reference for hover logic
-                        card.videoElement = video;
-                        card.muteBtn = muteBtn;
-                        
-                        video.oncanplay = () => {
-                            // Video is ready to be shown
-                            if (card.isHovering) {
-                                video.style.opacity = '1';
-                                video.play().catch(() => {});
-                            }
-                        };
+                if (entry.isIntersecting && !entry.target.dataset.videoInited) {
+                    loadQueue.push(entry.target);
+                    if (loadQueue.length === 1) {
+                        if (window.requestIdleCallback) requestIdleCallback(processQueue);
+                        else setTimeout(processQueue, 1000);
                     }
                 }
             });
-        }, { rootMargin: '200px 0px', threshold: 0.01 });
+        }, { rootMargin: '200px 0px' });
 
         projectCards.forEach(card => {
+            videoObserver.observe(card);
             const img = card.querySelector('.project-img');
-            const videoSrc = img?.dataset.video;
-            const gifSrc = img?.dataset.gif;
             const thumbSrc = img?.dataset.thumbnail || img?.src;
-
-            // Start observing for background load
-            videoLoader.observe(card);
 
             card.addEventListener('mouseenter', () => {
                 card.isHovering = true;
+                // High Priority Initialization
+                if (!card.dataset.videoInited) initVideo(card, true);
+                else if (card.videoElement) card.videoElement.preload = "auto";
+
                 if (card.videoElement) {
-                    card.videoElement.style.opacity = '1';
-                    card.videoElement.play().catch(() => {});
-                } else if (gifSrc && img) {
-                    img.src = gifSrc;
+                    const playPromise = card.videoElement.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => { if (card.isHovering) card.videoElement.style.opacity = '1'; }).catch(() => {});
+                    }
                 }
             });
 
@@ -443,8 +446,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (card.videoElement) {
                     card.videoElement.style.opacity = '0';
                     card.videoElement.pause();
-                } else if (gifSrc && img) {
-                    img.src = thumbSrc;
                 }
             });
         });
@@ -662,6 +663,335 @@ document.addEventListener('DOMContentLoaded', () => {
             if (originalBtnYes) originalBtnYes(e);
         };
     }
+
+    /* 
+    ==========================================================================
+    CUSTOM FIND INTERFACE (F3)
+    ==========================================================================
+    */
+    let findOverlay = null, findInput = null, findStats = null, matches = [], currentMatchIndex = -1;
+
+    const createFindUI = () => {
+        findOverlay = document.createElement('div');
+        findOverlay.className = 'custom-find';
+        findOverlay.innerHTML = `
+            <input type="text" class="find-input" placeholder="Find in page...">
+            <div class="find-stats">0/0</div>
+            <div class="find-btns">
+                <button class="find-btn prev">↑</button>
+                <button class="find-btn next">↓</button>
+            </div>
+            <div class="find-close">&times;</div>
+        `;
+        document.body.appendChild(findOverlay);
+        findInput = findOverlay.querySelector('.find-input');
+        findStats = findOverlay.querySelector('.find-stats');
+
+        findOverlay.querySelector('.find-close').onclick = hideFind;
+        findOverlay.querySelector('.prev').onclick = (e) => { e.stopPropagation(); navigateFind(-1); };
+        findOverlay.querySelector('.next').onclick = (e) => { e.stopPropagation(); navigateFind(1); };
+        
+        findInput.oninput = (e) => performSearch(e.target.value);
+        findInput.onkeydown = (e) => {
+            if (e.key === 'Enter') navigateFind(e.shiftKey ? -1 : 1);
+            if (e.key === 'Escape') hideFind();
+        };
+    };
+
+    const showFind = () => {
+        if (!findOverlay) createFindUI();
+        findOverlay.classList.add('active');
+        setTimeout(() => findInput.focus(), 100);
+    };
+
+    const hideFind = () => {
+        if (findOverlay) {
+            findOverlay.classList.remove('active');
+            clearHighlights();
+        }
+    };
+
+    const clearHighlights = () => {
+        document.querySelectorAll('mark.find-highlight').forEach(mark => {
+            const parent = mark.parentNode;
+            if (parent) {
+                parent.replaceChild(document.createTextNode(mark.textContent), mark);
+                parent.normalize();
+            }
+        });
+        matches = [];
+        currentMatchIndex = -1;
+    };
+
+    const performSearch = (query) => {
+        clearHighlights();
+        if (!query || query.length < 2) { findStats.textContent = '0/0'; return; }
+
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+            acceptNode: (node) => {
+                if (node.parentElement.closest('.custom-find, script, style, .bg-artifacts, .context-menu')) return NodeFilter.FILTER_REJECT;
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        });
+
+        const nodes = [];
+        let node;
+        while (node = walker.nextNode()) nodes.push(node);
+
+        nodes.forEach(textNode => {
+            const text = textNode.textContent;
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            if (regex.test(text)) {
+                const fragment = document.createDocumentFragment();
+                let lastIndex = 0;
+                text.replace(regex, (match, p1, offset) => {
+                    fragment.appendChild(document.createTextNode(text.substring(lastIndex, offset)));
+                    const mark = document.createElement('mark');
+                    mark.className = 'find-highlight';
+                    mark.textContent = match;
+                    fragment.appendChild(mark);
+                    matches.push(mark);
+                    lastIndex = offset + match.length;
+                });
+                fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+                if (textNode.parentNode) textNode.parentNode.replaceChild(fragment, textNode);
+            }
+        });
+
+        currentMatchIndex = matches.length > 0 ? 0 : -1;
+        updateFindStats();
+        if (matches.length > 0) highlightCurrent();
+    };
+
+    const highlightCurrent = () => {
+        matches.forEach(m => m.classList.remove('find-active'));
+        const current = matches[currentMatchIndex];
+        if (current) {
+            current.classList.add('find-active');
+            current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    const navigateFind = (direction) => {
+        if (matches.length === 0) return;
+        currentMatchIndex = (currentMatchIndex + direction + matches.length) % matches.length;
+        updateFindStats();
+        highlightCurrent();
+    };
+
+    const updateFindStats = () => {
+        findStats.textContent = matches.length > 0 ? `${currentMatchIndex + 1}/${matches.length}` : '0/0';
+    };
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'F3') {
+            e.preventDefault();
+            showFind();
+        }
+        if (e.key === '`') {
+            toggleStats();
+        }
+        
+        // Command Palette (Ctrl+K)
+        if (e.key === 'k' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            toggleCommandPalette();
+        }
+
+        // Accent Cycler (Alt+T)
+        if (e.key === 't' && e.altKey) {
+            e.preventDefault();
+            cycleAccent();
+        }
+
+        // Screenshot Mode (Alt+S)
+        if (e.key === 's' && e.altKey) {
+            e.preventDefault();
+            toggleScreenshotMode();
+        }
+
+        // Konami Code Tracker (Case Insensitive)
+        const key = e.key.toLowerCase();
+        if (key === konamiCode[konamiIdx]) {
+            konamiIdx++;
+            if (konamiIdx === konamiCode.length) {
+                toggleCRTMode();
+                konamiIdx = 0;
+            }
+        } else {
+            konamiIdx = (key === konamiCode[0]) ? 1 : 0;
+        }
+    });
+
+    /* 
+    ==========================================================================
+    PREMIUM FEATURES LOGIC
+    ==========================================================================
+    */
+    
+    // 1. Accent Cycler
+    const cycleAccent = () => {
+        currentPaletteIdx = (currentPaletteIdx + 1) % palettes.length;
+        const p = palettes[currentPaletteIdx];
+        document.documentElement.style.setProperty('--accent-color', p.accent);
+        document.documentElement.style.setProperty('--name-color', p.name);
+        trackEvent('palette_cycle', { palette: p.accent });
+    };
+
+    // 2. Command Palette
+    let cpOverlay = null, cpSearch = null, cpList = null, cpActiveIdx = 0;
+    const commands = [
+        { label: 'Go to Resume', action: () => window.location.href = 'resume.html', hint: 'Nav' },
+        { label: 'Destruction Mode', action: () => document.querySelector('.btn-yes')?.click(), hint: 'Secret' },
+        { label: 'Cycle Accent Color', action: cycleAccent, hint: 'Alt+T' },
+        { label: 'Toggle Retro CRT Mode', action: () => toggleCRTMode(), hint: 'Konami' },
+        { label: 'Screenshot Mode', action: () => toggleScreenshotMode(), hint: 'Alt+S' },
+        { label: 'Find in Page', action: () => showFind(), hint: 'F3' },
+        { label: 'Performance Stats', action: () => toggleStats(), hint: '`' }
+    ];
+
+    const createCPUI = () => {
+        cpOverlay = document.createElement('div');
+        cpOverlay.className = 'command-palette';
+        cpOverlay.innerHTML = `
+            <input type="text" class="cp-search" placeholder="Type a command...">
+            <div class="cp-list"></div>
+        `;
+        document.body.appendChild(cpOverlay);
+        cpSearch = cpOverlay.querySelector('.cp-search');
+        cpList = cpOverlay.querySelector('.cp-list');
+
+        cpSearch.oninput = (e) => renderCP(e.target.value);
+        cpSearch.onkeydown = (e) => {
+            if (e.key === 'ArrowDown') { e.preventDefault(); cpActiveIdx = (cpActiveIdx + 1) % cpFiltered.length; updateCPSelection(); }
+            if (e.key === 'ArrowUp') { e.preventDefault(); cpActiveIdx = (cpActiveIdx - 1 + cpFiltered.length) % cpFiltered.length; updateCPSelection(); }
+            if (e.key === 'Enter') { e.preventDefault(); cpFiltered[cpActiveIdx]?.action(); hideCP(); }
+            if (e.key === 'Escape') hideCP();
+        };
+    };
+
+    let cpFiltered = [];
+    const renderCP = (query = '') => {
+        cpFiltered = commands.filter(c => c.label.toLowerCase().includes(query.toLowerCase()));
+        cpList.innerHTML = cpFiltered.map((c, i) => `
+            <div class="cp-item ${i === cpActiveIdx ? 'selected' : ''}" data-index="${i}">
+                <span class="cp-label">${c.label}</span>
+                <span class="cp-hint">${c.hint}</span>
+            </div>
+        `).join('');
+        
+        cpList.querySelectorAll('.cp-item').forEach(item => {
+            item.onmouseenter = () => { cpActiveIdx = parseInt(item.dataset.index); updateCPSelection(); };
+            item.onclick = () => { cpFiltered[cpActiveIdx].action(); hideCP(); };
+        });
+    };
+
+    const updateCPSelection = () => {
+        cpList.querySelectorAll('.cp-item').forEach((item, i) => item.classList.toggle('selected', i === cpActiveIdx));
+    };
+
+    const toggleCommandPalette = () => {
+        if (!cpOverlay) createCPUI();
+        const isActive = cpOverlay.classList.toggle('active');
+        if (isActive) {
+            cpSearch.value = '';
+            cpActiveIdx = 0;
+            renderCP();
+            setTimeout(() => cpSearch.focus(), 100);
+        }
+    };
+    const hideCP = () => cpOverlay?.classList.remove('active');
+
+    // 3. CRT Mode
+    const toggleCRTMode = () => {
+        if (!document.querySelector('.crt-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.className = 'crt-overlay';
+            document.body.appendChild(overlay);
+        }
+        document.body.classList.toggle('crt-mode');
+        trackEvent('crt_mode_toggle');
+    };
+
+    // 4. Screenshot Mode
+    const toggleScreenshotMode = () => {
+        document.body.classList.toggle('screenshot-mode');
+    };
+
+    /* Konami definitions moved to top for scoping */
+
+    /* 
+    ==========================================================================
+    STATS OVERLAY (BACKTICK)
+    ==========================================================================
+    */
+    let statsOverlay = null, fps = 0, lastTime = performance.now(), frames = 0, statsActive = false;
+
+    const createStatsUI = () => {
+        statsOverlay = document.createElement('div');
+        statsOverlay.className = 'stats-overlay';
+        statsOverlay.innerHTML = `
+            <div class="stats-item">FPS: <span class="stats-value" id="stats-fps">0</span></div>
+            <div class="stats-item">Objects: <span class="stats-value" id="stats-objects">0</span></div>
+            <div class="stats-item">Memory: <span class="stats-value" id="stats-mem">N/A</span></div>
+        `;
+        document.body.appendChild(statsOverlay);
+    };
+
+    const toggleStats = () => {
+        if (!statsOverlay) createStatsUI();
+        statsActive = !statsActive;
+        statsOverlay.classList.toggle('active', statsActive);
+        if (statsActive) requestAnimationFrame(updateStats);
+    };
+
+    const updateStats = () => {
+        if (!statsActive) return;
+        
+        frames++;
+        const now = performance.now();
+        if (now >= lastTime + 1000) {
+            fps = Math.round((frames * 1000) / (now - lastTime));
+            document.getElementById('stats-fps').textContent = fps;
+            frames = 0;
+            lastTime = now;
+            
+            // Update objects count
+            const objects = document.querySelectorAll('.artifact-wrapper, .debris').length;
+            document.getElementById('stats-objects').textContent = objects;
+            
+            // Update memory if available
+            if (window.performance && window.performance.memory) {
+                const mem = Math.round(window.performance.memory.usedJSHeapSize / 1048576);
+                document.getElementById('stats-mem').textContent = mem + ' MB';
+            }
+        }
+        requestAnimationFrame(updateStats);
+    };
+
+    /* 
+    ==========================================================================
+    VISITOR COUNTER (PRODUCTION)
+    ==========================================================================
+    */
+    const updateVisitorCount = async () => {
+        const countEl = document.getElementById('visitor-count');
+        if (!countEl) return;
+
+        try {
+            // Using a stable visitor counter API
+            const response = await fetch('https://api.counterapi.dev/v1/harshitranjan/portfolio/up');
+            const data = await response.json();
+            if (data && data.count) {
+                const count = data.count.toLocaleString();
+                countEl.textContent = count.padStart(6, '0');
+                trackEvent('visitor_count_updated', { count: data.count });
+            }
+        } catch (error) {
+            countEl.textContent = "CONNECTED";
+        }
+    };
+    updateVisitorCount();
 });
 
 // ── DevTools Protection ──────────────────────────────────────────────

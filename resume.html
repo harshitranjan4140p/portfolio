@@ -42,6 +42,7 @@
             overflow-x: hidden;
             margin: 0;
             padding: 0;
+            cursor: none; /* Hide default cursor */
         }
 
         .resume-page {
@@ -52,7 +53,7 @@
             z-index: 10;
         }
 
-        /* Navigation */
+        /* Navigation Adjustments - Use global .btn class */
         .resume-nav {
             display: flex;
             justify-content: space-between;
@@ -61,35 +62,29 @@
             gap: 15px;
         }
 
-        .btn-nav {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        .resume-nav .btn {
             display: flex;
             align-items: center;
             gap: 8px;
-            cursor: pointer;
-            font-family: 'Urbanist', sans-serif;
+            border-radius: 4px;
+            cursor: none;
         }
 
-        .back-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
+        .resume-nav .back-btn {
+            background: transparent;
             color: var(--text-primary);
+            border: 1px solid var(--border-color);
         }
 
-        .print-btn {
+        .resume-nav .back-btn:hover {
+            background: var(--text-primary);
+            color: var(--bg-color);
+        }
+
+        .resume-nav .print-btn {
             background: var(--accent-color);
             color: var(--bg-color);
-            border: none;
-        }
-
-        .btn-nav:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--accent-color);
         }
 
         /* Header */
@@ -133,30 +128,12 @@
             gap: 6px;
         }
 
+        /* Social Links - Use global .social-btn class */
         .resume-socials {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-top: 25px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: var(--accent-color);
-            color: var(--bg-color);
-            transform: scale(1.1);
         }
 
         /* Sections */
@@ -318,29 +295,158 @@
             }
         }
 
-        /* Print Styles */
+        /* Print Styles - Professional Standard Resume */
         @media print {
-            .resume-nav, .bg-artifacts, .grain-overlay, .scanlines, .cursor-dot, .cursor-outline, .destruction-popup, .guilt-popup, .final-sequence {
+            /* Hide all web UI */
+            .resume-nav, 
+            .bg-artifacts, 
+            .grain-overlay, 
+            .scanlines, 
+            .cursor-dot, 
+            .cursor-outline, 
+            .destruction-popup, 
+            .guilt-popup, 
+            .final-sequence,
+            .back-to-top,
+            .scroll-progress,
+            .resume-socials {
                 display: none !important;
             }
+
+            @page {
+                margin: 2cm;
+                size: A4;
+            }
+
             body {
-                background: white;
-                color: black;
-                padding: 0;
+                background: white !important;
+                color: #000 !important;
+                font-family: 'Segoe UI', Arial, sans-serif !important;
+                font-size: 11pt;
+                line-height: 1.4;
             }
+
             .resume-page {
-                padding: 0;
-                max-width: 100%;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
             }
+
+            .resume-header {
+                text-align: left !important;
+                margin-bottom: 30px !important;
+                border-bottom: 2px solid #000 !important;
+                padding-bottom: 10px !important;
+            }
+
             .resume-header h1 {
-                color: black;
+                font-size: 24pt !important;
+                color: #000 !important;
+                margin-bottom: 5px !important;
+                text-transform: none !important;
+                letter-spacing: normal !important;
+                text-shadow: none !important;
+                animation: none !important;
             }
+
+            .resume-header .title {
+                font-size: 14pt !important;
+                color: #333 !important;
+                text-transform: none !important;
+                letter-spacing: normal !important;
+                margin-bottom: 10px !important;
+            }
+
+            .resume-contact-info {
+                justify-content: flex-start !important;
+                gap: 15px !important;
+                font-size: 10pt !important;
+                color: #000 !important;
+            }
+
+            .resume-contact-info span svg {
+                display: none !important; /* Icons don't print well sometimes */
+            }
+
             .section-title {
-                color: black;
-                border-bottom: 1px solid #ccc;
+                font-size: 14pt !important;
+                color: #000 !important;
+                border-bottom: 1px solid #333 !important;
+                margin-bottom: 15px !important;
+                margin-top: 25px !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
             }
+
             .section-title::after {
-                display: none;
+                display: none !important;
+            }
+
+            .experience-item, .education-item {
+                margin-bottom: 20px !important;
+                page-break-inside: avoid;
+            }
+
+            .item-header h3 {
+                font-size: 12pt !important;
+                color: #000 !important;
+            }
+
+            .item-header .date {
+                color: #444 !important;
+                font-style: italic;
+            }
+
+            .item-subheader {
+                color: #333 !important;
+                font-weight: bold !important;
+            }
+
+            .item-desc {
+                color: #000 !important;
+                max-width: 100% !important;
+            }
+
+            /* Skill Bar Replacement for Print */
+            .skill-bar-bg {
+                display: none !important;
+            }
+
+            .skill-item {
+                display: inline-block !important;
+                margin-right: 15px !important;
+                margin-bottom: 5px !important;
+            }
+
+            .skill-label {
+                font-size: 10pt !important;
+                font-weight: normal !important;
+            }
+
+            .skill-label span:last-child {
+                display: none !important; /* Hide percentages in standard print */
+            }
+
+            .skill-label span:first-child::after {
+                content: ', ';
+            }
+
+            .skill-group {
+                margin-bottom: 10px !important;
+            }
+
+            .skill-group h4 {
+                display: none !important;
+            }
+
+            .skills-container {
+                display: block !important;
+            }
+
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
             }
         }
     </style>
@@ -353,11 +459,11 @@
     <main class="resume-page reveal visible">
         <!-- Navigation -->
         <nav class="resume-nav">
-            <a href="index.html" class="btn-nav back-btn">
+            <a href="index.html" class="btn back-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                 Back to Home
             </a>
-            <button onclick="window.print()" class="btn-nav print-btn">
+            <button onclick="window.print()" class="btn print-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                 Print / Save PDF
             </button>
@@ -384,13 +490,13 @@
             </div>
 
             <div class="resume-socials">
-                <a href="https://www.linkedin.com/in/harshit-ranjan-874659375/" class="social-link" target="_blank">
+                <a href="https://www.linkedin.com/in/harshit-ranjan-874659375/" class="social-btn" title="LinkedIn" target="_blank">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                 </a>
-                <a href="https://www.instagram.com/harshit_ranjan_0/" class="social-link" target="_blank">
+                <a href="https://www.instagram.com/harshit_ranjan_0/" class="social-btn" title="Instagram" target="_blank">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
-                <a href="https://github.com/harshitranjan4140p" class="social-link" target="_blank">
+                <a href="https://github.com/harshitranjan4140p" class="social-btn" title="GitHub" target="_blank">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
                 </a>
             </div>
@@ -506,6 +612,15 @@
     <div class="cursor-outline"></div>
     <div class="scroll-progress" id="scrollProgress"></div>
     <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <!-- Visitor Counter -->
+    <div class="visitor-counter-wrap">
+        <div class="visitor-counter">
+            <span class="label">CONNECTION_ID:</span>
+            <span id="visitor-count" class="count">FETCHING...</span>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 
     <!-- Global State Popups (Maintained for 'Destruction Mode') -->
