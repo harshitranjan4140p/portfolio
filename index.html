@@ -44,7 +44,7 @@
                 </div>
                 <div class="contact-links reveal">
                     <a href="mailto:harshitranjan4140p@gmail.com" class="btn">harshitranjan4140p@gmail.com ↗</a>
-                    <a href="resume.html" class="btn btn-outline">Resume ↓</a>
+                    <a href="assets/resume.pdf" class="btn btn-outline" target="_blank">Resume ↓</a>
                 </div>
 
                 <div class="social-links reveal">
@@ -68,151 +68,16 @@
         <section id="projects" class="projects">
             <h2 class="section-title reveal">Selected Works</h2>
 
-            <!-- 
-                DEVELOPER NOTE: ADD NEW PROJECTS HERE
-                1. Use the <article class="project-card reveal"> structure.
-                2. For portrait/mobile projects, add the "portrait" class to .project-media.
-                3. Use "reverse" class on .project-card for alternating layout.
-                4. Data attributes:
-                   - data-thumbnail: Static image (PNG/JPG)
-                   - data-gif: GIF fallback
-                   - data-video: High-performance MP4 video (Priority)
-            -->
+            <div id="projects-grid">
+                <!-- Projects will be rendered here dynamically via script.js -->
+            </div>
 
-            <!-- Project 1 -->
-            <article class="project-card reveal">
-                <div class="project-media">
-                    <!-- Placeholder for GIF -->
-                    <!-- REPLACE: Put your image in assets/project1.png -->
-                    <img src="assets/project1.png" alt="Online FPS Multiplayer Shooter" class="project-img" 
-                         data-thumbnail="assets/project1.png" 
-                         data-gif="assets/game1.gif" 
-                         data-video="assets/game1.mp4" 
-                         loading="lazy">
-
-                </div>
-                <div class="project-info">
-                    <h3 class="glitch-text">Online FPS Multiplayer Shooter</h3>
-                    <p class="project-desc">A competitive multiplayer experience powered by <strong>Photon Pun 2</strong>, featuring fast-paced combat and robust network synchronization.</p>
-                    <div class="project-tags">
-                        <span>Photon Pun 2</span>
-                        <span>FPS</span>
-                        <span>Networking</span>
-                    </div>
-                    <a href="https://www.youtube.com/watch?v=MAhPNKZ_MHE" class="btn btn-outline" target="_blank">View Details ↗</a>
-                </div>
-            </article>
-
-            <!-- Project 2 -->
-            <article class="project-card reverse reveal">
-                <div class="project-media portrait">
-                    <!-- REPLACE: Put your image in assets/project2.png -->
-                    <img src="assets/project2.png" alt="Thief Long Hand Puzzle" class="project-img" 
-                         data-thumbnail="assets/project2.png" 
-                         data-gif="assets/game2.gif" 
-                         data-video="assets/game2.mp4" 
-                         loading="lazy">
-
-                </div>
-                <div class="project-info">
-                    <h3 class="glitch-text">Thief Long Hand Puzzle</h3>
-                    <p class="project-desc">A clever physics-based puzzle game challenging your spatial logic. <strong>Available on Play Store.</strong></p>
-                    <div class="project-tags">
-                        <span>Puzzle</span>
-                        <span>Play Store</span>
-                        <span>Logic</span>
-                    </div>
-                    <a href="https://play.google.com/store/apps/details?id=com.thief.puzzle.escape.game&pli=1" class="btn btn-outline" target="_blank">View Details ↗</a>
-                </div>
-            </article>
-
-            <!-- Project 3 -->
-            <article class="project-card reveal">
-                <div class="project-media">
-                    <!-- REPLACE: Put your image in assets/project3.png -->
-                    <img src="assets/project3.png" alt="Ashes: RPG Adventure" class="project-img" 
-                         data-thumbnail="assets/project3.png" 
-                         data-gif="assets/game3.gif" 
-                         data-video="assets/game3.mp4" 
-                         loading="lazy">
-
-                </div>
-                <div class="project-info">
-                    <h3 class="glitch-text">Ashes: RPG Adventure</h3>
-                    <p class="project-desc">A story-driven medieval action game featuring deep lore, character progression, and immersive environments.</p>
-                    <div class="project-tags">
-                        <span>Action RPG</span>
-                        <span>Medieval</span>
-                        <span>Story-driven</span>
-                    </div>
-                    <a href="https://www.youtube.com/watch?v=qu9_ICrAAc8" class="btn btn-outline" target="_blank">View Details ↗</a>
-                </div>
-            </article>
-
-            <!-- Project 4 -->
-            <article class="project-card reverse reveal">
-                <div class="project-media portrait">
-                    <img src="assets/project4.png" alt="Ragdoll Ball Game" class="project-img" 
-                         data-thumbnail="assets/project4.png" 
-                         data-gif="assets/game4.gif" 
-                         data-video="assets/game4.mp4" 
-                         loading="lazy" decoding="async">
-                </div>
-                <div class="project-info">
-                    <h3 class="glitch-text">Ragdoll Ball Game</h3>
-                    <p class="project-desc">Physics-based chaotic fun exploring ragdoll mechanics and dynamic object interactions.</p>
-                    <div class="project-tags">
-                        <span>Physics</span>
-                        <span>Casual</span>
-                    </div>
-                    <a href="https://drive.google.com/file/d/1GfCZ3f_H86bOCknX3-3AgwR3Nx9ybrqs/view?usp=sharing" class="btn btn-outline" target="_blank">View Details ↗</a>
-                </div>
-            </article>
-
-            <!-- Project 5 -->
-            <article class="project-card reveal">
-                <div class="project-media">
-                    <!-- REPLACE: Put your image in assets/project5.png -->
-                    <img src="assets/project5.png" alt="Cube Runner" class="project-img" 
-                         data-thumbnail="assets/project5.png" 
-                         data-gif="assets/game5.gif" 
-                         data-video="assets/game5.mp4" 
-                         loading="lazy">
-
-                </div>
-                <div class="project-info">
-                    <h3 class="glitch-text">Cube Runner</h3>
-                    <p class="project-desc">A fast-paced infinite runner testing your reflexes and spatial awareness.</p>
-                    <div class="project-tags">
-                        <span>Arcade</span>
-                        <span>Runner</span>
-                    </div>
-                    <a href="https://www.youtube.com/watch?v=omsdky5n_2Q" class="btn btn-outline" target="_blank">View Details ↗</a>
-                </div>
-            </article>
-
-            <!-- Project 6 -->
-            <article class="project-card reverse reveal">
-                <div class="project-media">
-                    <!-- REPLACE: Put your image in assets/project6.png -->
-                    <img src="assets/project6.png" alt="Wannabe GTA 6" class="project-img" 
-                         data-thumbnail="assets/project6.png" 
-                         data-gif="assets/game6.gif" 
-                         data-video="assets/game6.mp4" 
-                         loading="lazy">
-
-                </div>
-                <div class="project-info">
-                    <h3 class="glitch-text">Wannabe GTA 6</h3>
-                    <p class="project-desc">An ambitious open-world sandbox project exploring complex AI, vehicle physics, and large-scale environments.</p>
-                    <div class="project-tags">
-                        <span>Open World</span>
-                        <span>Sandbox</span>
-                    </div>
-                    <a href="https://www.youtube.com/watch?v=NeQqgua8t_c" class="btn btn-outline" target="_blank">View Details ↗</a>
-                </div>
-            </article>
-
+            <div class="more-projects-wrapper reveal">
+                <a href="projects.html" class="btn btn-outline more-projects-btn">
+                    More Projects
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+            </div>
         </section>
     </main>
 
@@ -282,9 +147,12 @@
         <div class="visitor-counter">
             <span class="label">CONNECTION_ID:</span>
             <span id="visitor-count" class="count">FETCHING...</span>
+            <span class="label" style="margin-left: 20px;">LAST_UPDATED:</span>
+            <span class="count">MAY 2026</span>
         </div>
     </div>
 
+    <script src="projects.js"></script>
     <script src="script.js"></script>
 
     <!-- Destruction Mode Popup -->

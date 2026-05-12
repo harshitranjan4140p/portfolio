@@ -12,6 +12,42 @@ document.addEventListener('DOMContentLoaded', () => {
         repulsionStrength: 40
     };
 
+    /* 
+    ==========================================================================
+    DYNAMIC PROJECT RENDERING
+    ==========================================================================
+    */
+    const renderProjects = () => {
+        const grid = document.getElementById('projects-grid');
+        if (!grid || typeof PROJECT_DATA === 'undefined') return;
+
+        const isMainPage = !document.body.classList.contains('projects-page');
+        const projectsToRender = isMainPage 
+            ? PROJECT_DATA.filter(p => p.isHighlight) 
+            : PROJECT_DATA.filter(p => !p.isHighlight);
+
+        grid.innerHTML = projectsToRender.map((project, index) => `
+            <article class="project-card reveal ${index % 2 !== 0 ? 'reverse' : ''}">
+                <div class="project-media ${project.isPortrait ? 'portrait' : ''}">
+                    <img src="${project.thumbnail}" alt="${project.title}" class="project-img" 
+                         data-thumbnail="${project.thumbnail}" 
+                         data-video="${project.video}" 
+                         loading="lazy">
+                </div>
+                <div class="project-info">
+                    <h3 class="glitch-text">${project.title}</h3>
+                    <p class="project-desc">${project.desc}</p>
+                    <div class="project-tags">
+                        ${project.tags.map(tag => `<span>${tag}</span>`).join('')}
+                    </div>
+                    <a href="${project.link}" class="btn btn-outline" target="_blank">View Details ↗</a>
+                </div>
+            </article>
+        `).join('');
+    };
+
+    // Render projects immediately before other initializations
+    renderProjects();
     // Global trackers for new features
     const konamiCode = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
     let konamiIdx = 0;
@@ -109,7 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    const initReveal = () => {
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    };
+    initReveal();
 
     /* 
     ==========================================================================
@@ -144,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'back': window.history.back(); break;
                     case 'reload': window.location.reload(); break;
                     case 'top': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
-                    case 'resume': window.location.href = 'resume.html'; break;
+                    case 'resume': window.open('assets/resume.pdf', '_blank'); break;
                     case 'home': window.location.href = 'index.html'; break;
                     case 'copy-email': 
                         navigator.clipboard.writeText(CONFIG.email);
@@ -195,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('a[href]').forEach(link => {
             const href = link.getAttribute('href');
             if (!href || href.startsWith('#') || href.startsWith('http') ||
-                href.startsWith('mailto') || href.startsWith('tel')) return;
+                href.startsWith('mailto') || href.startsWith('tel') || href.endsWith('.pdf')) return;
             link.addEventListener('click', (e) => {
                 if (e.metaKey || e.ctrlKey) return;
                 e.preventDefault();
@@ -295,14 +334,16 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(wrapper);
         }
     };
-    const isResume = document.querySelector('.resume-page') !== null;
-    initArtifacts(window.innerWidth <= 900 ? 200 : (isResume ? 300 : 600));
+    initArtifacts(window.innerWidth <= 900 ? 50 : 300);
 
     let mX = -1000, mY = -1000, ticking = false;
-    window.addEventListener('mousemove', (e) => {
-        mX = e.clientX; mY = e.clientY;
-        if (!ticking) { requestAnimationFrame(updateArtifacts); ticking = true; }
-    });
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (!isAndroid) {
+        window.addEventListener('mousemove', (e) => {
+            mX = e.clientX; mY = e.clientY;
+            if (!ticking) { requestAnimationFrame(updateArtifacts); ticking = true; }
+        });
+    }
 
     function updateArtifacts() {
         if (!ticking) return;
@@ -344,8 +385,16 @@ document.addEventListener('DOMContentLoaded', () => {
     sequentially when the browser is idle to ensure a lag-free experience.
     */
     let userMutedPreference = true;
-    const projectCards = document.querySelectorAll('.project-card');
-    const loadQueue = [];
+    
+    const initProjectMedia = () => {
+        const projectCards = document.querySelectorAll('.project-card');
+        const loadQueue = [];
+        
+        if (projectCards.length === 0) return;
+
+        // Reset state for dynamic re-init if needed
+        document.querySelectorAll('.mute-btn').forEach(btn => btn.remove());
+        document.querySelectorAll('video').forEach(v => v.remove());
 
     const initVideo = (card, priority = false) => {
         if (card.dataset.videoInited) {
@@ -425,11 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
         projectCards.forEach(card => {
             videoObserver.observe(card);
             const img = card.querySelector('.project-img');
-            const thumbSrc = img?.dataset.thumbnail || img?.src;
 
             card.addEventListener('mouseenter', () => {
                 card.isHovering = true;
-                // High Priority Initialization
                 if (!card.dataset.videoInited) initVideo(card, true);
                 else if (card.videoElement) card.videoElement.preload = "auto";
 
@@ -450,6 +497,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    };
+    initProjectMedia();
 
     /* 
     ==========================================================================
@@ -635,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Track Resume Clicks
-    document.querySelectorAll('a[href="resume.html"], .context-menu-item[data-action="resume"]').forEach(el => {
+    document.querySelectorAll('a[href="assets/resume.pdf"], .context-menu-item[data-action="resume"]').forEach(el => {
         el.addEventListener('click', () => {
             trackEvent('view_resume', {
                 location: el.tagName === 'A' ? 'nav/hero' : 'context_menu'
