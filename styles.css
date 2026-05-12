@@ -29,7 +29,10 @@ body {
     overflow-x: hidden;
     position: relative; /* Ensure artifacts attach to full page height */
     min-height: 100vh;
-    cursor: none; /* Hide default cursor */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='3' fill='%23ea9a97'/%3E%3Ccircle cx='16' cy='16' r='1' fill='white'/%3E%3Ccircle cx='16' cy='16' r='7' stroke='white' stroke-width='0.5' stroke-opacity='0.4'/%3E%3Ccircle cx='16' cy='16' r='11' stroke='%23ea9a97' stroke-width='1' stroke-opacity='0.1'/%3E%3C/svg%3E") 16 16, auto;
+
+
+
 }
 
 ::selection {
@@ -136,7 +139,10 @@ h1, h2, h3 {
 }
 
 a, button {
-    cursor: none; /* Hide default pointer */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23f6c177'/%3E%3Ccircle cx='16' cy='16' r='2' fill='white'/%3E%3Ccircle cx='16' cy='16' r='10' stroke='white' stroke-width='1' stroke-opacity='0.6'/%3E%3Ccircle cx='16' cy='16' r='14' stroke='%23f6c177' stroke-width='1' stroke-opacity='0.2'/%3E%3C/svg%3E") 16 16, pointer;
+
+
+
 }
 
 /* Hero Section */
@@ -246,7 +252,10 @@ a, button {
     border-radius: 4px;
     transition: transform 0.2s, box-shadow 0.2s;
     border: 1px solid var(--text-primary);
-    cursor: none; /* Hide default pointer */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23f6c177'/%3E%3Ccircle cx='16' cy='16' r='2' fill='white'/%3E%3Ccircle cx='16' cy='16' r='10' stroke='white' stroke-width='1' stroke-opacity='0.6'/%3E%3Ccircle cx='16' cy='16' r='14' stroke='%23f6c177' stroke-width='1' stroke-opacity='0.2'/%3E%3C/svg%3E") 16 16, pointer;
+
+
+
 }
 
 .btn:hover {
@@ -276,7 +285,10 @@ a, button {
     border: none;
     border-radius: 8px;
     transition: all 0.3s ease;
-    cursor: none;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23f6c177'/%3E%3Ccircle cx='16' cy='16' r='2' fill='white'/%3E%3Ccircle cx='16' cy='16' r='10' stroke='white' stroke-width='1' stroke-opacity='0.6'/%3E%3Ccircle cx='16' cy='16' r='14' stroke='%23f6c177' stroke-width='1' stroke-opacity='0.2'/%3E%3C/svg%3E") 16 16, pointer;
+
+
+
     position: relative;
     color: var(--text-secondary);
     overflow: hidden; /* Contain ripple */
@@ -627,63 +639,8 @@ a, button {
     66% { transform: translate(-20px, 30px); }
 }
 
-/* Custom Cursor Styles */
-.cursor-dot,
-.cursor-outline {
-    pointer-events: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    z-index: 9999999;
-    transition: opacity 0.3s ease;
-    will-change: transform, opacity;
-}
+/* Custom Snappy Cursor Styles Removed - Hardware Cursor active via body { cursor: url(...) } */
 
-.cursor-dot {
-    width: 6px;
-    height: 6px;
-    background-color: var(--accent-color);
-}
-
-.cursor-outline {
-    width: 30px;
-    height: 30px;
-    border: 2px solid var(--accent-color);
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999999;
-}
-
-/* Cursor states */
-.cursor-hover .cursor-dot {
-    transform: translate(-50%, -50%) scale(1.2);
-    background-color: var(--accent-color);
-}
-
-.cursor-hover .cursor-outline {
-    transform: translate(-50%, -50%) scale(3);
-    background-color: rgba(234, 154, 151, 0.1);
-    border-color: var(--accent-color);
-    border-width: 1px;
-}
-
-/* Add a pulse animation to the outline when hovering */
-.cursor-hover .cursor-outline::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border: 1px solid var(--accent-color);
-    border-radius: 50%;
-    animation: cursorPulse 1.5s infinite;
-    opacity: 0;
-}
-
-@keyframes cursorPulse {
-    0% { transform: scale(1); opacity: 0.5; }
-    100% { transform: scale(1.5); opacity: 0; }
-}
 
 
 /* Grain Overlay */
@@ -773,11 +730,11 @@ a, button {
     opacity: 0;
     visibility: hidden;
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: none !important;
+    cursor: crosshair !important;
 }
 
 .destruction-popup * {
-    cursor: none !important;
+    cursor: crosshair !important;
 }
 
 .destruction-popup.active {
@@ -811,7 +768,10 @@ a, button {
     padding: 10px 30px;
     border-radius: 4px;
     font-weight: bold;
-    cursor: pointer;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23f6c177'/%3E%3Ccircle cx='16' cy='16' r='2' fill='white'/%3E%3Ccircle cx='16' cy='16' r='10' stroke='white' stroke-width='1' stroke-opacity='0.6'/%3E%3Ccircle cx='16' cy='16' r='14' stroke='%23f6c177' stroke-width='1' stroke-opacity='0.2'/%3E%3C/svg%3E") 16 16, pointer;
+
+
+
     transition: all 0.3s;
 }
 
@@ -826,7 +786,10 @@ a, button {
     border: 1px solid var(--text-secondary);
     padding: 10px 30px;
     border-radius: 4px;
-    cursor: pointer;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23f6c177'/%3E%3Ccircle cx='16' cy='16' r='2' fill='white'/%3E%3Ccircle cx='16' cy='16' r='10' stroke='white' stroke-width='1' stroke-opacity='0.6'/%3E%3Ccircle cx='16' cy='16' r='14' stroke='%23f6c177' stroke-width='1' stroke-opacity='0.2'/%3E%3C/svg%3E") 16 16, pointer;
+
+
+
     transition: all 0.3s;
 }
 
@@ -1061,7 +1024,7 @@ a, button {
     color: var(--accent-color);
     font-size: 1.3rem;
     font-weight: 700;
-    cursor: none;
+    cursor: pointer;
     z-index: 9990;
     opacity: 0;
     transform: translateY(20px);
@@ -1215,7 +1178,7 @@ a, button {
     padding: 10px 20px;
     font-size: 0.9rem;
     color: var(--text-primary);
-    cursor: none;
+    cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
@@ -1286,17 +1249,8 @@ a, button {
 
 
 
-/* Cursor change during middle scroll */
-.cursor-dot.middle-scroll {
-    width: 28px;
-    height: 28px;
-    background: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='3' fill='%23ea9a97'/%3E%3Cpath d='M16 2l-4 4h8l-4-4zM16 30l-4-4h8l-4 4zM2 16l4-4v8l-4-4zM30 16l-4-4v8l4-4z' fill='%23ea9a97'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 1 !important;
-    box-shadow: none;
-}
+/* Middle scroll cursor style removed */
+
 
 /* ===================== Blood Splatter Effect ===================== */
 .blood-container {
@@ -1416,7 +1370,7 @@ a, button {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: none !important;
+    cursor: pointer !important;
     transition: all 0.2s;
 }
 
@@ -1429,7 +1383,7 @@ a, button {
     color: var(--text-secondary);
     font-size: 1.2rem;
     margin-left: 10px;
-    cursor: none !important;
+    cursor: pointer !important;
 }
 
 .find-close:hover {
@@ -1532,7 +1486,7 @@ mark.find-active {
 .cp-item {
     padding: 12px 15px;
     border-radius: 8px;
-    cursor: none !important;
+    cursor: pointer !important;
     display: flex;
     justify-content: space-between;
     align-items: center;

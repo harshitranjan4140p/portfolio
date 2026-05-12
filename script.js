@@ -189,33 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
         else setTimeout(initRoles, 500);
     }
 
-    /* 
-    ==========================================================================
-    CUSTOM CURSOR
-    ==========================================================================
-    */
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorOutline = document.querySelector('.cursor-outline');
+    /* Native Hardware Cursor Active */
 
-    if (cursorDot && cursorOutline) {
-        window.addEventListener('mousemove', (e) => {
-            const transformStr = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
-            cursorDot.style.transform = transformStr;
-            cursorOutline.style.transform = transformStr;
-        });
-
-        const updateHovers = () => {
-            document.querySelectorAll('a, button, .project-card, .btn, .back-to-top, .context-menu-item, .social-btn, .social-link, .btn-nav').forEach(el => {
-                if (el.dataset.hasCursorListener) return;
-                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-                el.dataset.hasCursorListener = "true";
-            });
-        };
-        updateHovers();
-        const hoverObserver = new MutationObserver(updateHovers);
-        hoverObserver.observe(document.body, { childList: true, subtree: true });
-    }
 
     /* 
     ==========================================================================
@@ -281,9 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Middle Click Toggle
-        window.addEventListener('mousedown', (e) => { if (e.button === 1) cursorDot?.classList.add('middle-scroll'); });
-        window.addEventListener('mouseup', () => { cursorDot?.classList.remove('middle-scroll'); });
+        /* Middle Click Toggle Removed */
     }
 
     /* 
