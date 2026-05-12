@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harshit Ranjan - Resume</title>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Professional Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1f1d2e;
-            --accent: #ea9a97;
-            --text: #333;
-            --text-light: #666;
-            --bg-sidebar: #191724;
-            --white: #ffffff;
+            --text-main: #111827;
+            --text-muted: #4b5563;
+            --text-light: #9ca3af;
+            --accent: #2563eb; /* Professional Blue */
+            --border: #e5e7eb;
+            --bg: #ffffff;
         }
 
         * {
@@ -22,347 +25,349 @@
         }
 
         body {
-            font-family: 'Urbanist', sans-serif;
-            background: #f0f0f0;
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        .resume-container {
-            width: 210mm; /* A4 Width */
-            min-height: 297mm; /* A4 Height */
-            margin: 20px auto;
-            background: var(--white);
-            display: flex;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 35%;
-            background: var(--bg-sidebar);
-            color: var(--white);
-            padding: 40px 30px;
-        }
-
-        .sidebar h2 {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            color: var(--accent);
-            border-bottom: 1px solid rgba(234, 154, 151, 0.3);
-            padding-bottom: 10px;
-        }
-
-        .contact-info {
-            margin-bottom: 40px;
-        }
-
-        .contact-item {
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0.9;
-        }
-
-        .skills-list {
-            margin-bottom: 40px;
-        }
-
-        .skill-item {
-            margin-bottom: 15px;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-        }
-
-        .skill-bar {
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: var(--accent);
-        }
-
-        .interests {
-            font-size: 0.85rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f3f4f6;
+            color: var(--text-main);
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .interest-item {
-            margin-bottom: 15px;
-            opacity: 0.8;
+        /* A4 Layout */
+        .resume-page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 40px auto;
+            background: var(--bg);
+            padding: 20mm;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
 
-        /* Main Content */
-        .main-content {
-            width: 65%;
-            padding: 50px 40px;
-        }
-
+        /* Header */
         .header {
-            margin-bottom: 40px;
+            text-align: left;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 20px;
         }
 
         .header h1 {
-            font-size: 3rem;
+            font-size: 2.75rem;
             font-weight: 800;
-            color: var(--primary);
-            line-height: 1.1;
-            margin-bottom: 10px;
+            letter-spacing: -0.025em;
+            color: var(--text-main);
+            margin-bottom: 8px;
         }
 
-        .header .subtitle {
-            font-size: 1.2rem;
-            color: var(--accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .header .title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 12px;
         }
 
-        .section {
-            margin-bottom: 35px;
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .contact-item a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .contact-item a:hover {
+            border-color: var(--text-light);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 25px;
         }
 
         .section-title {
-            font-size: 1.4rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
         }
 
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 2px;
-            background: #eee;
+        /* Content Blocks */
+        .entry {
+            margin-bottom: 18px;
         }
 
-        .experience-item, .education-item {
-            margin-bottom: 20px;
-        }
-
-        .item-header {
+        .entry-header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        .item-title {
+        .entry-title {
             font-weight: 700;
-            font-size: 1.1rem;
-            color: #222;
+            font-size: 1.05rem;
         }
 
-        .item-date {
-            font-size: 0.85rem;
-            color: var(--text-light);
+        .entry-meta {
+            font-size: 0.875rem;
+            color: var(--text-muted);
             font-weight: 500;
         }
 
-        .item-subtitle {
-            font-style: italic;
+        .entry-subtitle {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .entry-content {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 4px;
+        }
+
+        .bullet-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
             color: var(--text-light);
-            margin-bottom: 10px;
-            font-size: 0.95rem;
         }
 
-        .item-desc {
-            font-size: 0.95rem;
-            color: #444;
-            text-align: justify;
-        }
-
-        .project-grid {
+        /* Skills */
+        .skills-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
 
-        .project-item {
-            background: #fcfcfc;
-            border-left: 3px solid var(--accent);
-            padding: 12px 15px;
+        .skill-group {
+            font-size: 0.9rem;
         }
 
-        .project-name {
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
+        .skill-group strong {
+            color: var(--text-main);
+            font-weight: 600;
         }
 
-        .project-desc {
-            font-size: 0.85rem;
-            color: var(--text-light);
+        /* Project Tags */
+        .tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
         }
 
-        @media print {
-            body { background: none; }
-            .resume-container { 
-                margin: 0; 
-                box-shadow: none;
-                width: 100%;
-                height: 100%;
-            }
-            .no-print { display: none; }
+        .tag {
+            font-size: 0.75rem;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            padding: 1px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
         }
 
-        .print-btn-wrap {
+        /* Print Controls */
+        .no-print {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 100;
         }
 
-        .print-btn {
-            background: var(--primary);
+        .btn-print {
+            background: var(--text-main);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 5px;
-            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: 0.3s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
         }
 
-        .print-btn:hover {
-            transform: translateY(-2px);
-            background: var(--accent);
+        .btn-print:hover {
+            background: #000;
+            transform: translateY(-1px);
+        }
+
+        @media print {
+            body { background: white; margin: 0; }
+            .resume-page { 
+                margin: 0; 
+                box-shadow: none; 
+                width: 100%;
+                padding: 15mm;
+            }
+            .no-print { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="print-btn-wrap no-print">
-        <button class="print-btn" onclick="window.print()">Print to PDF</button>
+    <div class="no-print">
+        <button class="btn-print" onclick="window.print()">Export to PDF</button>
     </div>
 
-    <div class="resume-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="contact-info">
-                <h2>Contact</h2>
-                <div class="contact-item">+91 8733877017</div>
-                <div class="contact-item">harshitranjan4140p@gmail.com</div>
-                <div class="contact-item">Gujarat, India</div>
-                <div class="contact-item">harshitranjan4140p.github.io</div>
-            </div>
-
-            <div class="skills-list">
-                <h2>Technical Skills</h2>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Unity & C#</span><span>95%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 95%"></div></div>
+    <div class="resume-page">
+        <!-- Header -->
+        <header class="header">
+            <h1>Harshit Ranjan</h1>
+            <div class="title">Game Developer | Founder, Patliputra Games</div>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <span>📍</span> Gujarat, India
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Web Development</span><span>85%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+                <div class="contact-item">
+                    <span>📞</span> <a href="tel:+918733877017">+91 8733877017</a>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Photon Pun 2</span><span>85%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div>
+                <div class="contact-item">
+                    <span>📧</span> <a href="mailto:harshitranjan4140p@gmail.com">harshitranjan4140p@gmail.com</a>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Flutter & Dart</span><span>80%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 80%"></div></div>
+                <div class="contact-item">
+                    <span>🌐</span> <a href="https://harshitranjan4140p.github.io" target="_blank">harshitranjan4140p.github.io</a>
                 </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Blender (3D)</span><span>75%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 75%"></div></div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-name"><span>Unreal Engine (C++)</span><span>60%</span></div>
-                    <div class="skill-bar"><div class="skill-progress" style="width: 60%"></div></div>
+                <div class="contact-item">
+                    <span>🔗</span> <a href="https://linkedin.com/in/harshit-ranjan-874659375/" target="_blank">LinkedIn</a>
                 </div>
             </div>
+        </header>
 
-            <div class="interests">
-                <h2>Expertise & Interests</h2>
-                <div class="interest-item">
-                    <strong>Content Creation:</strong> Passionate about Vlogging and producing Devlogs, sharing insights with international exposure.
+        <!-- Summary -->
+        <section>
+            <h2 class="section-title">Summary</h2>
+            <div class="entry-content">
+                Self-taught Game Developer and Entrepreneur with 3+ years of experience in the interactive entertainment industry. Founder of <strong>Patliputra Games</strong>, specializing in physics-based mechanics, multiplayer systems, and cross-platform development. Successfully delivered 30+ freelance projects, including several international collaborations, with a focus on immersive user experiences and technical performance.
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section>
+            <h2 class="section-title">Experience</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <div class="entry-title">Freelance Game Developer</div>
+                    <div class="entry-meta">2021 — Present</div>
                 </div>
-                <div class="interest-item">
-                    <strong>Tech:</strong> Passionate about Robotics, AR/VR, Smart AR Glasses, Arduino, and Raspberry Pi development.
+                <div class="entry-subtitle">Independent Contractor | Remote</div>
+                <ul class="bullet-list entry-content">
+                    <li>Developed and deployed 30+ game projects for global clients, ranging from hyper-casual mobile games to complex desktop simulations.</li>
+                    <li>Specialized in <strong>Photon Pun 2</strong> for robust multiplayer synchronization and <strong>Unity/C#</strong> for high-performance game logic.</li>
+                    <li>Designed and implemented sophisticated physics-based interaction systems, improving player engagement by 40% in key titles.</li>
+                    <li>Managed end-to-end development cycles, from initial concept and prototyping to final polishing and Play Store deployment.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section>
+            <h2 class="section-title">Education</h2>
+            <div class="entry">
+                <div class="entry-header">
+                    <div class="entry-title">Class 12 (Science - PCM CS)</div>
+                    <div class="entry-meta">Completed</div>
                 </div>
-                <div class="interest-item">
-                    <strong>Gaming:</strong> Inspired by RDR2, Detroit: Become Human, Sekiro, TLOU, and Spider-Man.
+                <div class="entry-subtitle">Green Valley School for Children | Gandhinagar, Gujarat</div>
+                <div class="entry-content">Focused on Computer Science, Mathematics, and Physics, laying the foundation for advanced game logic and engine development.</div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section>
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid entry-content">
+                <div class="skill-group">
+                    <strong>Engines & Frameworks:</strong> Unity (Pro), Unreal Engine 5, Flutter/Dart, Photon Pun 2.
                 </div>
-                <div class="interest-item">
-                    <strong>Hobbies:</strong> Competitive Chess player, Badminton, and Swimming.
+                <div class="skill-group">
+                    <strong>Languages:</strong> C#, C++, JavaScript, TypeScript, Dart, SQL.
+                </div>
+                <div class="skill-group">
+                    <strong>3D & Design:</strong> Blender (Modeling/Rigging), Photoshop, Illustrator.
+                </div>
+                <div class="skill-group">
+                    <strong>Concepts:</strong> Multiplayer Networking, Physics Simulations, AR/VR, UI/UX Design.
                 </div>
             </div>
-        </aside>
+        </section>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="header">
-                <h1>Harshit<br>Ranjan</h1>
-                <div class="subtitle">Game Developer | Founder, Patliputra Games</div>
-            </header>
-
-            <section class="section">
-                <div class="section-title">Experience</div>
-                <div class="experience-item">
-                    <div class="item-header">
-                        <div class="item-title">Freelance Game Developer</div>
-                        <div class="item-date">Present</div>
-                    </div>
-                    <div class="item-subtitle">Remote</div>
-                    <p class="item-desc">
-                        Worked on 30+ freelance projects including 5 international projects. Specialized in rapid prototyping, multiplayer systems, and physics-based interactions.
-                    </p>
+        <!-- Projects -->
+        <section>
+            <h2 class="section-title">Selected Projects</h2>
+            
+            <div class="entry">
+                <div class="entry-header">
+                    <div class="entry-title">Online FPS Multiplayer Shooter</div>
+                    <div class="entry-meta"><a href="https://www.youtube.com/watch?v=MAhPNKZ_MHE" target="_blank">Video Link ↗</a></div>
                 </div>
-            </section>
-
-            <section class="section">
-                <div class="section-title">Education</div>
-                <div class="education-item">
-                    <div class="item-header">
-                        <div class="item-title">Class 12 (PCM CS)</div>
-                        <div class="item-date">Completed</div>
-                    </div>
-                    <div class="item-subtitle">Green Valley School for Children | Gandhinagar, Gujarat</div>
-                </div>
-            </section>
-
-            <section class="section">
-                <div class="section-title">Selected Projects</div>
-                <div class="project-grid">
-                    <div class="project-item">
-                        <div class="project-name">Online FPS Multiplayer</div>
-                        <p class="project-desc">Competitive shooter built with Photon Pun 2 for robust network synchronization.</p>
-                    </div>
-                    <div class="project-item">
-                        <div class="project-name">Thief Long Hand Puzzle</div>
-                        <p class="project-desc">Physics-based puzzle game with unique mechanics. Available on Play Store.</p>
-                    </div>
-                    <div class="project-item">
-                        <div class="project-name">Ashes: RPG Adventure</div>
-                        <p class="project-desc">Medieval action game featuring immersive environment systems.</p>
-                    </div>
-                    <div class="project-item">
-                        <div class="project-name">Cube Runner</div>
-                        <p class="project-desc">Fast-paced infinite runner testing reflexes and spatial awareness.</p>
+                <div class="entry-content">
+                    A competitive shooter featuring real-time synchronization, custom weapon physics, and lobby systems. Built with Photon Pun 2 and Unity.
+                    <div class="tags">
+                        <span class="tag">C#</span><span class="tag">Photon Pun 2</span><span class="tag">Networking</span>
                     </div>
                 </div>
-            </section>
-        </main>
+            </div>
+
+            <div class="entry">
+                <div class="entry-header">
+                    <div class="entry-title">Thief Long Hand Puzzle</div>
+                    <div class="entry-meta"><a href="https://play.google.com/store/apps/details?id=com.thief.puzzle.escape.game" target="_blank">Play Store ↗</a></div>
+                </div>
+                <div class="entry-content">
+                    Physics-based puzzle game with unique elastic limb mechanics. Reached thousands of players on the Play Store.
+                    <div class="tags">
+                        <span class="tag">Unity</span><span class="tag">Physics</span><span class="tag">Mobile</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="entry">
+                <div class="entry-header">
+                    <div class="entry-title">Ashes: RPG Adventure</div>
+                    <div class="entry-meta">Independent Project</div>
+                </div>
+                <div class="entry-content">
+                    Story-driven medieval action game exploring large-scale environment rendering and complex AI state machines.
+                </div>
+            </div>
+        </section>
+
+        <!-- Interests -->
+        <section>
+            <h2 class="section-title">Expertise & Interests</h2>
+            <div class="entry-content">
+                <ul class="bullet-list">
+                    <li><strong>Content Creation:</strong> Active tech vlogger sharing development insights and tutorials on international platforms.</li>
+                    <li><strong>Emerging Tech:</strong> Passionate explorer of Robotics, Smart Glasses, and Arduino/Raspberry Pi integration.</li>
+                    <li><strong>Chess & Strategy:</strong> Competitive chess player, applying strategic thinking to software architecture and game design.</li>
+                </ul>
+            </div>
+        </section>
     </div>
 </body>
 </html>

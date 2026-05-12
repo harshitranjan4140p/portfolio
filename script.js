@@ -7,7 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const CONFIG = {
         roles: ["Wizard", "Software Developer", "Game Developer", "3D Artist", "Founder", "Chess Player"],
         email: "harshitranjan4140p@gmail.com",
-        destructionTrigger: atob('NDE0MHA='), // Code: 4140p
+        // _0x4140: Secure trigger resolution
+        _0x4140: (() => {
+            const _0x1a2b = [100, 122, 99, 55, 55, 79, 68, 115, 61]; 
+            const _0x3e4f = String.fromCharCode(100, 122, 99, 55, 79, 68, 115, 61);
+            return atob(_0x3e4f).split('').reverse().map(c => String.fromCharCode(c.charCodeAt(0) - (0x10 - 0x9))).join('');
+        })(),
         repulsionRadius: 150,
         repulsionStrength: 40
     };
@@ -17,6 +22,87 @@ document.addEventListener('DOMContentLoaded', () => {
     DYNAMIC PROJECT RENDERING
     ==========================================================================
     */
+    const _0x5b3c = [
+        {
+            id: 0x1,
+            _t: "Online FPS Multiplayer Shooter",
+            _d: "A competitive multiplayer experience powered by Photon Pun 2, featuring fast-paced combat and robust network synchronization.",
+            _ts: ["Photon Pun 2", "FPS", "Networking"],
+            _th: "assets/project1.png",
+            _v: "assets/game1.mp4",
+            _l: "https://www.youtube.com/watch?v=MAhPNKZ_MHE",
+            _h: true,
+            _p: false
+        },
+        {
+            id: 0x2,
+            _t: "Thief Long Hand Puzzle",
+            _d: "A clever physics-based puzzle game challenging your spatial logic. Available on Play Store.",
+            _ts: ["Puzzle", "Play Store", "Logic"],
+            _th: "assets/project2.png",
+            _v: "assets/game2.mp4",
+            _l: "https://play.google.com/store/apps/details?id=com.thief.puzzle.escape.game&pli=1",
+            _h: true,
+            _p: true
+        },
+        {
+            id: 0x3,
+            _t: "Ashes: RPG Adventure",
+            _d: "A story-driven medieval action game featuring deep lore, character progression, and immersive environments.",
+            _ts: ["Action RPG", "Medieval", "Story-driven"],
+            _th: "assets/project3.png",
+            _v: "assets/game3.mp4",
+            _l: "https://www.youtube.com/watch?v=qu9_ICrAAc8",
+            _h: true,
+            _p: false
+        },
+        {
+            id: 0x4,
+            _t: "Ragdoll Ball Game",
+            _d: "Physics-based chaotic fun exploring ragdoll mechanics and dynamic object interactions.",
+            _ts: ["Physics", "Casual"],
+            _th: "assets/project4.png",
+            _v: "assets/game4.mp4",
+            _l: "https://drive.google.com/file/d/1GfCZ3f_H86bOCknX3-3AgwR3Nx9ybrqs/view?usp=sharing",
+            _h: false,
+            _p: true
+        },
+        {
+            id: 0x5,
+            _t: "Cube Runner",
+            _d: "A fast-paced infinite runner testing your reflexes and spatial awareness.",
+            _ts: ["Arcade", "Runner"],
+            _th: "assets/project5.png",
+            _v: "assets/game5.mp4",
+            _l: "https://www.youtube.com/watch?v=omsdky5n_2Q",
+            _h: false,
+            _p: false
+        },
+        {
+            id: 0x6,
+            _t: "Wannabe GTA 6",
+            _d: "An ambitious open-world sandbox project exploring complex AI, vehicle physics, and large-scale environments.",
+            _ts: ["Open World", "Sandbox"],
+            _th: "assets/project6.png",
+            _v: "assets/game6.mp4",
+            _l: "https://www.youtube.com/watch?v=NeQqgua8t_c",
+            _h: false,
+            _p: false
+        }
+    ];
+
+    const PROJECT_DATA = _0x5b3c.map(p => ({
+        id: p.id,
+        title: p._t,
+        desc: p._d,
+        tags: p._ts,
+        thumbnail: p._th,
+        video: p._v,
+        link: p._l,
+        isHighlight: p._h,
+        isPortrait: p._p
+    }));
+
     const renderProjects = () => {
         const grid = document.getElementById('projects-grid');
         if (!grid || typeof PROJECT_DATA === 'undefined') return;
@@ -158,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contextMenu = document.getElementById('custom-context-menu');
     if (contextMenu) {
         window.addEventListener('contextmenu', (e) => {
-            if (destructionActive) return;
+            if (_0x2c1a) return;
             e.preventDefault();
             const { clientX: mouseX, clientY: mouseY } = e;
             const { innerWidth: winW, innerHeight: winH } = window;
@@ -502,30 +588,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* 
     ==========================================================================
-    SECRET DESTRUCTION MODE
+    _0xMODULE: RESTRICTED ACCESS
     ==========================================================================
     */
-    let secretCode = "", destructionActive = false, debrisList = [], heldDebris = null;
-    const destructionPopup = document.querySelector('.destruction-popup'), btnYes = document.querySelector('.btn-yes'), btnNo = document.querySelector('.btn-no');
+    let _0x5f3e = "", _0x2c1a = false, _0x11b2 = [], _0x4d3c = null;
+    const _0x9e2a = document.querySelector('.destruction-popup'), _0x7f1b = document.querySelector('.btn-yes'), _0x3a2c = document.querySelector('.btn-no');
 
-    if (destructionPopup && btnYes && btnNo) {
+    if (_0x9e2a && _0x7f1b && _0x3a2c) {
         window.addEventListener('keydown', (e) => {
-            secretCode += e.key;
-            if (secretCode.length > CONFIG.destructionTrigger.length) secretCode = secretCode.substring(1);
-            if (secretCode === CONFIG.destructionTrigger) destructionPopup.classList.add('active');
+            _0x5f3e += e.key;
+            const _target = CONFIG._0x4140;
+            if (_0x5f3e.length > _target.length) _0x5f3e = _0x5f3e.substring(1);
+            if (_0x5f3e === _target) _0x9e2a.classList.add('active');
         });
-        btnNo.onclick = () => destructionPopup.classList.remove('active');
-        btnYes.onclick = () => { destructionPopup.classList.remove('active'); startDestruction(); };
+        _0x3a2c.onclick = () => _0x9e2a.classList.remove('active');
+        _0x7f1b.onclick = () => { _0x9e2a.classList.remove('active'); _0x11b2_init(); };
     }
 
-    function startDestruction() {
-        destructionActive = true;
+    function _0x11b2_init() {
+        _0x2c1a = true;
         document.body.classList.add('destruction-active');
-        const breakables = document.querySelectorAll('h1, h2, h3, p, img, .btn, .project-card, .skill-item');
-        let breakableCount = breakables.length, initialBreakableCount = breakableCount, guiltTriggered = false;
+        const _0x8e2b = document.querySelectorAll('h1, h2, h3, p, img, .btn, .project-card, .skill-item');
+        let _0xcount = _0x8e2b.length, _0xinitial = _0xcount, _0xguilt = false;
 
         window.addEventListener('dragstart', (e) => e.preventDefault());
-        window.addEventListener('contextmenu', (e) => { if (destructionActive) e.preventDefault(); });
+        window.addEventListener('contextmenu', (e) => { if (_0x2c1a) e.preventDefault(); });
         document.querySelectorAll('a, button').forEach(el => {
             if (!el.classList.contains('btn-yes') && !el.classList.contains('btn-no')) {
                 el.style.pointerEvents = 'none'; el.style.cursor = 'crosshair';
@@ -533,41 +620,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         window.addEventListener('mousedown', (e) => {
-            if (!destructionActive) return;
+            if (!_0x2c1a) return;
             const target = e.target;
             if (target === document.body || target === document.documentElement || target.closest('.destruction-popup')) return;
             if (e.button === 2) {
                 const proximitySq = 2500; let closest = null, minDistSq = proximitySq;
-                debrisList.forEach(d => {
+                _0x11b2.forEach(d => {
                     const distSq = (e.clientX - d.x)**2 + (e.clientY - d.y)**2;
                     if (distSq < minDistSq) { minDistSq = distSq; closest = d; }
                 });
-                if (closest) { heldDebris = closest; heldDebris.settled = false; heldDebris.el.classList.add('held'); }
+                if (closest) { _0x4d3c = closest; _0x4d3c.settled = false; _0x4d3c.el.classList.add('held'); }
             } else if (e.button === 0 && !target.classList.contains('debris')) {
-                breakElement(target);
+                _0xbreak(target);
             }
         });
 
         window.addEventListener('mousemove', (e) => {
-            if (heldDebris) {
-                heldDebris.x = e.clientX - (heldDebris.w || 20)/2;
-                heldDebris.y = e.clientY - (heldDebris.h || 20)/2;
-                heldDebris.vx = heldDebris.vy = 0;
+            if (_0x4d3c) {
+                _0x4d3c.x = e.clientX - (_0x4d3c.w || 20)/2;
+                _0x4d3c.y = e.clientY - (_0x4d3c.h || 20)/2;
+                _0x4d3c.vx = _0x4d3c.vy = 0;
             }
         });
 
-        window.addEventListener('mouseup', () => { if (heldDebris) { heldDebris.el.classList.remove('held'); heldDebris = null; } });
+        window.addEventListener('mouseup', () => { if (_0x4d3c) { _0x4d3c.el.classList.remove('held'); _0x4d3c = null; } });
 
-        function breakElement(el) {
+        function _0xbreak(el) {
             if (el.dataset.broken) return;
             const isTarget = el.matches('h1, h2, h3, p, img, .btn, .project-card, .skill-item');
             if (isTarget) {
-                el.dataset.broken = "true"; breakableCount--;
-                if (breakableCount <= initialBreakableCount * 0.6 && !guiltTriggered) {
-                    guiltTriggered = true;
+                el.dataset.broken = "true"; _0xcount--;
+                if (_0xcount <= _0xinitial * 0.6 && !_0xguilt) {
+                    _0xguilt = true;
                     setTimeout(() => {
                         const gp = document.querySelector('.guilt-popup');
-                        if (gp) { gp.classList.add('active'); startShutdownSequence(); }
+                        if (gp) { gp.classList.add('active'); _0xstop_seq(); }
                     }, 1500);
                 }
             } else if (el.children.length === 0) el.dataset.broken = "true"; else return;
@@ -580,7 +667,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     dEl.className = 'debris'; dEl.textContent = word;
                     Object.assign(dEl.style, { color: styles.color, fontSize: styles.fontSize, position: 'fixed', left: '0', top: '0' });
                     document.body.appendChild(dEl);
-                    debrisList.push({ el: dEl, x: rect.left + (i * 20), y: rect.top, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, rv: (Math.random()-0.5)*0.2, rot: 0, w: 40, h: 20 });
+                    _0x11b2.push({ el: dEl, x: rect.left + (i * 20), y: rect.top, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, rv: (Math.random()-0.5)*0.2, rot: 0, w: 40, h: 20 });
                 });
             } else {
                 const shards = ["0% 0%, 50% 50%, 0% 50%", "0% 0%, 50% 0%, 50% 50%", "50% 0%, 100% 0%, 50% 50%", "100% 0%, 100% 50%, 50% 50%", "100% 50%, 100% 100%, 50% 50%", "100% 100%, 50% 100%, 50% 50%", "50% 100%, 0% 100%, 50% 50%", "0% 100%, 0% 50%, 50% 50%"];
@@ -589,27 +676,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     dEl.classList.add('debris');
                     Object.assign(dEl.style, { position: 'fixed', left: '0', top: '0', width: rect.width+'px', height: rect.height+'px', visibility: 'visible', margin: '0', clipPath: `polygon(${path})`, transition: 'none' });
                     document.body.appendChild(dEl);
-                    debrisList.push({ el: dEl, x: rect.left, y: rect.top, vx: (Math.random()-0.5)*15, vy: (Math.random()-0.5)*15-5, rv: (Math.random()-0.5)*0.3, rot: 0, isImage: true, w: rect.width, h: rect.height });
+                    _0x11b2.push({ el: dEl, x: rect.left, y: rect.top, vx: (Math.random()-0.5)*15, vy: (Math.random()-0.5)*15-5, rv: (Math.random()-0.5)*0.3, rot: 0, isImage: true, w: rect.width, h: rect.height });
                 });
             }
         }
 
-        const physicsLoop = () => {
-            if (!destructionActive) return;
+        const _0xphys = () => {
+            if (!_0x2c1a) return;
             const gravity = 0.4, friction = 0.99, ground = window.innerHeight, width = window.innerWidth;
-            debrisList.forEach(d => {
+            _0x11b2.forEach(d => {
                 d.el.style.transform = `translate3d(${d.x}px, ${d.y}px, 0) rotate(${d.rot}rad)`;
-                if (d === heldDebris || d.settled) return;
+                if (d === _0x4d3c || d.settled) return;
                 d.vy += gravity; d.vx *= friction; d.vy *= friction; d.x += d.vx; d.y += d.vy; d.rot += d.rv;
                 if (d.y > ground - 20) { d.y = ground - 20; d.vy *= -0.5; d.vx *= 0.8; d.rv *= 0.8; if (Math.abs(d.vy) < 0.5) d.settled = true; }
                 if (d.x < 0 || d.x > width) { d.vx *= -0.8; d.x = d.x < 0 ? 0 : width; }
             });
-            requestAnimationFrame(physicsLoop);
+            requestAnimationFrame(_0xphys);
         };
-        requestAnimationFrame(physicsLoop);
+        requestAnimationFrame(_0xphys);
     }
 
-    function startShutdownSequence() {
+    function _0xstop_seq() {
         let timeLeft = 15;
         const countdownEl = document.getElementById('shutdown-countdown');
         const timer = setInterval(() => {
@@ -619,15 +706,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const gp = document.querySelector('.guilt-popup'); if (gp) gp.classList.remove('active');
                 document.body.style.transition = 'background-color 2s ease, opacity 2s ease';
                 document.body.style.backgroundColor = '#000';
-                setTimeout(() => runBloodEffect(() => {
+                setTimeout(() => _0xblood(() => {
                     document.body.style.opacity = '0';
-                    setTimeout(runFinalEyeSequence, 2000);
+                    setTimeout(_0xeye_seq, 2000);
                 }), 1000);
             }
         }, 1000);
     }
 
-    function runBloodEffect(callback) {
+    function _0xblood(callback) {
         const container = document.createElement('div'); container.className = 'blood-container'; document.body.appendChild(container);
         for (let i = 0; i < 45; i++) {
             setTimeout(() => {
@@ -650,7 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4500);
     }
 
-    function runFinalEyeSequence() {
+    function _0xeye_seq() {
         const finalSeq = document.querySelector('.final-sequence'); if (!finalSeq) return;
         finalSeq.classList.remove('eye-open', 'text-anim', 'eye-blink', 'eye-blinking');
         document.body.style.opacity = '1'; finalSeq.classList.add('active');
@@ -703,13 +790,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Track Destruction Mode Trigger
-    const destructionYesBtn = document.querySelector('.btn-yes');
-    if (destructionYesBtn) {
-        const originalBtnYes = destructionYesBtn.onclick;
-        destructionYesBtn.onclick = (e) => {
-            trackEvent('destruction_mode_start');
-            if (originalBtnYes) originalBtnYes(e);
+    // Track _0xMODULE Trigger
+    const _0xyes = document.querySelector('.btn-yes');
+    if (_0xyes) {
+        const _0xorig = _0xyes.onclick;
+        _0xyes.onclick = (e) => {
+            trackEvent('_0xstart');
+            if (_0xorig) _0xorig(e);
         };
     }
 
@@ -1043,10 +1130,82 @@ document.addEventListener('DOMContentLoaded', () => {
     updateVisitorCount();
 });
 
-// ── DevTools Protection ──────────────────────────────────────────────
-window.addEventListener('keydown', (e) => {
-    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && e.key === 'u')) e.preventDefault();
-}, false);
+/* 
+==========================================================================
+ADVANCED SECURITY & INTEGRITY LAYER
+==========================================================================
+*/
+(function() {
+    // Console Hijacking: Prevent logging and inspection
+    const _0x31a2 = console;
+    const _0x1b2e = _0x31a2.log;
+    const _0x5c4d = _0x31a2.clear;
+    
+    // Disable all console methods except the warning
+    const _0xmethods = ['log', 'warn', 'error', 'info', 'debug', 'table', 'trace', 'dir'];
+    _0xmethods.forEach(m => {
+        _0x31a2[m] = function() {
+            if (arguments[0] && typeof arguments[0] === 'string' && arguments[0].includes('%cSTOP')) {
+                _0x1b2e.apply(_0x31a2, arguments);
+            }
+        };
+    });
+
+    // Integrity Check: Prevent function string conversion
+    const _0xproto = Function.prototype.toString;
+    Function.prototype.toString = function() {
+        if (this === _0xproto) return _0xproto.call(this);
+        return "function " + (this.name || "") + "() { [protected code] }";
+    };
+
+    // Aggressive Anti-Debugging
+    const _0x4f22 = function() {
+        try {
+            (function(_0x5d21) {
+                (function(_0x3e1a) {
+                    if (_0x3e1a) return _0x3e1a;
+                    else _0x4f22();
+                }(_0x5d21));
+            }(function() {
+                let _0x1b2c;
+                try {
+                    _0x1b2c = Function('return (function() {}.constructor("debugger")())')();
+                } catch (_0x5a2e) {
+                    _0x1b2c = false;
+                }
+                return _0x1b2c;
+            }()));
+        } catch (_0x2d1c) {}
+    };
+    setInterval(_0x4f22, 500);
+
+    // Block Interaction
+    window.addEventListener('keydown', (e) => {
+        const _0xfbk = ['F12', 'I', 'J', 'C', 'U', 'S', 'P', 'H'];
+        if (_0xfbk.includes(e.key.toUpperCase()) && (e.ctrlKey || e.shiftKey || e.key === 'F12')) {
+            e.preventDefault();
+            return false;
+        }
+    }, true);
+
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // DevTools Detection & Redirection
+    setInterval(() => {
+        const _0xthreshold = 160;
+        const _0xwidth = window.outerWidth - window.innerWidth > _0xthreshold;
+        const _0xheight = window.outerHeight - window.innerHeight > _0xthreshold;
+        if (_0xwidth || _0xheight) {
+            _0x5c4d.call(_0x31a2);
+            document.body.innerHTML = '<div style="background:#000;color:#f00;height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:2rem;">ACCESS RESTRICTED</div>';
+            location.reload();
+        }
+    }, 1000);
+
+    const _0x3a2b = "color: #ff0000; font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 0 #000;";
+    _0x1b2e.call(_0x31a2, "%cSTOP!", _0x3a2b);
+})();
+
 
 
 

@@ -637,7 +637,7 @@ a, button {
     transform: translate(-50%, -50%);
     border-radius: 50%;
     z-index: 9999999;
-    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: opacity 0.3s ease;
     will-change: transform, opacity;
 }
 
