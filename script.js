@@ -103,6 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
         isPortrait: p._p
     }));
 
+    const getPlatformBadge = (link) => {
+        if (link.includes('youtube.com')) return { label: 'YouTube', cls: 'badge-youtube' };
+        if (link.includes('play.google.com')) return { label: 'Play Store', cls: 'badge-playstore' };
+        if (link.includes('drive.google.com')) return { label: 'Drive', cls: 'badge-drive' };
+        return null;
+    };
+
     const renderProjects = () => {
         const grid = document.getElementById('projects-grid');
         if (!grid || typeof PROJECT_DATA === 'undefined') return;
@@ -112,13 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
             ? PROJECT_DATA.filter(p => p.isHighlight) 
             : PROJECT_DATA.filter(p => !p.isHighlight);
 
-        grid.innerHTML = projectsToRender.map((project, index) => `
+        grid.innerHTML = projectsToRender.map((project, index) => {
+            const badge = getPlatformBadge(project.link);
+            const badgeHTML = badge ? `<div class="platform-badge ${badge.cls}">${badge.label}</div>` : '';
+            return `
             <article class="project-card reveal ${index % 2 !== 0 ? 'reverse' : ''}">
                 <div class="project-media ${project.isPortrait ? 'portrait' : ''}">
+                    <div class="media-shimmer"></div>
                     <img src="${project.thumbnail}" alt="${project.title}" class="project-img" 
                          data-thumbnail="${project.thumbnail}" 
                          data-video="${project.video}" 
                          loading="lazy">
+                    ${badgeHTML}
                 </div>
                 <div class="project-info">
                     <h3 class="glitch-text">${project.title}</h3>
@@ -129,7 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <a href="${project.link}" class="btn btn-outline" target="_blank">View Details ↗</a>
                 </div>
             </article>
-        `).join('');
+        `}).join('');
+
+        // Remove shimmer when images load
+        document.querySelectorAll('.project-img').forEach(img => {
+            const removeShimmer = () => img.closest('.project-media')?.querySelector('.media-shimmer')?.remove();
+            if (img.complete && img.naturalWidth !== 0) removeShimmer();
+            else img.addEventListener('load', removeShimmer, { once: true });
+        });
     };
 
     // Render projects immediately before other initializations
@@ -1101,6 +1120,248 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     updateVisitorCount();
+
+    /* 
+    ==========================================================================
+    HERO IMAGE PARALLAX
+    ==========================================================================
+    */
+    const heroImg = document.querySelector('.hero-image');
+    const heroSection = document.querySelector('.hero');
+    if (heroImg && heroSection && !isAndroid) {
+        heroSection.addEventListener('mousemove', (e) => {
+            const rect = heroSection.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = (e.clientX - cx) / (rect.width / 2);
+            const dy = (e.clientY - cy) / (rect.height / 2);
+            heroImg.style.transform = `perspective(900px) rotateY(${dx * 6}deg) rotateX(${-dy * 4}deg) scale(1.02)`;
+        });
+        heroSection.addEventListener('mouseleave', () => {
+            heroImg.style.transform = '';
+        });
+    }
+
+    /* 
+    ==========================================================================
+    STAT COUNTER ANIMATION
+    ==========================================================================
+    */
+    const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+    if (statNumbers.length > 0) {
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                const target = parseInt(el.dataset.target);
+                const duration = 1200;
+                const start = performance.now();
+                const tick = (now) => {
+                    const p = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = Math.round(eased * target);
+                    if (p < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+                statObserver.unobserve(el);
+            });
+        }, { threshold: 0.5 });
+        statNumbers.forEach(el => statObserver.observe(el));
+    }
+
+    /* 
+    ==========================================================================
+    KEYBOARD SHORTCUTS MODAL (?)
+    ==========================================================================
+    */
+    const createShortcutsModal = () => {
+        const modal = document.createElement('div');
+        modal.className = 'shortcuts-modal';
+        modal.id = 'shortcutsModal';
+        modal.innerHTML = `
+            <div class="shortcuts-box">
+                <h3>Keyboard Shortcuts</h3>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">Command Palette</span>
+                    <span class="shortcut-keys"><span class="kbd">Ctrl</span>+<span class="kbd">K</span></span>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">Find in Page</span>
+                    <span class="shortcut-keys"><span class="kbd">F3</span></span>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">Cycle Accent Color</span>
+                    <span class="shortcut-keys"><span class="kbd">Alt</span>+<span class="kbd">T</span></span>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">Screenshot Mode</span>
+                    <span class="shortcut-keys"><span class="kbd">Alt</span>+<span class="kbd">S</span></span>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">Performance Stats</span>
+                    <span class="shortcut-keys"><span class="kbd">\`</span></span>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">Retro CRT Mode</span>
+                    <span class="shortcut-keys"><span class="kbd">Konami Code</span></span>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">Located Cursor</span>
+                    <span class="shortcut-keys"><span class="kbd">Ctrl</span>×2</span>
+                </div>
+                <div class="shortcut-row">
+                    <span class="shortcut-desc">This guide</span>
+                    <span class="shortcut-keys"><span class="kbd">?</span></span>
+                </div>
+                <div class="shortcuts-close">Press <span class="kbd">Esc</span> or click outside to close</div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+        return modal;
+    };
+
+    let shortcutsModal = null;
+    const toggleShortcuts = () => {
+        if (!shortcutsModal) shortcutsModal = createShortcutsModal();
+        shortcutsModal.classList.toggle('active');
+    };
+
+    // Register ? key (but not when typing in inputs)
+    window.addEventListener('keydown', (e) => {
+        if (e.key === '?' && !['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) {
+            e.preventDefault();
+            toggleShortcuts();
+        }
+        if (e.key === 'Escape' && shortcutsModal?.classList.contains('active')) {
+            shortcutsModal.classList.remove('active');
+        }
+    });
+
+    /* 
+    ==========================================================================
+    CONTACT FORM HANDLER
+    ==========================================================================
+    NOTE: Replace 'YOUR_FORM_ID' below with your Formspree form ID.
+    Get one free at https://formspree.io
+    ==========================================================================
+    */
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('cf-submit');
+            const status = document.getElementById('cf-status');
+            const formspreeId = 'mykoqkdj'; // Formspree form ID
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            status.textContent = '';
+            status.className = 'cf-status';
+
+            const data = {
+                name: document.getElementById('cf-name').value,
+                email: document.getElementById('cf-email').value,
+                message: document.getElementById('cf-message').value
+            };
+
+            // Fallback: open mailto if Formspree not configured
+            if (formspreeId === 'UNCONFIGURED') {
+                const subject = encodeURIComponent(`Portfolio Contact from ${data.name}`);
+                const body = encodeURIComponent(`From: ${data.name} <${data.email}>\n\n${data.message}`);
+                window.open(`mailto:${CONFIG.email}?subject=${subject}&body=${body}`);
+                btn.disabled = false;
+                btn.textContent = 'Send Message ↗';
+                status.textContent = '✓ Opening email client...';
+                status.className = 'cf-status success';
+                setTimeout(() => { status.textContent = ''; status.className = 'cf-status'; }, 3000);
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    status.textContent = '✓ Message sent! I\'ll reply within 24 hours.';
+                    status.className = 'cf-status success';
+                    contactForm.reset();
+                } else {
+                    throw new Error('Failed');
+                }
+            } catch {
+                status.textContent = '✗ Something went wrong. Try emailing directly.';
+                status.className = 'cf-status error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Message ↗';
+                setTimeout(() => { status.textContent = ''; status.className = 'cf-status'; }, 5000);
+            }
+        });
+    }
+
+    /* 
+    ==========================================================================
+    LOCATED CURSOR — DOUBLE CTRL SONAR PING
+    ==========================================================================
+    */
+    let _lastCtrlTime = 0;
+    let _cursorX = window.innerWidth / 2;
+    let _cursorY = window.innerHeight / 2;
+
+    // Always track mouse so we know where to ping
+    window.addEventListener('mousemove', (e) => {
+        _cursorX = e.clientX;
+        _cursorY = e.clientY;
+    }, { passive: true });
+
+    const _spawnLocatePing = (x, y) => {
+        const container = document.body;
+
+        // Three expanding rings
+        [1, 2, 3].forEach(n => {
+            const ring = document.createElement('div');
+            ring.className = `locate-ring locate-ring-${n}`;
+            ring.style.left = `${x}px`;
+            ring.style.top  = `${y}px`;
+            container.appendChild(ring);
+            // Clean up after animation
+            ring.addEventListener('animationend', () => ring.remove(), { once: true });
+        });
+
+        // Bouncy center dot
+        const dot = document.createElement('div');
+        dot.className = 'locate-dot';
+        dot.style.left = `${x}px`;
+        dot.style.top  = `${y}px`;
+        container.appendChild(dot);
+        dot.addEventListener('animationend', () => dot.remove(), { once: true });
+
+        // Floating label
+        const label = document.createElement('div');
+        label.className = 'locate-label';
+        label.textContent = 'Located';
+        label.style.left = `${x}px`;
+        label.style.top  = `${y}px`;
+        container.appendChild(label);
+        label.addEventListener('animationend', () => label.remove(), { once: true });
+    };
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key !== 'Control') return;
+        const now = Date.now();
+        if (now - _lastCtrlTime < 350) {
+            // Double tap!
+            _spawnLocatePing(_cursorX, _cursorY);
+            _lastCtrlTime = 0; // reset so triple-tap doesn't re-fire
+        } else {
+            _lastCtrlTime = now;
+        }
+    }, { passive: true });
 });
 
 /* 
