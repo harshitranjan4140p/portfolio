@@ -1123,23 +1123,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* 
     ==========================================================================
-    HERO IMAGE PARALLAX
+    HERO IMAGE WATER DISTORTION (LOCALIZED)
     ==========================================================================
     */
-    const heroImg = document.querySelector('.hero-image');
-    const heroSection = document.querySelector('.hero');
-    if (heroImg && heroSection && !isAndroid) {
-        heroSection.addEventListener('mousemove', (e) => {
-            const rect = heroSection.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            const dx = (e.clientX - cx) / (rect.width / 2);
-            const dy = (e.clientY - cy) / (rect.height / 2);
-            heroImg.style.transform = `perspective(900px) rotateY(${dx * 6}deg) rotateX(${-dy * 4}deg) scale(1.02)`;
+    const heroImgContainer = document.querySelector('.hero-image');
+    const heroImg = document.querySelector('.hero-image img');
+    const waterMap = document.getElementById('water-map');
+    
+    if (heroImgContainer && heroImg && waterMap && !isAndroid) {
+        heroImgContainer.style.position = 'relative';
+        heroImg.style.filter = 'grayscale(15%) contrast(1.1)'; // Reset base image
+
+        const overlayImg = heroImg.cloneNode(true);
+        overlayImg.className = 'distortion-overlay';
+        Object.assign(overlayImg.style, {
+            position: 'absolute',
+            top: '0', left: '0',
+            width: '100%', height: '100%',
+            pointerEvents: 'none',
+            filter: 'url(#water) grayscale(15%) contrast(1.1)',
+            opacity: '0',
+            transition: 'opacity 0.2s ease',
+            zIndex: '2'
         });
-        heroSection.addEventListener('mouseleave', () => {
-            heroImg.style.transform = '';
+        
+        heroImgContainer.appendChild(overlayImg);
+        
+        let lastX = 0, lastY = 0;
+        let scale = 0;
+
+        heroImgContainer.addEventListener('mousemove', (e) => {
+            overlayImg.style.opacity = '1';
+            
+            const rect = heroImgContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Mask to a 50px radius
+            const maskStr = `radial-gradient(circle 50px at ${x}px ${y}px, black 60%, transparent 100%)`;
+            overlayImg.style.maskImage = maskStr;
+            overlayImg.style.webkitMaskImage = maskStr;
+
+            const dx = e.clientX - lastX;
+            const dy = e.clientY - lastY;
+            const speed = Math.min(Math.sqrt(dx*dx + dy*dy), 25);
+            
+            scale = Math.max(scale, speed * 2.5);
+            
+            lastX = e.clientX;
+            lastY = e.clientY;
         });
+
+        heroImgContainer.addEventListener('mouseleave', () => {
+            overlayImg.style.opacity = '0';
+        });
+
+        const animateWater = () => {
+            if (scale > 0) {
+                scale *= 0.92;
+                if (scale < 0.1) scale = 0;
+                waterMap.setAttribute('scale', scale);
+            }
+            requestAnimationFrame(animateWater);
+        };
+        requestAnimationFrame(animateWater);
     }
 
     /* 
@@ -1266,6 +1313,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 email: document.getElementById('cf-email').value,
                 message: document.getElementById('cf-message').value
             };
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                btn.disabled = false;
+                btn.textContent = 'Send Message ↗';
+                status.textContent = '✗ Please enter a valid email address.';
+                status.className = 'cf-status error';
+                return;
+            }
 
             // Fallback: open mailto if Formspree not configured
             if (formspreeId === 'UNCONFIGURED') {

@@ -155,13 +155,20 @@
                     <p>When I'm not coding, I'm thinking about chess, robotics, or the next mechanic that'll make
                         someone say <em>"how did they do that?"</em></p>
                 </div>
-                <div class="about-highlights">
-                    <div class="highlight-chip">🎮 Unity & Unreal</div>
-                    <div class="highlight-chip">🌐 Multiplayer (Photon)</div>
-                    <div class="highlight-chip">📱 Play Store Published</div>
-                    <div class="highlight-chip">🏢 MSME Registered</div>
-                    <div class="highlight-chip">✂️ 3D Art (Blender)</div>
-                    <div class="highlight-chip">♟ Chess Player</div>
+                <div class="engine-terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dots"><span></span><span></span><span></span></div>
+                        <div class="terminal-title">SYS.INIT // CORE_MODULES</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="term-line"><span class="term-prompt">&gt;</span> <span class="term-cmd">load_module</span> <span class="term-arg">"Unity & Unreal"</span> <span class="term-status">[OK]</span></div>
+                        <div class="term-line"><span class="term-prompt">&gt;</span> <span class="term-cmd">connect_net</span> <span class="term-arg">"Photon Pun 2"</span> <span class="term-status">[OK]</span></div>
+                        <div class="term-line"><span class="term-prompt">&gt;</span> <span class="term-cmd">compile_build</span> <span class="term-arg">"Play Store"</span> <span class="term-status">[OK]</span></div>
+                        <div class="term-line"><span class="term-prompt">&gt;</span> <span class="term-cmd">verify_biz</span> <span class="term-arg">"MSME Reg."</span> <span class="term-status">[OK]</span></div>
+                        <div class="term-line"><span class="term-prompt">&gt;</span> <span class="term-cmd">import_assets</span> <span class="term-arg">"Blender 3D"</span> <span class="term-status">[OK]</span></div>
+                        <div class="term-line"><span class="term-prompt">&gt;</span> <span class="term-cmd">run_logic</span> <span class="term-arg">"Chess Engine"</span> <span class="term-status">[OK]</span></div>
+                        <div class="term-cursor">_</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -461,6 +468,13 @@
             <div class="eye-lid-bottom"></div>
         </div>
     </div>
+    <!-- SVG Filter for Water Distortion Effect -->
+    <svg width="0" height="0" style="position: absolute; width: 0; height: 0; pointer-events: none;">
+        <filter id="water">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="water-map"/>
+        </filter>
+    </svg>
 </body>
 
 </html>
