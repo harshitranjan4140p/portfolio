@@ -345,41 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* 
     ==========================================================================
-    SKILLS ANIMATION
-    ==========================================================================
-    */
-    const skillItems = document.querySelectorAll('.skill-item');
-    if (skillItems.length > 0) {
-        const skillObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                const bar = entry.target.querySelector('.skill-progress, .skill-bar-fill');
-                const label = entry.target.querySelector('.skill-info span:last-child, .skill-label span:last-child');
-                if (bar && label) {
-                    const targetWidth = bar.style.width || '0%';
-                    const targetNum = parseInt(targetWidth);
-                    bar.style.width = '0%';
-                    bar.style.transition = 'none';
-                    const startTime = performance.now();
-                    const duration = 2000; // Slightly slower for better look
-                    const tick = (now) => {
-                        const progress = Math.min((now - startTime) / duration, 1);
-                        const eased = 1 - Math.pow(1 - progress, 4); // Smoother quartic ease-out
-                        const current = eased * targetNum;
-                        label.textContent = Math.round(current) + '%';
-                        bar.style.width = current + '%';
-                        if (progress < 1) requestAnimationFrame(tick);
-                    };
-                    requestAnimationFrame(tick);
-                }
-                skillObserver.unobserve(entry.target);
-            });
-        }, { threshold: 0.2 });
-        skillItems.forEach(item => skillObserver.observe(item));
-    }
-
-    /* 
-    ==========================================================================
     BACKGROUND ARTIFACTS
     ==========================================================================
     */
@@ -600,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function _0x11b2_init() {
         _0x2c1a = true;
         document.body.classList.add('destruction-active');
-        const _0x8e2b = document.querySelectorAll('h1, h2, h3, p, img, .btn, .project-card, .skill-item');
+        const _0x8e2b = document.querySelectorAll('h1, h2, h3, p, img, .btn, .project-card');
         let _0xcount = _0x8e2b.length, _0xinitial = _0xcount, _0xguilt = false;
 
         window.addEventListener('dragstart', (e) => e.preventDefault());
