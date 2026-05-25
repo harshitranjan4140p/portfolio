@@ -486,6 +486,23 @@ a, button {
     border: 1px solid rgba(255,255,255,0.1);
 }
 
+.project-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-docs {
+    border-color: var(--accent-color) !important;
+    color: var(--accent-color) !important;
+}
+
+.btn-docs:hover {
+    background: var(--accent-color) !important;
+    color: var(--bg-color) !important;
+    box-shadow: 4px 4px 0px var(--text-primary) !important;
+}
+
 /* Video Mute Button */
 .mute-btn {
     position: absolute;

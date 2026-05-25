@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Documentation | Patliputra Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/images/game_cover.png" type="image/png">
+    <style>
+        :root {
+            --docs-bg: #191724;
+            --docs-surface: #211f2d;
+            --docs-accent: #f6c177;
+            --docs-rose: #eb6f92;
+            --docs-foam: #9ccfd8;
+            --docs-iris: #c4a7e7;
+            --docs-text: #e0def4;
+            --docs-muted: #908caa;
+            --docs-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body.docs-view-page {
+            background-color: var(--docs-bg);
+            color: var(--docs-text);
+            font-family: 'Urbanist', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            cursor: auto;
+        }
+
+        .docs-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 24px 60px 24px;
+        }
+
+        .docs-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--docs-border);
+            padding-bottom: 25px;
+        }
+
+        .docs-nav-back {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--docs-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .docs-nav-back:hover {
+            color: var(--docs-accent);
+        }
+
+        .game-title-wrap h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin: 0 0 10px 0;
+            color: var(--docs-text);
+            text-shadow: 0 0 20px rgba(246, 193, 119, 0.25);
+        }
+
+        .game-meta-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .game-meta-tags span {
+            font-size: 0.8rem;
+            padding: 4px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--docs-border);
+            border-radius: 20px;
+            color: var(--docs-foam);
+        }
+
+        /* Glass Tab Controller */
+        .docs-tabs-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--docs-border);
+            padding-bottom: 15px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--docs-muted);
+            font-family: 'Urbanist', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--docs-text);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--docs-accent);
+            background: rgba(246, 193, 119, 0.08);
+            border: 1px solid rgba(246, 193, 119, 0.2);
+            text-shadow: 0 0 8px rgba(246, 193, 119, 0.3);
+        }
+
+        /* Content Panel Layout */
+        .tab-panel {
+            display: none;
+            background: var(--docs-surface);
+            border: 1px solid var(--docs-border);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-panel h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--docs-iris);
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 10px;
+        }
+
+        .tab-panel p {
+            line-height: 1.7;
+            color: var(--docs-text);
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .tab-panel ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tab-panel li {
+            line-height: 1.8;
+            margin-bottom: 8px;
+            font-size: 1.02rem;
+            color: var(--docs-text);
+            opacity: 0.95;
+        }
+
+        /* Architectural / Code display */
+        .code-block-header {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--docs-border);
+            border-bottom: none;
+            padding: 8px 16px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--docs-muted);
+        }
+
+        pre {
+            margin: 0 0 25px 0;
+            background: #111019;
+            border: 1px solid var(--docs-border);
+            padding: 20px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #e0def4;
+        }
+
+        .token-keyword { color: #eb6f92; }
+        .token-function { color: #c4a7e7; }
+        .token-string { color: #f6c177; }
+        .token-comment { color: #6e6a86; font-style: italic; }
+        .token-number { color: #31748f; }
+
+        /* Controls styling */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .control-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--docs-border);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-key {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 4px;
+            color: var(--docs-accent);
+            font-size: 0.85rem;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.5);
+        }
+
+        .control-action {
+            font-weight: 600;
+            color: var(--docs-text);
+        }
+
+        /* Error state formatting */
+        .error-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .error-container h1 {
+            color: var(--docs-rose);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .docs-container { padding-top: 60px; }
+            .game-title-wrap h1 { font-size: 2.2rem; }
+            .tab-panel { padding: 25px; }
+        }
+    </style>
+</head>
+<body class="docs-view-page">
+    <div class="grain-overlay"></div>
+    <div class="scanlines"></div>
+    <div class="bg-artifacts"></div>
+
+    <div class="docs-container">
+        <!-- Back Navigation -->
+        <a href="index.html" class="docs-nav-back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Home
+        </a>
+
+        <!-- Dynamic Game Title & Metadata -->
+        <header class="docs-header" style="margin-top: 30px;">
+            <div class="game-title-wrap">
+                <h1 id="game-title">Loading Documentation...</h1>
+                <div class="game-meta-tags" id="game-tags">
+                    <!-- Dynamic tags loaded via JS -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="docs-tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="switchTab('mechanics')">Key Mechanics</button>
+            <button class="tab-btn" onclick="switchTab('technical')">Technical Architecture</button>
+            <button class="tab-btn" onclick="switchTab('controls')">Controls</button>
+        </nav>
+
+        <!-- Tab Content Panels -->
+        <main id="docs-content">
+            <!-- Overview -->
+            <section id="panel-overview" class="tab-panel active">
+                <h2>Overview & Design Philosophy</h2>
+                <div id="overview-content">Loading...</div>
+            </section>
+
+            <!-- Key Mechanics -->
+            <section id="panel-mechanics" class="tab-panel">
+                <h2>Gameplay & Core Systems</h2>
+                <div id="mechanics-content">Loading...</div>
+            </section>
+
+            <!-- Technical Architecture -->
+            <section id="panel-technical" class="tab-panel">
+                <h2>Technical Design & Systems Architecture</h2>
+                <div id="technical-content">Loading...</div>
+            </section>
+
+            <!-- Controls -->
+            <section id="panel-controls" class="tab-panel">
+                <h2>Input Schema & Configurations</h2>
+                <div id="controls-content">Loading...</div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Page Transition Overlay -->
+    <div class="page-transition-overlay loaded" id="pageOverlay"></div>
+
+    <script src="projects.js"></script>
+    <script>
+        // Custom Rich Documentation Data Store
+        const DOCUMENTATION_DATA = {
+            7: {
+                overview: `
+                    <p><strong>Parkour System</strong> is a state-of-the-art, custom physics-driven locomotion system built to redefine how players navigate 3D spatial environments. The design focuses on physical weight, momentum conservation, and seamless transitions between active states.</p>
+                    <h3>1. Locomotion & Character Controller (<code>PlayerMovement.cs</code>)</h3>
+                    <p>The foundation of the player's movement is built on top of a standard Unity <code>CharacterController</code> integrated with custom state-machine driven gravity, speed scaling, and animation control.</p>
+                    <img src="assets/images/diagrams/parkour_locomotion_2d.png" alt="Locomotion Loop Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
+                    <h4>Key Engineering Features</h4>
+                    <ul>
+                        <li><strong>Camera-Relative Movement:</strong> Input vectors from the input manager are rotated relative to the player camera's forward/right vectors (ignoring the Y-axis) to ensure that pressing forward always moves the player in the direction the camera is facing.</li>
+                        <li><strong>Grounded Override Mechanics:</strong> Standard Unity ground-checking is prone to remaining stuck when characters pull themselves up onto ledges or leap off walls. To resolve this, a grounded override state was implemented where setting character control to <code>false</code> (during animations/actions) forces <code>isGrounded</code> and the animator's state to <code>false</code>, allowing smooth transitions into airborne/falling animations without mid-air jerking.</li>
+                        <li><strong>Air Control Acceleration:</strong> Smooth vertical and horizontal speed limits are calculated while in mid-air using interpolation thresholds, allowing minor trajectory modifications without breaking realistic physics.</li>
+                    </ul>
+                `,
+                mechanics: `
+                    <h3>2. Environmental Sensing (<code>EnvironmentScanner.cs</code>)</h3>
+                    <p>To perform fluid parkour and climbing, the player needs to constantly "feel" the environment. The <code>EnvironmentScanner</code> handles this using predictive spatial raycasting.</p>
+                    <img src="assets/images/diagrams/parkour_raycast_2d.png" alt="Environment Raycast Sensing Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
+                    <h4>Raycasting Methodologies</h4>
+                    <ul>
+                        <li><strong>Forward Obstacle Scan:</strong> Fired from a customized vertical offset (chest/waist height) in the direction of the player's movement to detect walls, fences, or blocks.</li>
+                        <li><strong>Height Scan:</strong> Once a forward obstacle is hit, a vertical raycast is fired downward from a point <em>above</em> the obstacle to measure its exact height. This determines whether the player can vault it, step up, climb it, or jump over it.</li>
+                        <li><strong>Three-Raycast Sampling:</strong> For ledge drop-offs, the script uses a utility (<code>ThreeRaycasts</code>) that samples three parallel downward raycasts across a horizontal span. This accurately calculates the exact drop-off height and wall angle, preventing the player from leaping off slopes that are too steep or flat.</li>
+                    </ul>
+
+                    <h3 style="margin-top: 30px;">3. Parkour Engine & Motion Warping (<code>ParkourController.cs</code> & <code>ParkourAction.cs</code>)</h3>
+                    <p>The parkour system translates environmental detection into synchronized athletic actions using modular <code>ScriptableObject</code> configurations.</p>
+                    <h4>Architectural Breakdown</h4>
+                    <ol>
+                        <li><strong>Action Lookup:</strong> The controller holds a list of pre-configured <code>ParkourAction</code> assets (e.g., Vault, StepUp, ClimbUp, VaultLow).</li>
+                        <li><strong>Possibility Verification:</strong> When the player presses the run/jump trigger, <code>EnvironmentScanner</code> gathers the obstacle tag and height. The controller iterates through its actions, checking if the obstacle fits the height thresholds:<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">Min Height &le; Obstacle Height &le; Max Height</code></li>
+                        <li><strong>Motion Warping (Target Matching):</strong> When an action is selected, the system triggers <code>Animator.MatchTarget()</code>. This warps the player's position and hands/feet smoothly to the exact obstacle hit point during a specified window of the animation clip:
+                            <ul>
+                                <li><strong>Left/Right Hands:</strong> Aligned precisely to the top shelf of a vault obstacle.</li>
+                                <li><strong>Feet:</strong> Aligned to step on top of obstacles during a climb-up action.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Airborne Recovery Safety Loop:</strong> When jumping down or vaulting, a two-phase landing coroutine first checks that the player has left the ground (airborne phase) and then listens for the next grounded event to trigger the landing roll or run transition.</li>
+                    </ol>
+                `,
+                technical: `
+                    <h3>4. Climbing System & Ledge Scanning (<code>ClimbController.cs</code> & <code>ClimbPoint.cs</code>)</h3>
+                    <p>The climbing engine handles free-climbing, hanging, shimmies, ledge leaps, and drop-downs. It is entirely driven by network nodes representing ledges (<code>ClimbPoint</code>).</p>
+                    <img src="assets/images/diagrams/climbpoint_2d.png" alt="ClimbPoint Neighbour Node System" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
+                    <h4>The 3-Phase Neighbour Auto-Scanner (Core Engineering Achievement)</h4>
+                    <p>To make level creation fast and clean, we engineered a state-of-the-art <strong>Phased Neighbour Scanner</strong> inside <code>ClimbPoint.cs</code> that auto-scans nearby ledges and links them mathematically inside the Unity editor:</p>
+                    <ul>
+                        <li><strong>Phase 1: Vertical Scan (Y Axis)</strong><br>Scans up and down within <code>autoSearchRadius</code>. Selects points where the vertical offset dominates the horizontal offset:<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">|Offset_Y| &gt; DeadZone  and  |Offset_Y| &gt; |Offset_X|</code></li>
+                        <li><strong>Phase 2: Horizontal Scan (X Axis)</strong><br>Scans left and right up to <code>autoSearchRadius * horizontalSearchMultiplier</code>. Selects points where the horizontal offset dominates:<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">|Offset_X| &gt; DeadZone  and  |Offset_X| &gt; |Offset_Y|</code></li>
+                        <li><strong>Phase 3: Diagonal Scan</strong><br>Scans diagonal angles using an aspect ratio threshold (<code>diagonalAxisRatio</code>):<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">min(|Offset_X|, |Offset_Y|) / max(|Offset_X|, |Offset_Y|) &ge; diagonalAxisRatio</code></li>
+                        <li><strong>Closest-Candidate Priority Logic:</strong> Wipes manual placeholders and enforces a strict <strong>closest-wins</strong> sorting logic. If multiple points fall into the same direction segment, only the closest point is linked and the rest are ignored.</li>
+                        <li><strong>Flipped X-Axis Resolution:</strong> Aligns local camera right-hand dot products directly to direction indices, resolving direction flipping issues across wall orientations.</li>
+                    </ul>
+
+                    <h3 style="margin-top: 30px;">5. Engineering Evolution & Key Technical Solutions</h3>
+                    <p>Throughout the development process, several critical issues were resolved to elevate the game's polish to AAA standards:</p>
+                    <ul>
+                        <li><strong>Problem 1: Redundant Post-Climb Warp jerks</strong><br><em>Symptom:</em> Pulling up on top of a ledge caused the player to double-jerk/teleport forward by a step immediately after the animation ended.<br><em>Resolution:</em> Identified that the animator already handled root-motion translation onto the platform. Removed a redundant post-warp translation offset (<code>climbOnTopExitOffset</code> Z value set to <code>0</code>), resulting in a perfect transition.</li>
+                        <li><strong>Problem 2: Sticky Ledge Float</strong><br><em>Symptom:</em> Leaping off a ledge caused the player to float suspended in mid-air for about 1 second before gravity kicked in.<br><em>Resolution:</em> The physics and character controllers were kept disabled until the transition animation ended. Modified the coroutine to asynchronously re-enable player physics and downward velocities <code>0.15</code> seconds into the leap, causing the player to fall realistically.</li>
+                        <li><strong>Problem 3: Duplicate Ledge Directions</strong><br><em>Symptom:</em> The neighbour scanner could register multiple different ledge objects in the exact same direction (e.g. two "Up" links), breaking character navigation.<br><em>Resolution:</em> Refactored the collection engine to index connections by direction vectors. The closest ledge is cached, and any further points attempting to bind to the same direction are automatically skipped.</li>
+                    </ul>
+                `,
+                controls: `
+                    <p>Master the locomotion suite using the following bindings:</p>
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="control-action">Move / Steer</span><span class="control-key">W / A / S / D</span></div>
+                        <div class="control-item"><span class="control-action">Wall Run / Jump</span><span class="control-key">Spacebar</span></div>
+                        <div class="control-item"><span class="control-action">Slide / Crouch</span><span class="control-key">Left Shift</span></div>
+                        <div class="control-item"><span class="control-action">Drop Ledge</span><span class="control-key">C</span></div>
+                    </div>
+                `
+            },
+            1: {
+                overview: `
+                    <p><strong>Online FPS Multiplayer Shooter</strong> is a competitive, high-tick-rate multiplayer arena built on top of the Unity Engine and powered by the <strong>Photon PUN 2</strong> networking framework. The core gameplay loop focuses on high-precision hitscan shooting, lag compensation, client prediction, and server reconciliation to guarantee fair, esports-grade combat.</p>
+                    <h3>1. Client-Side Prediction & Locomotion</h3>
+                    <p>Standard multiplayer movement feels sluggish due to network round-trip latency. To combat this, the game implements client prediction. Local inputs (WASD, jumps) are applied immediately to the character physics controller, and the local simulation runs ahead of the server. When server updates arrive, the client compares its predicted path against the server authoritative path and reconciles any deviations.</p>
+                    <img src="assets/images/diagrams/fps_networking_2d.png" alt="Multiplayer Netcode Timeline Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
+                `,
+                mechanics: `
+                    <h3>2. Lag Compensation & Hit Verification</h3>
+                    <p>When a player fires, they aim at where they see their opponent. However, due to latency, the target has already moved on the server. The hit verification engine works by buffering the history of all player positions. When a fire packet is received, the server temporarily rewinds all characters back to the exact time the shot was fired by the client, performs the raycast hit test in the rewound state, and applies damage. This prevents the "shot behind cover" anomaly.</p>
+                    <h4>Raycasting & Ballistics System</h4>
+                    <ul>
+                        <li><strong>Dynamic Weapon Recoil:</strong> Uses procedural spring equations to simulate camera shake and recoil recovery based on rapid shot cadences.</li>
+                        <li><strong>Hitscan Calculations:</strong> A straight 3D raycast is fired through the weapon muzzle. If it intersects with a player hitbox collider, damage scales based on distance falloff and limb multipliers.</li>
+                    </ul>
+                `,
+                technical: `
+                    <h3>3. Network State Serialization & Lag Simulation</h3>
+                    <p>This component synchronizes positional data across client screens. Position packets are queued and smoothly interpolated over time to mask network packet jitter.</p>
+                    <div class="code-block-header">NetworkSync.cs</div>
+                    <pre><code><span class="token-keyword">public class</span> <span class="token-class">NetworkSync</span> : MonoBehaviour, IPunObservable {
+    <span class="token-keyword">private</span> Vector3 networkPosition;
+    <span class="token-keyword">private</span> Quaternion networkRotation;
+    <span class="token-keyword">private float</span> interpolationSpeed = 15f;
+
+    <span class="token-keyword">void</span> <span class="token-function">Update</span>() {
+        <span class="token-keyword">if</span> (!photonView.IsMine) {
+            <span class="token-comment">// Smoothly interpolate towards the last known server state</span>
+            transform.position = Vector3.<span class="token-function">Lerp</span>(transform.position, networkPosition, Time.deltaTime * interpolationSpeed);
+            transform.rotation = Quaternion.<span class="token-function">Slerp</span>(transform.rotation, networkRotation, Time.deltaTime * interpolationSpeed);
+        }
+    }
+
+    <span class="token-keyword">public void</span> <span class="token-function">OnPhotonSerializeView</span>(PhotonStream stream, PhotonMessageInfo info) {
+        <span class="token-keyword">if</span> (stream.IsWriting) {
+            <span class="token-comment">// Send local state to remote players</span>
+            stream.<span class="token-function">SendNext</span>(transform.position);
+            stream.<span class="token-function">SendNext</span>(transform.rotation);
+        } <span class="token-keyword">else</span> {
+            <span class="token-comment">// Receive remote state</span>
+            networkPosition = (Vector3)stream.<span class="token-function">ReceiveNext</span>();
+            networkRotation = (Quaternion)stream.<span class="token-function">ReceiveNext</span>();
+        }
+    }
+}</code></pre>
+                `,
+                controls: `
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="control-action">Move / Strafe</span><span class="control-key">W / A / S / D</span></div>
+                        <div class="control-item"><span class="control-action">Jump</span><span class="control-key">Spacebar</span></div>
+                        <div class="control-item"><span class="control-action">Fire Primary</span><span class="control-key">Left Mouse</span></div>
+                        <div class="control-item"><span class="control-action">Aim Down Sights</span><span class="control-key">Right Mouse</span></div>
+                        <div class="control-item"><span class="control-action">Reload Weapon</span><span class="control-key">R</span></div>
+                        <div class="control-item"><span class="control-action">Weapon Swap</span><span class="control-key">1 / 2</span></div>
+                    </div>
+                `
+            },
+            2: {
+                overview: `
+                    <p><strong>Thief Long Hand Puzzle</strong> is a highly engaging physics-based puzzle game engineered for mobile touch devices. The core mechanics center around the player stretching and bending an elastic character arm through complex maze structures, avoiding static obstacles, laser tripwires, and patrolling guards to steal a specific prize object.</p>
+                    <h3>1. Dynamic Joint Stretching Math</h3>
+                    <p>The arm is represented by a procedural chain of physics joints. Input touch positions on the mobile screen project a ray onto the ground plane, producing a stretch direction vector that drives the arm's extension. Limit caps ensure the arm cannot stretch beyond its maximum structural length.</p>
+                    <img src="assets/images/diagrams/thief_arm_2d.png" alt="Arm Stretching Physics Joint Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
+                `,
+                mechanics: `
+                    <h3>2. Obstacle Collisions & Detection</h3>
+                    <p>Each link in the arm chain is equipped with lightweight 2D sphere colliders. The system processes collision triggers at a minimal footprint to guarantee 60 FPS gameplay on low-end mobile devices:</p>
+                    <ul>
+                        <li><strong>Laser Hazards:</strong> Trigger a line trace hit. If the arm overlaps, it fractures at the point of contact, failing the level.</li>
+                        <li><strong>Wrap-around Physics:</strong> Arm segments conform procedurally to the contours of static obstacles using angular spring joints, mimicking a real rope or soft limb.</li>
+                    </ul>
+                `,
+                technical: `
+                    <h3>3. Procedural Arm Elongation Logic</h3>
+                    <p>The stretching physics calculations are processed frame-by-frame, updating joint position vectors and dynamically resizing the segment meshes to match the stretched distance.</p>
+                    <div class="code-block-header">ArmController.cs</div>
+                    <pre><code><span class="token-keyword">public class</span> <span class="token-class">ArmController</span> : MonoBehaviour {
+    <span class="token-keyword">public</span> Transform shoulderPivot;
+    <span class="token-keyword">public float</span> maxStretchLength = 10f;
+    <span class="token-keyword">private</span> List&lt;Transform&gt; armSegments = <span class="token-keyword">new</span> List&lt;Transform&gt;();
+
+    <span class="token-keyword">public void</span> <span class="token-function">UpdateArmLinks</span>(Vector3 targetPoint) {
+        Vector3 origin = shoulderPivot.position;
+        <span class="token-keyword">float</span> currentDistance = Vector3.Distance(origin, targetPoint);
+        
+        <span class="token-comment">// Cap the stretch target to max allowed distance</span>
+        Vector3 finalTarget = targetPoint;
+        <span class="token-keyword">if</span> (currentDistance &gt; maxStretchLength) {
+            finalTarget = origin + (targetPoint - origin).normalized * maxStretchLength;
+        }
+
+        <span class="token-comment">// Reposition chain nodes along the stretch line</span>
+        <span class="token-keyword">for</span> (<span class="token-keyword">int</span> i = 0; i &lt; armSegments.Count; i++) {
+            <span class="token-keyword">float</span> t = (i + 1) / (<span class="token-keyword">float</span>)armSegments.Count;
+            armSegments[i].position = Vector3.<span class="token-function">Lerp</span>(origin, finalTarget, t);
+        }
+    }
+}</code></pre>
+                `,
+                controls: `
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="control-action">Extend Arm</span><span class="control-key">Touch + Drag Screen</span></div>
+                        <div class="control-item"><span class="control-action">Grab Object / Steal</span><span class="control-key">Release Touch</span></div>
+                    </div>
+                `
+            },
+            3: {
+                overview: `
+                    <p><strong>Ashes: RPG Adventure</strong> is a medieval fantasy action RPG highlighting frame-perfect sword combat, behavioral-tree driven AI, and inventory databases. The game system scales structural scripts to coordinate quests, enemy encounters, and character statistics.</p>
+                    <h3>1. Melee Combat & Animation Windows</h3>
+                    <p>Combat matches the depth of tactical action games. Attacks check for precision animation frames (Active Frames vs Recovery Frames). A procedural Threat Map guides the enemy group's positioning around the player, preventing enemies from overlapping.</p>
+                    <img src="assets/images/diagrams/rpg_ai_2d.png" alt="AI Behavior Tree Flowchart Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
+                `,
+                mechanics: `
+                    <h3>2. AI Behavior Trees & Coordination</h3>
+                    <p>Enemy actors operate under behavior trees that evaluate defensive positioning, threat levels, and coordinate group flanking maneuver offsets:</p>
+                    <ul>
+                        <li><strong>Combos & Parrying:</strong> Precision parry checking fires a directional dot-product match check. If it succeeds, the enemy's posture breaks.</li>
+                        <li><strong>AI Flanking Maps:</strong> Procedural path offsets determine where archers and melee soldiers stand to encircle the target.</li>
+                    </ul>
+                `,
+                technical: `
+                    <h3>3. AI Combat Evaluation Engine</h3>
+                    <p>This script represents the core decision block determining target tracking, path routing, and team alerts.</p>
+                    <div class="code-block-header">AIThreatMap.cs</div>
+                    <pre><code><span class="token-keyword">public class</span> <span class="token-class">AIThreatMap</span> : MonoBehaviour {
+    <span class="token-keyword">public float</span> threatRadius = 15f;
+    <span class="token-keyword">public</span> AIState currentState = AIState.Patrol;
+
+    <span class="token-keyword">public void</span> <span class="token-function">EvaluateThreat</span>(Transform targetPlayer) {
+        <span class="token-keyword">float</span> dist = Vector3.Distance(transform.position, targetPlayer.position);
+        
+        <span class="token-comment">// Threat triggers search state transition if in range</span>
+        <span class="token-keyword">if</span> (dist &lt; threatRadius &amp;&amp; <span class="token-function">HasLineOfSight</span>(targetPlayer)) {
+            currentState = AIState.Aggressive;
+            <span class="token-function">BroadcastAlertToAllies</span>(targetPlayer.position);
+        } <span class="token-keyword">else</span> {
+            currentState = AIState.Patrol;
+        }
+    }
+
+    <span class="token-keyword">private bool</span> <span class="token-function">HasLineOfSight</span>(Transform target) {
+        RaycastHit hit;
+        <span class="token-keyword">if</span> (Physics.<span class="token-function">Raycast</span>(transform.position + Vector3.up, (target.position - transform.position).normalized, <span class="token-keyword">out</span> hit, threatRadius)) {
+            <span class="token-keyword">return</span> hit.transform == target;
+        }
+        <span class="token-keyword">return false;</span>
+    }
+}</code></pre>
+                `,
+                controls: `
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="control-action">Move Player</span><span class="control-key">W / A / S / D</span></div>
+                        <div class="control-item"><span class="control-action">Light Slash / Combo</span><span class="control-key">Left Mouse Button</span></div>
+                        <div class="control-item"><span class="control-action">Shield Block / Parry</span><span class="control-key">Right Mouse Button</span></div>
+                        <div class="control-item"><span class="control-action">Evade Dodge Roll</span><span class="control-key">Spacebar</span></div>
+                        <div class="control-item"><span class="control-action">Inventory Page</span><span class="control-key">I</span></div>
+                    </div>
+                `
+            },
+            4: {
+                overview: `
+                    <p><strong>Ragdoll Ball Game</strong> is a physics sandbox game that simulates active ragdoll movements, dynamic limb slicing, and real-time gravity vector modulation. The game engine coordinates animation keyframes with physical joint motors, allowing objects to bounce and balance inside a spinning spherical cage.</p>
+                    <h3>1. Active Ragdoll Pose Matching</h3>
+                    <p>Active ragdolls combine classic animations with physical collisions. While a standard ragdoll goes limp, an active ragdoll tries to maintain its keyframed pose. The system evaluates the target rotation from the animator, calculates the angular difference to the physical bone's current rotation, and applies corrective torque through Configurable Joint muscle springs.</p>
+                    <!-- Custom Inline SVG for Active Ragdoll -->
+                    <div style="margin: 15px 0; text-align: center;">
+                        <svg viewBox="0 0 600 240" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="240" fill="#111019"/>
+                            <!-- Kinematic Pose Target -->
+                            <rect x="30" y="40" width="160" height="150" rx="6" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <text x="110" y="30" text-anchor="middle" fill="#9ccfd8" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">KINEMATIC POSE TARGET</text>
+                            <circle cx="110" cy="80" r="12" fill="#9ccfd8" opacity="0.3"/>
+                            <line x1="110" y1="92" x2="110" y2="150" stroke="#9ccfd8" stroke-width="3"/>
+                            <line x1="110" y1="110" x2="70" y2="90" stroke="#9ccfd8" stroke-width="3"/>
+                            <line x1="110" y1="110" x2="150" y2="90" stroke="#9ccfd8" stroke-width="3"/>
+                            
+                            <!-- Torque Interpolator Indicator -->
+                            <path d="M 230 115 L 330 115" stroke="#f6c177" stroke-width="2" stroke-dasharray="5 5"/>
+                            <polygon points="335,115 325,110 325,120" fill="#f6c177"/>
+                            <text x="280" y="105" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif">Spring Muscle Torque</text>
+                            
+                            <!-- Physical Rigidbody Limb -->
+                            <rect x="370" y="40" width="200" height="150" rx="6" fill="#1e1b26" stroke="#eb6f92" stroke-width="1.5"/>
+                            <text x="470" y="30" text-anchor="middle" fill="#eb6f92" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">PHYSICAL RIGIDBODY LIMB</text>
+                            <circle cx="470" cy="85" r="12" fill="#eb6f92" opacity="0.3"/>
+                            <line x1="470" y1="97" x2="485" y2="150" stroke="#eb6f92" stroke-width="3"/>
+                            <line x1="470" y1="110" x2="430" y2="115" stroke="#eb6f92" stroke-width="3"/>
+                            <!-- Impact marker -->
+                            <circle cx="430" cy="115" r="5" fill="#f6c177"/>
+                            <text x="470" y="215" text-anchor="middle" fill="var(--docs-muted)" font-size="10" font-family="'Urbanist', sans-serif">Aligns physical collider with keyframes under impact</text>
+                        </svg>
+                    </div>
+                `,
+                mechanics: `
+                    <h3>2. Gravity Matrix Manipulation & Joint Stress Limits</h3>
+                    <p>Physics interactions scale dynamically based on environmental stress inputs:</p>
+                    <ul>
+                        <li><strong>Gravity Vector Modulation:</strong> Global gravity matrices are rotated dynamically (e.g. when entering gravity pockets), forcing player skeletons to adjust balance to avoid collapsing.</li>
+                        <li><strong>Stress-Induced Limb Slicing:</strong> Joints measure target forces. If forces exceed the structural tension threshhold, the Configurable Joint automatically detaches, causing limb loss.</li>
+                    </ul>
+                `,
+                technical: `
+                    <h3>3. Active Joint Target Pose Alignment</h3>
+                    <p>This script converts local animation rotations into joint coordinate vectors to adjust motor drives.</p>
+                    <div class="code-block-header">ActiveRagdoll.cs</div>
+                    <pre><code><span class="token-keyword">public class</span> <span class="token-class">ActiveRagdoll</span> : MonoBehaviour {
+    <span class="token-keyword">private</span> ConfigurableJoint joint;
+    <span class="token-keyword">private</span> Quaternion initialJointRotation;
+
+    <span class="token-keyword">void</span> <span class="token-function">Start</span>() {
+        joint = <span class="token-keyword">GetComponent</span>&lt;ConfigurableJoint&gt;();
+        initialJointRotation = joint.transform.localRotation;
+    }
+
+    <span class="token-keyword">public void</span> <span class="token-function">MatchPose</span>(Transform targetTransform) {
+        // Convert animation clip local coordinates to Configurable Joint target space
+        joint.targetRotation = Quaternion.Inverse(targetTransform.localRotation) * initialJointRotation;
+    }
+}</code></pre>
+                `,
+                controls: `
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="control-action">Roll Spherical Body</span><span class="control-key">W / A / S / D</span></div>
+                        <div class="control-item"><span class="control-action">Grab / Snap Limbs</span><span class="control-key">Spacebar (Hold)</span></div>
+                        <div class="control-item"><span class="control-action">Rotate Gravity Axis</span><span class="control-key">Left Ctrl</span></div>
+                        <div class="control-item"><span class="control-action">Reset Character Pose</span><span class="control-key">R</span></div>
+                    </div>
+                `
+            },
+            5: {
+                overview: `
+                    <p><strong>Cube Runner</strong> is an infinite, high-speed procedural arcade game built on reaction speed and geometric hazard navigation. The game generator cycles obstacle runway layouts ahead of the camera, preventing frame rate stutters by avoiding real-time allocation calls.</p>
+                    <h3>1. Runway Object Pooling Queue</h3>
+                    <p>Instead of spawning and destroying runway tiles during gameplay, which triggers garbage collection, the system utilizes a circular buffer queue. A fixed count of runway tiles is instantiated at start. As the player exits a tile, the generator pops it from the active list, relocates it ahead of the player, and randomizes its hazard nodes.</p>
+                    <!-- Custom Inline SVG for Object Pool -->
+                    <div style="margin: 15px 0; text-align: center;">
+                        <svg viewBox="0 0 600 240" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="240" fill="#111019"/>
+                            
+                            <!-- Queue blocks -->
+                            <rect x="50" y="90" width="80" height="60" rx="4" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1"/>
+                            <text x="90" y="125" text-anchor="middle" fill="var(--docs-text)" font-size="10" font-family="'Urbanist', sans-serif">Tile 1 (Past)</text>
+                            
+                            <rect x="160" y="90" width="80" height="60" rx="4" fill="#1e1b26" stroke="#f6c177" stroke-width="1.5"/>
+                            <text x="200" y="125" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif">Tile 2 (Active)</text>
+                            <circle cx="200" cy="70" r="5" fill="#f6c177"/>
+                            <text x="200" y="55" text-anchor="middle" fill="#f6c177" font-size="9" font-family="'Urbanist', sans-serif">Player</text>
+                            
+                            <rect x="270" y="90" width="80" height="60" rx="4" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1"/>
+                            <text x="310" y="125" text-anchor="middle" fill="var(--docs-text)" font-size="10" font-family="'Urbanist', sans-serif">Tile 3 (Next)</text>
+                            
+                            <rect x="380" y="90" width="80" height="60" rx="4" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1"/>
+                            <text x="420" y="125" text-anchor="middle" fill="var(--docs-text)" font-size="10" font-family="'Urbanist', sans-serif">Tile 4 (Far)</text>
+                            
+                            <!-- Recycle loop arrow -->
+                            <path d="M 90 160 C 90 210, 460 210, 460 160" fill="none" stroke="#9ccfd8" stroke-width="2" stroke-dasharray="4 4"/>
+                            <polygon points="460,155 455,165 465,165" fill="#9ccfd8"/>
+                            <text x="275" y="200" text-anchor="middle" fill="#9ccfd8" font-size="10" font-family="'Urbanist', sans-serif">Relocate / Recycle to front</text>
+                        </svg>
+                    </div>
+                `,
+                mechanics: `
+                    <h3>2. Procedural Speed Scales & Audio Modulation</h3>
+                    <p>Speed curves scale coordinate steps dynamically to challenge the player's reflexes:</p>
+                    <ul>
+                        <li><strong>Exponential Acceleration:</strong> Increases gameplay velocity vectors over time, matching step scales with high-score milestones.</li>
+                        <li><strong>Visual Beat Reactor:</strong> Coordinates shader frequency variables with real-time audio FFT data, pulsing obstacle neon colors in beat sync.</li>
+                    </ul>
+                `,
+                technical: `
+                    <h3>3. Circular Queue Tile Pooler</h3>
+                    <p>This script monitors client coordinates and moves tiles forward in the queue as tiles are exited.</p>
+                    <div class="code-block-header">TilePooler.cs</div>
+                    <pre><code><span class="token-keyword">public class</span> <span class="token-class">TilePooler</span> : MonoBehaviour {
+    <span class="token-keyword">public</span> List&lt;GameObject&gt; tilePool;
+    <span class="token-keyword">public</span> Transform playerTransform;
+    <span class="token-keyword">private float</span> spawnZ = 0.0f;
+    <span class="token-keyword">private float</span> tileLength = 30.0f;
+    <span class="token-keyword">private int</span> poolSize = 6;
+
+    <span class="token-keyword">void</span> <span class="token-function">Update</span>() {
+        // Check if the player has passed the oldest active tile
+        if (playerTransform.position.z - 35.0f &gt; (spawnZ - poolSize * tileLength)) {
+            <span class="token-function">RecycleTile</span>();
+        }
+    }
+
+    <span class="token-keyword">private void</span> <span class="token-function">RecycleTile</span>() {
+        GameObject activeTile = tilePool[0];
+        tilePool.<span class="token-function">RemoveAt</span>(0);
+        
+        // Reposition tile to the front of the runway
+        activeTile.transform.position = Vector3.forward * spawnZ;
+        spawnZ += tileLength;
+        
+        tilePool.<span class="token-function">Add</span>(activeTile);
+    }
+}</code></pre>
+                `,
+                controls: `
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="control-action">Dodge Obstacles</span><span class="control-key">A / D (Left / Right)</span></div>
+                        <div class="control-item"><span class="control-action">Jump Over Grid</span><span class="control-key">Spacebar / W</span></div>
+                        <div class="control-item"><span class="control-action">Slide / Duck Under</span><span class="control-key">S / Left Shift</span></div>
+                        <div class="control-item"><span class="control-action">Toggle Music Channels</span><span class="control-key">M</span></div>
+                    </div>
+                `
+            },
+            6: {
+                overview: `
+                    <p><strong>Wannabe GTA 6</strong> is a complex open-world vehicle sandbox designed to test multithreaded AI crowds, procedural vehicle mesh deformation, and dynamic spatial streaming. The core architecture uses sub-grid calculations to run hundreds of traffic and pedestrian agents at 60 FPS.</p>
+                    <h3>1. Spatial World Streamer & Traffic Grids</h3>
+                    <p>To render large cityscapes without exhausting system memory, the environment is divided into structural grid sectors. The world streamer loads chunks inside a radius around the player position and unloads sectors that fall outside this distance.</p>
+                    <!-- Custom Inline SVG for Spatial Grid Chunks -->
+                    <div style="margin: 15px 0; text-align: center;">
+                        <svg viewBox="0 0 600 240" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="240" fill="#111019"/>
+                            
+                            <!-- Grid blocks -->
+                            <rect x="60" y="30" width="100" height="70" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1"/>
+                            <text x="110" y="70" text-anchor="middle" fill="var(--docs-muted)" font-size="10" font-family="'Urbanist', sans-serif">Unloaded Sector</text>
+                            
+                            <rect x="180" y="30" width="100" height="70" fill="#211f2d" stroke="#f6c177" stroke-width="1.5"/>
+                            <text x="230" y="70" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif">Sector A (Loaded)</text>
+                            
+                            <rect x="300" y="30" width="100" height="70" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1"/>
+                            <text x="350" y="70" text-anchor="middle" fill="var(--docs-muted)" font-size="10" font-family="'Urbanist', sans-serif">Unloaded Sector</text>
+                            
+                            <rect x="60" y="120" width="100" height="70" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1"/>
+                            <text x="110" y="160" text-anchor="middle" fill="var(--docs-muted)" font-size="10" font-family="'Urbanist', sans-serif">Unloaded Sector</text>
+                            
+                            <rect x="180" y="120" width="100" height="70" fill="#211f2d" stroke="#f6c177" stroke-width="1.5"/>
+                            <text x="230" y="160" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif">Sector B (Loaded)</text>
+                            <!-- Player circle -->
+                            <circle cx="230" cy="110" r="6" fill="#eb6f92"/>
+                            <text x="230" y="98" text-anchor="middle" fill="#eb6f92" font-size="9" font-family="'Urbanist', sans-serif">Player</text>
+                            
+                            <rect x="300" y="120" width="100" height="70" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1"/>
+                            <text x="350" y="160" text-anchor="middle" fill="var(--docs-muted)" font-size="10" font-family="'Urbanist', sans-serif">Unloaded Sector</text>
+                            
+                            <!-- Radius line -->
+                            <circle cx="230" cy="110" r="65" fill="none" stroke="#eb6f92" stroke-dasharray="3 3"/>
+                            <text x="470" y="115" text-anchor="middle" fill="#eb6f92" font-size="10" font-family="'Urbanist', sans-serif">Active Loading Sector Radius</text>
+                        </svg>
+                    </div>
+                `,
+                mechanics: `
+                    <h3>2. Multithreaded Traffic Pathfinding & Vehicle Deformation</h3>
+                    <p>The city's active systems scale efficiently:</p>
+                    <ul>
+                        <li><strong>Multithreaded Pathfinding:</strong> Traffic routes are processed in batch queues. Tasks are scheduled to run across multiple threads using Unity's C# Job System.</li>
+                        <li><strong>Mesh Vertex Deformation:</strong> Vehicle impacts calculate force coordinates at collision points. Impact vectors push surrounding vertices inward, creating realistic dents.</li>
+                    </ul>
+                `,
+                technical: `
+                    <h3>3. Multithreaded Traffic Routing Manager</h3>
+                    <p>This script triggers path routing queries using the pathfinder API, moving vehicle actors through road segments.</p>
+                    <div class="code-block-header">TrafficManager.cs</div>
+                    <pre><code><span class="token-keyword">public class</span> <span class="token-class">TrafficManager</span> : MonoBehaviour {
+    <span class="token-keyword">public</span> List&lt;CarAgent&gt; activeCars;
+
+    <span class="token-keyword">void</span> <span class="token-function">Update</span>() {
+        for (int i = 0; i &lt; activeCars.Count; i++) {
+            if (!activeCars[i].HasActivePath) {
+                <span class="token-function">RequestRouteUpdate</span>(activeCars[i]);
+            }
+        }
+    }
+
+    <span class="token-keyword">private void</span> <span class="token-function">RequestRouteUpdate</span>(CarAgent car) {
+        Vector3 randomDestination = CityRoadGrid.<span class="token-function">GetRandomWaypoint</span>();
+        Vector3[] waypoints = CityPathfinder.<span class="token-function">RequestRoute</span>(car.transform.position, randomDestination);
+        
+        if (waypoints != null &amp;&amp; waypoints.Length &gt; 0) {
+            car.<span class="token-function">FollowPathNodes</span>(waypoints);
+        }
+    }
+}</code></pre>
+                `,
+                controls: `
+                    <div class="controls-grid">
+                        <div class="control-item"><span class="control-action">Locomotion / Steer</span><span class="control-key">W / A / S / D</span></div>
+                        <div class="control-item"><span class="control-action">Handbrake Drift</span><span class="control-key">Spacebar</span></div>
+                        <div class="control-item"><span class="control-action">Hijack / Enter Car</span><span class="control-key">F</span></div>
+                        <div class="control-item"><span class="control-action">Toggle Radio Music</span><span class="control-key">Q</span></div>
+                        <div class="control-item"><span class="control-action">Equip / Swap Weapon</span><span class="control-key">Mouse Scroll Wheel</span></div>
+                    </div>
+                `
+            }
+        };
+
+        // Parse query params to load appropriate game info
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const gameId = parseInt(getQueryParam('id')) || 7; // Default to new Parkour System (7)
+
+        // Find game from the PROJECT_DATA (which is included via projects.js)
+        const activeGame = typeof PROJECT_DATA !== 'undefined' 
+            ? PROJECT_DATA.find(p => p.id === gameId)
+            : null;
+
+        if (activeGame && DOCUMENTATION_DATA[gameId]) {
+            // Render Game Meta Title
+            document.getElementById('game-title').textContent = activeGame.title;
+            
+            // Set Page Title
+            document.title = `${activeGame.title} - Game Documentation`;
+
+            // Render tags
+            const tagsGrid = document.getElementById('game-tags');
+            tagsGrid.innerHTML = activeGame.tags.map(tag => `<span>${tag}</span>`).join('');
+
+            // Render tab panels
+            const doc = DOCUMENTATION_DATA[gameId];
+            document.getElementById('overview-content').innerHTML = doc.overview;
+            document.getElementById('mechanics-content').innerHTML = doc.mechanics;
+            document.getElementById('technical-content').innerHTML = doc.technical;
+            document.getElementById('controls-content').innerHTML = doc.controls;
+        } else {
+            // Render beautiful error state
+            const contentWrap = document.getElementById('docs-content');
+            contentWrap.innerHTML = `
+                <div class="tab-panel active error-container">
+                    <h1>DOCUMENTATION NOT FOUND</h1>
+                    <p>The requested connection ID could not resolve to an active gaming matrix module. Verify your link queries.</p>
+                    <a href="index.html" class="btn btn-outline" style="margin-top:20px; display:inline-block;">Return Home</a>
+                </div>
+            `;
+            document.getElementById('game-title').textContent = "ERROR 404";
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Deactivate all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+
+            // Find clicked button based on tabId
+            const clickedBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.toLowerCase().includes(tabId.substring(0, 4)));
+            if (clickedBtn) clickedBtn.classList.add('active');
+
+            // Activate target panel
+            const panel = document.getElementById(`panel-${tabId}`);
+            if (panel) panel.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -24,12 +24,23 @@ document.addEventListener('DOMContentLoaded', () => {
     */
     const _0x5b3c = [
         {
+            id: 0x7,
+            _t: "Parkour System",
+            _d: "A fluid physics-based parkour movement system featuring climbing, sliding, ledge hanging, and wall-running mechanics.",
+            _ts: ["Physics", "Movement", "Parkour"],
+            _th: "assets/images/projects/project7.png",
+            _v: "assets/videos/game7.mp4",
+            _l: "docs.html?id=7",
+            _h: true,
+            _p: false
+        },
+        {
             id: 0x1,
             _t: "Online FPS Multiplayer Shooter",
             _d: "A competitive multiplayer experience powered by Photon Pun 2, featuring fast-paced combat and robust network synchronization.",
             _ts: ["Photon Pun 2", "FPS", "Networking"],
-            _th: "assets/project1.png",
-            _v: "assets/game1.mp4",
+            _th: "assets/images/projects/project1.png",
+            _v: "assets/videos/game1.mp4",
             _l: "https://www.youtube.com/watch?v=MAhPNKZ_MHE",
             _h: true,
             _p: false
@@ -39,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             _t: "Thief Long Hand Puzzle",
             _d: "A clever physics-based puzzle game challenging your spatial logic. Available on Play Store.",
             _ts: ["Puzzle", "Play Store", "Logic"],
-            _th: "assets/project2.png",
-            _v: "assets/game2.mp4",
+            _th: "assets/images/projects/project2.png",
+            _v: "assets/videos/game2.mp4",
             _l: "https://play.google.com/store/apps/details?id=com.thief.puzzle.escape.game&pli=1",
             _h: true,
             _p: true
@@ -50,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
             _t: "Ashes: RPG Adventure",
             _d: "A story-driven medieval action game featuring deep lore, character progression, and immersive environments.",
             _ts: ["Action RPG", "Medieval", "Story-driven"],
-            _th: "assets/project3.png",
-            _v: "assets/game3.mp4",
+            _th: "assets/images/projects/project3.png",
+            _v: "assets/videos/game3.mp4",
             _l: "https://www.youtube.com/watch?v=qu9_ICrAAc8",
             _h: true,
             _p: false
@@ -61,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
             _t: "Ragdoll Ball Game",
             _d: "Physics-based chaotic fun exploring ragdoll mechanics and dynamic object interactions.",
             _ts: ["Physics", "Casual"],
-            _th: "assets/project4.png",
-            _v: "assets/game4.mp4",
+            _th: "assets/images/projects/project4.png",
+            _v: "assets/videos/game4.mp4",
             _l: "https://drive.google.com/file/d/1GfCZ3f_H86bOCknX3-3AgwR3Nx9ybrqs/view?usp=sharing",
             _h: false,
             _p: true
@@ -72,8 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
             _t: "Cube Runner",
             _d: "A fast-paced infinite runner testing your reflexes and spatial awareness.",
             _ts: ["Arcade", "Runner"],
-            _th: "assets/project5.png",
-            _v: "assets/game5.mp4",
+            _th: "assets/images/projects/project5.png",
+            _v: "assets/videos/game5.mp4",
             _l: "https://www.youtube.com/watch?v=omsdky5n_2Q",
             _h: false,
             _p: false
@@ -83,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
             _t: "Wannabe GTA 6",
             _d: "An ambitious open-world sandbox project exploring complex AI, vehicle physics, and large-scale environments.",
             _ts: ["Open World", "Sandbox"],
-            _th: "assets/project6.png",
-            _v: "assets/game6.mp4",
+            _th: "assets/images/projects/project6.png",
+            _v: "assets/videos/game6.mp4",
             _l: "https://www.youtube.com/watch?v=NeQqgua8t_c",
             _h: false,
             _p: false
@@ -138,7 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="project-tags">
                         ${project.tags.map(tag => `<span>${tag}</span>`).join('')}
                     </div>
-                    <a href="${project.link}" class="btn btn-outline" target="_blank">View Details ↗</a>
+                    <div class="project-actions">
+                        <a href="${project.link}" class="btn btn-outline" target="_blank">Project Link ↗</a>
+                        <a href="docs.html?id=${project.id}" class="btn btn-outline btn-docs" target="_blank">Documentation 📖</a>
+                    </div>
                 </div>
             </article>
         `}).join('');
@@ -263,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'back': window.history.back(); break;
                     case 'reload': window.location.reload(); break;
                     case 'top': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
-                    case 'resume': window.open('assets/resume.pdf', '_blank'); break;
+                    case 'resume': window.open('assets/docs/resume.pdf', '_blank'); break;
                     case 'home': window.location.href = 'index.html'; break;
                     case 'copy-email': 
                         navigator.clipboard.writeText(CONFIG.email);
@@ -728,7 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Track Resume Clicks
-    document.querySelectorAll('a[href="assets/resume.pdf"], .context-menu-item[data-action="resume"]').forEach(el => {
+    document.querySelectorAll('a[href="assets/docs/resume.pdf"], .context-menu-item[data-action="resume"]').forEach(el => {
         el.addEventListener('click', () => {
             trackEvent('view_resume', {
                 location: el.tagName === 'A' ? 'nav/hero' : 'context_menu'
