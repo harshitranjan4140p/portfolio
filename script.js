@@ -325,8 +325,10 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => requestAnimationFrame(() => pageOverlay.classList.add('loaded')));
         document.querySelectorAll('a[href]').forEach(link => {
             const href = link.getAttribute('href');
+            const target = link.getAttribute('target');
             if (!href || href.startsWith('#') || href.startsWith('http') ||
-                href.startsWith('mailto') || href.startsWith('tel') || href.endsWith('.pdf')) return;
+                href.startsWith('mailto') || href.startsWith('tel') || href.endsWith('.pdf') ||
+                target === '_blank') return;
             link.addEventListener('click', (e) => {
                 if (e.metaKey || e.ctrlKey) return;
                 e.preventDefault();
@@ -335,6 +337,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Handle Back-Forward Cache (bfcache) restoration to prevent frozen transition screen
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted && pageOverlay) {
+            pageOverlay.classList.add('loaded');
+        }
+    });
 
     /* 
     ==========================================================================

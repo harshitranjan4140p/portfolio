@@ -855,6 +855,31 @@
             const panel = document.getElementById(`panel-${tabId}`);
             if (panel) panel.classList.add('active');
         }
+
+        // Handle dynamic page transition animations and Back to Home click interceptor
+        const pageOverlay = document.getElementById('pageOverlay');
+        if (pageOverlay) {
+            requestAnimationFrame(() => requestAnimationFrame(() => pageOverlay.classList.add('loaded')));
+
+            // Smooth fade out when navigating back to home
+            document.querySelectorAll('.docs-nav-back, .error-container a').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (e.metaKey || e.ctrlKey) return;
+                    e.preventDefault();
+                    pageOverlay.classList.remove('loaded');
+                    setTimeout(() => {
+                        window.location.href = btn.getAttribute('href');
+                    }, 520);
+                });
+            });
+        }
+
+        // Handle Back-Forward Cache (bfcache) restoration to prevent frozen transition screen
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted && pageOverlay) {
+                pageOverlay.classList.add('loaded');
+            }
+        });
     </script>
 </body>
 </html>
