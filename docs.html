@@ -337,72 +337,310 @@
         const DOCUMENTATION_DATA = {
             7: {
                 overview: `
-                    <p><strong>Parkour System</strong> is a state-of-the-art, custom physics-driven locomotion system built to redefine how players navigate 3D spatial environments. The design focuses on physical weight, momentum conservation, and seamless transitions between active states.</p>
-                    <h3>1. Locomotion & Character Controller (<code>PlayerMovement.cs</code>)</h3>
-                    <p>The foundation of the player's movement is built on top of a standard Unity <code>CharacterController</code> integrated with custom state-machine driven gravity, speed scaling, and animation control.</p>
-                    <img src="assets/images/diagrams/parkour_locomotion_2d.png" alt="Locomotion Loop Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
-                    <h4>Key Engineering Features</h4>
+                    <h2>Core Gameplay Systems Documentation</h2>
+                    <p>This document provides a detailed technical breakdown of the input mapping abstraction, player locomotion, environment sensing, parkour, climbing, and camera utilities. It describes how these components are designed, how they function under the hood, and how data flows between them.</p>
+                    
+                    <h3>1. Input Mapping & Abstraction</h3>
+                    <p>The project utilizes Unity's <strong>New Input System</strong> to map physical hardware inputs (Keyboard, Mouse) to logical gameplay actions. These are defined inside the <code>PlayerBasicLocomotion</code> action map:</p>
                     <ul>
-                        <li><strong>Camera-Relative Movement:</strong> Input vectors from the input manager are rotated relative to the player camera's forward/right vectors (ignoring the Y-axis) to ensure that pressing forward always moves the player in the direction the camera is facing.</li>
-                        <li><strong>Grounded Override Mechanics:</strong> Standard Unity ground-checking is prone to remaining stuck when characters pull themselves up onto ledges or leap off walls. To resolve this, a grounded override state was implemented where setting character control to <code>false</code> (during animations/actions) forces <code>isGrounded</code> and the animator's state to <code>false</code>, allowing smooth transitions into airborne/falling animations without mid-air jerking.</li>
-                        <li><strong>Air Control Acceleration:</strong> Smooth vertical and horizontal speed limits are calculated while in mid-air using interpolation thresholds, allowing minor trajectory modifications without breaking realistic physics.</li>
+                        <li><strong>Movement (<code>Vector2</code>):</strong> Mapped to standard <code>WASD</code> keys. Exposes continuous horizontal and vertical movement vectors.</li>
+                        <li><strong>Look (<code>Vector2</code>):</strong> Mapped to <code>&lt;Mouse&gt;/delta</code>. Exposes mouse pointer movement speed for looking around.</li>
+                        <li><strong>Run (<code>Button</code>):</strong> Mapped to <code>&lt;Keyboard&gt;/leftShift</code> to trigger or hold sprint speeds.</li>
+                        <li><strong>Crouch (<code>Button</code>):</strong> Mapped to <code>&lt;Keyboard&gt;/c</code> to toggle crouching state.</li>
+                        <li><strong>JumpFromLedge (<code>Button</code>):</strong> Mapped to <code>&lt;Keyboard&gt;/space</code> to initiate jumping while running near edges.</li>
+                        <li><strong>JumpToClimb (<code>Button</code>):</strong> Mapped to <code>&lt;Keyboard&gt;/space</code> to initiate jumps toward adjacent climb points.</li>
+                        <li><strong>GetDownFromLedge_Key (<code>Button</code>):</strong> Mapped to <code>&lt;Keyboard&gt;/leftCtrl</code> to drop off high ledges.</li>
                     </ul>
+
+                    <h4>Input Manager Abstraction Wrapper (<code>PlayerInputManager.cs</code>)</h4>
+                    <p>This abstraction layer acts as a wrapper around the auto-generated <code>PlayerInput</code> C# class. It is polled every frame in <code>Update()</code> to populate simple, public fields (such as <code>MovementInput</code>, <code>Sprint</code>, <code>Crouch</code>, <code>jumpToClimb</code>, etc.). This decoupling allows other scripts (like <code>PlayerMovement</code> and <code>ClimbController</code>) to easily read input states without querying the event-based input system APIs directly.</p>
+                    <img src="assets/images/diagrams/parkour_locomotion_2d.png" alt="Locomotion Loop Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
+
+                    <h3>2. Camera Rig & Mouse Look System (<code>CameraFollow.cs</code> & <code>MouseLook.cs</code>)</h3>
+                    <p>The camera rig tracks the player using frame-rate independent position smoothing and clamps horizontal/vertical viewing angles to prevent camera clipping:</p>
+                    
+                    <!-- SVG Camera Rig Diagram -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 260" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="260" fill="#111019"/>
+                            <text x="30" y="35" fill="var(--docs-text)" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">CAMERA RIG PROFILE SCHEMATIC</text>
+                            
+                            <!-- Player Anchor Pivot -->
+                            <circle cx="200" cy="150" r="8" fill="#f6c177"/>
+                            <line x1="200" y1="150" x2="200" y2="70" stroke="#f6c177" stroke-width="1.5" stroke-dasharray="3 3"/>
+                            <text x="200" y="180" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif">Player Pivot (Target)</text>
+
+                            <!-- Rig Follow Offset Vector -->
+                            <line x1="200" y1="150" x2="380" y2="100" stroke="#9ccfd8" stroke-width="2"/>
+                            <polygon points="380,100 370,105 375,97" fill="#9ccfd8"/>
+                            <text x="290" y="115" text-anchor="middle" fill="#9ccfd8" font-size="10" font-family="'Urbanist', sans-serif" transform="rotate(-15,290,115)">Follow Vector (Lerped)</text>
+
+                            <!-- Pitch angle limits -->
+                            <path d="M 380 100 A 180 180 0 0 1 340 40" fill="none" stroke="#eb6f92" stroke-width="1.5" stroke-dasharray="4 4"/>
+                            <path d="M 380 100 A 180 180 0 0 0 410 160" fill="none" stroke="#eb6f92" stroke-width="1.5" stroke-dasharray="4 4"/>
+                            <text x="430" y="45" fill="#eb6f92" font-size="10" font-family="'Urbanist', sans-serif">Max Pitch Clamp (+60°)</text>
+                            <text x="430" y="165" fill="#eb6f92" font-size="10" font-family="'Urbanist', sans-serif">Min Pitch Clamp (-45°)</text>
+
+                            <!-- Camera Node -->
+                            <rect x="380" y="85" width="40" height="30" rx="3" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <circle cx="400" cy="100" r="5" fill="#9ccfd8"/>
+                            <text x="400" y="130" text-anchor="middle" fill="var(--docs-muted)" font-size="9" font-family="'Urbanist', sans-serif">Camera Node</text>
+                        </svg>
+                    </div>
                 `,
                 mechanics: `
-                    <h3>2. Environmental Sensing (<code>EnvironmentScanner.cs</code>)</h3>
-                    <p>To perform fluid parkour and climbing, the player needs to constantly "feel" the environment. The <code>EnvironmentScanner</code> handles this using predictive spatial raycasting.</p>
-                    <img src="assets/images/diagrams/parkour_raycast_2d.png" alt="Environment Raycast Sensing Diagram" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
-                    <h4>Raycasting Methodologies</h4>
-                    <ul>
-                        <li><strong>Forward Obstacle Scan:</strong> Fired from a customized vertical offset (chest/waist height) in the direction of the player's movement to detect walls, fences, or blocks.</li>
-                        <li><strong>Height Scan:</strong> Once a forward obstacle is hit, a vertical raycast is fired downward from a point <em>above</em> the obstacle to measure its exact height. This determines whether the player can vault it, step up, climb it, or jump over it.</li>
-                        <li><strong>Three-Raycast Sampling:</strong> For ledge drop-offs, the script uses a utility (<code>ThreeRaycasts</code>) that samples three parallel downward raycasts across a horizontal span. This accurately calculates the exact drop-off height and wall angle, preventing the player from leaping off slopes that are too steep or flat.</li>
-                    </ul>
+                    <h3>3. Environment Sensing (<code>EnvoirnmentScanner.cs</code>)</h3>
+                    <p>The player scans their surroundings in real time using a series of layered, multi-point raycasts to determine wall structures, heights, and drop-off slopes:</p>
 
-                    <h3 style="margin-top: 30px;">3. Parkour Engine & Motion Warping (<code>ParkourController.cs</code> & <code>ParkourAction.cs</code>)</h3>
-                    <p>The parkour system translates environmental detection into synchronized athletic actions using modular <code>ScriptableObject</code> configurations.</p>
-                    <h4>Architectural Breakdown</h4>
-                    <ol>
-                        <li><strong>Action Lookup:</strong> The controller holds a list of pre-configured <code>ParkourAction</code> assets (e.g., Vault, StepUp, ClimbUp, VaultLow).</li>
-                        <li><strong>Possibility Verification:</strong> When the player presses the run/jump trigger, <code>EnvironmentScanner</code> gathers the obstacle tag and height. The controller iterates through its actions, checking if the obstacle fits the height thresholds:<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">Min Height &le; Obstacle Height &le; Max Height</code></li>
-                        <li><strong>Motion Warping (Target Matching):</strong> When an action is selected, the system triggers <code>Animator.MatchTarget()</code>. This warps the player's position and hands/feet smoothly to the exact obstacle hit point during a specified window of the animation clip:
-                            <ul>
-                                <li><strong>Left/Right Hands:</strong> Aligned precisely to the top shelf of a vault obstacle.</li>
-                                <li><strong>Feet:</strong> Aligned to step on top of obstacles during a climb-up action.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Airborne Recovery Safety Loop:</strong> When jumping down or vaulting, a two-phase landing coroutine first checks that the player has left the ground (airborne phase) and then listens for the next grounded event to trigger the landing roll or run transition.</li>
-                    </ol>
+                    <!-- SVG Ledge Raycast Sensing Diagram -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 260" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="240" fill="#111019"/>
+                            <text x="30" y="35" fill="var(--docs-text)" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">ENVIRONMENT RAYCAST SENSING SCHEMATIC</text>
+
+                            <!-- Player Silhouette representing chest-height raycast origin -->
+                            <circle cx="150" cy="120" r="10" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="2"/>
+                            <line x1="150" y1="130" x2="150" y2="200" stroke="var(--docs-border)" stroke-width="2"/>
+                            <line x1="150" y1="150" x2="110" y2="170" stroke="var(--docs-border)" stroke-width="2"/>
+                            <line x1="150" y1="150" x2="190" y2="170" stroke="var(--docs-border)" stroke-width="2"/>
+                            
+                            <!-- Forward Raycast Check -->
+                            <line x1="150" y1="120" x2="350" y2="120" stroke="#eb6f92" stroke-width="2"/>
+                            <polygon points="350,120 340,116 340,124" fill="#eb6f92"/>
+                            <text x="250" y="110" text-anchor="middle" fill="#eb6f92" font-size="10" font-family="'Urbanist', sans-serif">1. Forward Raycast (Chest Height)</text>
+
+                            <!-- Obstacle / Ledge Block -->
+                            <rect x="350" y="140" width="180" height="80" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <text x="440" y="185" text-anchor="middle" fill="#9ccfd8" font-size="11" font-family="'Urbanist', sans-serif">Obstacle Block</text>
+
+                            <!-- Height Downward Check -->
+                            <line x1="390" y1="80" x2="390" y2="140" stroke="#f6c177" stroke-width="2"/>
+                            <polygon points="390,140 386,130 394,130" fill="#f6c177"/>
+                            <text x="390" y="65" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif">2. Height Raycast (Downward)</text>
+                            
+                            <!-- Ground Surface -->
+                            <line x1="50" y1="220" x2="550" y2="220" stroke="var(--docs-border)" stroke-width="2"/>
+                        </svg>
+                    </div>
+
+                    <h3>4. Parkour System (<code>ParkourController.cs</code>)</h3>
+                    <p>The parkour system automatically detects obstacles in the player's path during sprints and executes custom movement animations (such as vaults, wall jumps, or hop overs).</p>
+
+                    <!-- Custom SVG Flowchart representing the Parkour Checking Logic -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 320" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="320" fill="#111019"/>
+                            
+                            <!-- Flow Boxes -->
+                            <rect x="50" y="30" width="160" height="40" rx="4" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1"/>
+                            <text x="130" y="55" text-anchor="middle" fill="#9ccfd8" font-size="10" font-family="'Urbanist', sans-serif">Player Sprints Towards Wall</text>
+                            
+                            <path d="M 130 70 L 130 105" stroke="#f6c177" stroke-width="1.5"/>
+                            <polygon points="130,110 126,100 134,100" fill="#f6c177"/>
+                            
+                            <rect x="50" y="110" width="160" height="40" rx="4" fill="#1e1b26" stroke="#f6c177" stroke-width="1.5"/>
+                            <text x="130" y="133" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif">Obstacle Detected?</text>
+                            
+                            <!-- No branch -->
+                            <path d="M 210 130 L 330 130" stroke="#eb6f92" stroke-width="1.5"/>
+                            <polygon points="335,130 325,126 325,134" fill="#eb6f92"/>
+                            <text x="270" y="120" text-anchor="middle" fill="#eb6f92" font-size="9" font-family="'Urbanist', sans-serif">No</text>
+                            
+                            <rect x="340" y="110" width="180" height="40" rx="4" fill="#1e1b26" stroke="#eb6f92" stroke-width="1"/>
+                            <text x="430" y="133" text-anchor="middle" fill="#eb6f92" font-size="10" font-family="'Urbanist', sans-serif">Continue Standard Locomotion</text>
+                            
+                            <!-- Yes branch -->
+                            <path d="M 130 150 L 130 185" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <polygon points="130,190 126,180 134,180" fill="#9ccfd8"/>
+                            <text x="140" y="170" text-anchor="middle" fill="#9ccfd8" font-size="9" font-family="'Urbanist', sans-serif">Yes</text>
+                            
+                            <rect x="40" y="190" width="180" height="40" rx="4" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1"/>
+                            <text x="130" y="213" text-anchor="middle" fill="#9ccfd8" font-size="10" font-family="'Urbanist', sans-serif">Verify Parkour Action Heights</text>
+                            
+                            <path d="M 130 230 L 130 265" stroke="#f6c177" stroke-width="1.5"/>
+                            <polygon points="130,270 126,260 134,260" fill="#f6c177"/>
+                            
+                            <rect x="30" y="270" width="200" height="40" rx="4" fill="#1e1b26" stroke="#f6c177" stroke-width="1.5"/>
+                            <text x="130" y="293" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif" font-weight="bold">Trigger Target-Matching Action</text>
+                        </svg>
+                    </div>
+
+                    <h3>5. Climbing System (<code>ClimbController.cs</code> & <code>ClimbPoint.cs</code>)</h3>
+                    <p>A complete modular climbing system designed to allow the player to grab ledges, shimmy horizontally, jump between grab points, and pull themselves up. Limiting slide vectors prevents the character skeleton from sliding off model meshes:</p>
+
+                    <!-- SVG Ledge Bounds Constraints Diagram -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 200" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="200" fill="#111019"/>
+                            <text x="30" y="35" fill="var(--docs-text)" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">LEDGE SHIMMY BOUNDS LIMITATION SCHEMATIC</text>
+
+                            <!-- Horizontal Ledge Rail -->
+                            <line x1="100" y1="100" x2="500" y2="100" stroke="#9ccfd8" stroke-width="4"/>
+                            
+                            <!-- Left Limit Boundary -->
+                            <circle cx="100" cy="100" r="8" fill="#eb6f92"/>
+                            <text x="100" y="80" text-anchor="middle" fill="#eb6f92" font-size="10" font-family="'Urbanist', sans-serif">leftLimit</text>
+
+                            <!-- Right Limit Boundary -->
+                            <circle cx="500" cy="100" r="8" fill="#eb6f92"/>
+                            <text x="500" y="80" text-anchor="middle" fill="#eb6f92" font-size="10" font-family="'Urbanist', sans-serif">rightLimit</text>
+
+                            <!-- Hanging Player Slide Range -->
+                            <rect x="260" y="85" width="80" height="30" rx="3" fill="#1e1b26" stroke="#f6c177" stroke-width="1.5"/>
+                            <text x="300" y="103" text-anchor="middle" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif" font-weight="bold">Shimmy Actor</text>
+                            
+                            <path d="M 240 100 L 210 100" stroke="#f6c177" stroke-width="1.5"/>
+                            <polygon points="205,100 215,96 215,104" fill="#f6c177"/>
+                            
+                            <path d="M 360 100 L 390 100" stroke="#f6c177" stroke-width="1.5"/>
+                            <polygon points="395,100 385,96 385,104" fill="#f6c177"/>
+                            
+                            <text x="300" y="150" text-anchor="middle" fill="var(--docs-muted)" font-size="9" font-family="'Urbanist', sans-serif">Hanging position clamped inside leftLimit and rightLimit bounds</text>
+                        </svg>
+                    </div>
+
+                    <h3>6. Ledge Collision & Boundary Halting</h3>
+                    <p>To prevent the player from accidentally sliding off high surfaces during fast locomotion, the locomotion loop uses a ledge halting boundary system. When the player runs near a cliff or platform edge, the scanner projects downward raycast steps. If a drop-off is detected and no active jump or drop input is registered, movement velocity is instantly clamped to zero.</p>
+                    
+                    <!-- SVG Ledge Collision Detection Diagram -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 220" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="220" fill="#111019"/>
+                            <text x="30" y="35" fill="var(--docs-text)" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">LEDGE COLLISION & VELOCITY CLAMP SCHEMATIC</text>
+
+                            <!-- Cliff platform -->
+                            <rect x="50" y="120" width="250" height="80" fill="#1e1b26" stroke="var(--docs-border)" stroke-width="1.5"/>
+                            <text x="175" y="160" text-anchor="middle" fill="var(--docs-muted)" font-size="11" font-family="'Urbanist', sans-serif">Safe Ground Platform</text>
+                            
+                            <!-- Player silhouette near edge -->
+                            <circle cx="260" cy="90" r="8" fill="#f6c177"/>
+                            <line x1="260" y1="98" x2="260" y2="120" stroke="#f6c177" stroke-width="2"/>
+                            
+                            <!-- Velocity vector pointing off cliff, but blocked/crossed out -->
+                            <line x1="260" y1="90" x2="330" y2="90" stroke="#eb6f92" stroke-width="2.5"/>
+                            <polygon points="335,90 325,86 325,94" fill="#eb6f92"/>
+                            <!-- X marker indicating halted speed -->
+                            <line x1="285" y1="80" x2="305" y2="100" stroke="#eb6f92" stroke-width="3"/>
+                            <line x1="305" y1="80" x2="285" y2="100" stroke="#eb6f92" stroke-width="3"/>
+                            <text x="315" y="70" text-anchor="middle" fill="#eb6f92" font-size="9" font-family="'Urbanist', sans-serif" font-weight="bold">Speed Clamped to 0</text>
+
+                            <!-- Three downward ray samples -->
+                            <line x1="240" y1="120" x2="240" y2="150" stroke="#9ccfd8" stroke-dasharray="3 3" stroke-width="1.5"/>
+                            <line x1="260" y1="120" x2="260" y2="150" stroke="#9ccfd8" stroke-dasharray="3 3" stroke-width="1.5"/>
+                            <line x1="280" y1="120" x2="280" y2="200" stroke="#9ccfd8" stroke-dasharray="3 3" stroke-width="1.5"/>
+                            
+                            <!-- Hits vs Missing hit -->
+                            <circle cx="240" cy="120" r="3" fill="#9ccfd8"/>
+                            <circle cx="260" cy="120" r="3" fill="#9ccfd8"/>
+                            <circle cx="280" cy="120" r="3" fill="#eb6f92"/>
+                            <text x="290" y="145" fill="#eb6f92" font-size="9" font-family="'Urbanist', sans-serif">No Hit (Drop Detected)</text>
+                        </svg>
+                    </div>
                 `,
                 technical: `
-                    <h3>4. Climbing System & Ledge Scanning (<code>ClimbController.cs</code> & <code>ClimbPoint.cs</code>)</h3>
-                    <p>The climbing engine handles free-climbing, hanging, shimmies, ledge leaps, and drop-downs. It is entirely driven by network nodes representing ledges (<code>ClimbPoint</code>).</p>
-                    <img src="assets/images/diagrams/climbpoint_2d.png" alt="ClimbPoint Neighbour Node System" style="width:100%; max-width:700px; border-radius:8px; border:1px solid var(--docs-border); margin: 15px 0; display:block;">
-                    <h4>The 3-Phase Neighbour Auto-Scanner (Core Engineering Achievement)</h4>
-                    <p>To make level creation fast and clean, we engineered a state-of-the-art <strong>Phased Neighbour Scanner</strong> inside <code>ClimbPoint.cs</code> that auto-scans nearby ledges and links them mathematically inside the Unity editor:</p>
-                    <ul>
-                        <li><strong>Phase 1: Vertical Scan (Y Axis)</strong><br>Scans up and down within <code>autoSearchRadius</code>. Selects points where the vertical offset dominates the horizontal offset:<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">|Offset_Y| &gt; DeadZone  and  |Offset_Y| &gt; |Offset_X|</code></li>
-                        <li><strong>Phase 2: Horizontal Scan (X Axis)</strong><br>Scans left and right up to <code>autoSearchRadius * horizontalSearchMultiplier</code>. Selects points where the horizontal offset dominates:<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">|Offset_X| &gt; DeadZone  and  |Offset_X| &gt; |Offset_Y|</code></li>
-                        <li><strong>Phase 3: Diagonal Scan</strong><br>Scans diagonal angles using an aspect ratio threshold (<code>diagonalAxisRatio</code>):<br><code style="background:transparent; border:none; padding:0; color:var(--docs-accent)">min(|Offset_X|, |Offset_Y|) / max(|Offset_X|, |Offset_Y|) &ge; diagonalAxisRatio</code></li>
-                        <li><strong>Closest-Candidate Priority Logic:</strong> Wipes manual placeholders and enforces a strict <strong>closest-wins</strong> sorting logic. If multiple points fall into the same direction segment, only the closest point is linked and the rest are ignored.</li>
-                        <li><strong>Flipped X-Axis Resolution:</strong> Aligns local camera right-hand dot products directly to direction indices, resolving direction flipping issues across wall orientations.</li>
-                    </ul>
+                    <h3>6. Player Locomotion & Physics (<code>PlayerMovement.cs</code>)</h3>
+                    <p>The core locomotion controller, driving the <code>CharacterController</code> component, physics interactions, and animator states.</p>
 
-                    <h3 style="margin-top: 30px;">5. Engineering Evolution & Key Technical Solutions</h3>
-                    <p>Throughout the development process, several critical issues were resolved to elevate the game's polish to AAA standards:</p>
+                    <h4>Locomotion State Machine Transitions</h4>
+                    <p>The controller coordinates state switches via the <code>PlayerMovementState</code> machine enum:</p>
+                    
+                    <!-- SVG Locomotion State Machine Transition Diagram -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 200" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="200" fill="#111019"/>
+                            <text x="30" y="35" fill="var(--docs-text)" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">LOCOMOTION STATE MACHINE TRANSITIONS</text>
+
+                            <!-- State Nodes -->
+                            <rect x="50" y="80" width="80" height="40" rx="4" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <text x="90" y="105" text-anchor="middle" fill="#9ccfd8" font-size="11" font-family="'Urbanist', sans-serif">Idle</text>
+
+                            <rect x="180" y="80" width="80" height="40" rx="4" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <text x="220" y="105" text-anchor="middle" fill="#9ccfd8" font-size="11" font-family="'Urbanist', sans-serif">Walking</text>
+
+                            <rect x="310" y="80" width="80" height="40" rx="4" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <text x="350" y="105" text-anchor="middle" fill="#9ccfd8" font-size="11" font-family="'Urbanist', sans-serif">Running</text>
+
+                            <rect x="440" y="80" width="80" height="40" rx="4" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <text x="480" y="105" text-anchor="middle" fill="#9ccfd8" font-size="11" font-family="'Urbanist', sans-serif">Crouched</text>
+
+                            <!-- Transition paths -->
+                            <path d="M 130 100 L 175 100" stroke="#f6c177" stroke-width="1.5"/>
+                            <polygon points="175,100 167,96 167,104" fill="#f6c177"/>
+                            <text x="152" y="90" text-anchor="middle" fill="#f6c177" font-size="8" font-family="'Urbanist', sans-serif">input>0</text>
+
+                            <path d="M 260 100 L 305 100" stroke="#f6c177" stroke-width="1.5"/>
+                            <polygon points="305,100 297,96 297,104" fill="#f6c177"/>
+                            <text x="282" y="90" text-anchor="middle" fill="#f6c177" font-size="8" font-family="'Urbanist', sans-serif">sprint</text>
+
+                            <path d="M 220 120 L 220 150 L 480 150 L 480 125" fill="none" stroke="#f6c177" stroke-width="1.5"/>
+                            <polygon points="480,120 476,130 484,130" fill="#f6c177"/>
+                            <text x="350" y="145" text-anchor="middle" fill="#f6c177" font-size="8" font-family="'Urbanist', sans-serif">C key toggle</text>
+                        </svg>
+                    </div>
+
+                    <h4>Gravity & Grounding Math</h4>
+                    <p>Locomotion physics runs every frame in the Update cycle:</p>
+                    <pre><code><span class="token-comment">// 1. Stick force on ground</span>
+<span class="token-keyword">if</span> (isGrounded &amp;&amp; velocity.y &lt; 0) {
+    velocity.y = -2.0f;
+}
+<span class="token-comment">// 2. Apply gravity acceleration</span>
+velocity.y += gravity * Time.deltaTime;
+
+<span class="token-comment">// 3. Smooth Air Control translation</span>
+<span class="token-keyword">if</span> (!isGrounded) {
+    Vector3 targetAirVelocity = airInput * maxAirControlSpeed;
+    horizontalVelocity = Vector3.<span class="token-function">MoveTowards</span>(horizontalVelocity, targetAirVelocity, airControlAcceleration * Time.deltaTime);
+}</code></pre>
+
+                    <h3>7. Air Control Trajectory Steering</h3>
+                    <p>In mid-air, instead of instantly moving to match mouse inputs, velocity vectors are smoothly steering using linear delta bounds interpolation:</p>
+
+                    <!-- SVG Air Control Diagram -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 220" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="220" fill="#111019"/>
+                            <text x="30" y="35" fill="var(--docs-text)" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">AIR CONTROL STEERING DYNAMICS SCHEMATIC</text>
+
+                            <!-- Falling Player -->
+                            <circle cx="150" cy="110" r="10" fill="#1e1b26" stroke="#9ccfd8" stroke-width="1.5"/>
+                            <text x="150" y="135" text-anchor="middle" fill="#9ccfd8" font-size="10" font-family="'Urbanist', sans-serif">Airborne Player</text>
+
+                            <!-- Jump Force Momentum Vector -->
+                            <line x1="160" y1="110" x2="350" y2="110" stroke="var(--docs-muted)" stroke-width="2" stroke-dasharray="3 3"/>
+                            <text x="270" y="98" fill="var(--docs-muted)" font-size="9" font-family="'Urbanist', sans-serif">Initial Momentum Vector</text>
+
+                            <!-- Air input direction -->
+                            <line x1="160" y1="110" x2="320" y2="170" stroke="#eb6f92" stroke-width="2"/>
+                            <polygon points="320,170 310,168 316,161" fill="#eb6f92"/>
+                            <text x="240" y="162" fill="#eb6f92" font-size="9" font-family="'Urbanist', sans-serif" transform="rotate(20,240,162)">User Steering Input (airInput)</text>
+
+                            <!-- Resultant interpolation path -->
+                            <path d="M 160 110 Q 250 110, 310 135" fill="none" stroke="#f6c177" stroke-width="2.5"/>
+                            <polygon points="315,137 304,138 309,131" fill="#f6c177"/>
+                            <text x="280" y="130" fill="#f6c177" font-size="10" font-family="'Urbanist', sans-serif" font-weight="bold">Interpolated Trajectory Path</text>
+                        </svg>
+                    </div>
+
+                    <p><strong>Ledge Halting:</strong> If player input is non-zero, the controller checks for a ledge using the Environment Scanner. If one is hit, horizontal movement is lerped to <code>0</code> instantly, preventing the character from sliding off unless a deliberate drop or leap key is triggered.</p>
+
+                    <h3>8. Camera & Utilities</h3>
                     <ul>
-                        <li><strong>Problem 1: Redundant Post-Climb Warp jerks</strong><br><em>Symptom:</em> Pulling up on top of a ledge caused the player to double-jerk/teleport forward by a step immediately after the animation ended.<br><em>Resolution:</em> Identified that the animator already handled root-motion translation onto the platform. Removed a redundant post-warp translation offset (<code>climbOnTopExitOffset</code> Z value set to <code>0</code>), resulting in a perfect transition.</li>
-                        <li><strong>Problem 2: Sticky Ledge Float</strong><br><em>Symptom:</em> Leaping off a ledge caused the player to float suspended in mid-air for about 1 second before gravity kicked in.<br><em>Resolution:</em> The physics and character controllers were kept disabled until the transition animation ended. Modified the coroutine to asynchronously re-enable player physics and downward velocities <code>0.15</code> seconds into the leap, causing the player to fall realistically.</li>
-                        <li><strong>Problem 3: Duplicate Ledge Directions</strong><br><em>Symptom:</em> The neighbour scanner could register multiple different ledge objects in the exact same direction (e.g. two "Up" links), breaking character navigation.<br><em>Resolution:</em> Refactored the collection engine to index connections by direction vectors. The closest ledge is cached, and any further points attempting to bind to the same direction are automatically skipped.</li>
+                        <li><strong>Smoothed Tracking (<code>CameraFollow.cs</code>):</strong> Implements frame-rate independent positional interpolation (<code>Vector3.Lerp</code>) inside <code>LateUpdate</code> to follow the player rig smoothly.</li>
+                        <li><strong>Camera Pitch & Yaw (<code>MouseLook.cs</code>):</strong> Rotates the main actor root horizontally (yaw) and clamps vertical pivot pitch between <code>-45&deg;</code> and <code>60&deg;</code>.</li>
+                        <li><strong>Action Blockers (<code>ControlStoppingAction.cs</code>):</strong> A StateMachineBehaviour on the Animator. Disables character movement inputs and controller checks upon entering specific states (e.g. land rolls, climbs) and automatically restores control on animator state exit.</li>
+                        <li><strong>Multiline Raycast Samples (<code>PhysicsUtil.cs</code>):</strong> Includes utility methods like <code>ThreeRaycasts</code> to verify ground slop angles.</li>
                     </ul>
                 `,
                 controls: `
                     <p>Master the locomotion suite using the following bindings:</p>
                     <div class="controls-grid">
                         <div class="control-item"><span class="control-action">Move / Steer</span><span class="control-key">W / A / S / D</span></div>
-                        <div class="control-item"><span class="control-action">Wall Run / Jump</span><span class="control-key">Spacebar</span></div>
-                        <div class="control-item"><span class="control-action">Slide / Crouch</span><span class="control-key">Left Shift</span></div>
-                        <div class="control-item"><span class="control-action">Drop Ledge</span><span class="control-key">C</span></div>
+                        <div class="control-item"><span class="control-action">Sprinting Speed</span><span class="control-key">Hold Left Shift</span></div>
+                        <div class="control-item"><span class="control-action">Toggle Crouch</span><span class="control-key">C</span></div>
+                        <div class="control-item"><span class="control-action">Wall Run / Vault / Jump</span><span class="control-key">Spacebar</span></div>
+                        <div class="control-item"><span class="control-action">Jump to Climb Point</span><span class="control-key">Spacebar</span></div>
+                        <div class="control-item"><span class="control-action">Drop Ledge / safe fall</span><span class="control-key">Left Ctrl</span></div>
                     </div>
                 `
             },
@@ -416,6 +654,37 @@
                 mechanics: `
                     <h3>2. Lag Compensation & Hit Verification</h3>
                     <p>When a player fires, they aim at where they see their opponent. However, due to latency, the target has already moved on the server. The hit verification engine works by buffering the history of all player positions. When a fire packet is received, the server temporarily rewinds all characters back to the exact time the shot was fired by the client, performs the raycast hit test in the rewound state, and applies damage. This prevents the "shot behind cover" anomaly.</p>
+                    
+                    <!-- SVG Lag Compensation Buffer Diagram -->
+                    <div style="margin: 20px 0; text-align: center;">
+                        <svg viewBox="0 0 600 200" style="width: 100%; max-width: 600px; border-radius: 8px; border: 1px solid var(--docs-border); background: #111019; display: block;">
+                            <rect width="600" height="200" fill="#111019"/>
+                            <text x="30" y="35" fill="var(--docs-text)" font-size="12" font-family="'Urbanist', sans-serif" font-weight="bold">SERVER LAG COMPENSATION HISTORY REWIND</text>
+
+                            <!-- Timeline axis -->
+                            <line x1="80" y1="120" x2="520" y2="120" stroke="var(--docs-border)" stroke-width="2"/>
+                            
+                            <!-- Frame Nodes -->
+                            <circle cx="100" cy="120" r="6" fill="var(--docs-muted)"/>
+                            <text x="100" y="145" text-anchor="middle" fill="var(--docs-muted)" font-size="9" font-family="'Urbanist', sans-serif">T-3 (150ms ago)</text>
+                            
+                            <circle cx="220" cy="120" r="8" fill="#f6c177"/>
+                            <text x="220" y="145" text-anchor="middle" fill="#f6c177" font-size="9" font-family="'Urbanist', sans-serif">T-2 (100ms ago)</text>
+                            <text x="220" y="90" text-anchor="middle" fill="#f6c177" font-size="9" font-family="'Urbanist', sans-serif" font-weight="bold">Client Shot Fired</text>
+                            
+                            <circle cx="340" cy="120" r="6" fill="var(--docs-muted)"/>
+                            <text x="340" y="145" text-anchor="middle" fill="var(--docs-muted)" font-size="9" font-family="'Urbanist', sans-serif">T-1 (50ms ago)</text>
+                            
+                            <circle cx="460" cy="120" r="6" fill="#eb6f92"/>
+                            <text x="460" y="145" text-anchor="middle" fill="#eb6f92" font-size="9" font-family="'Urbanist', sans-serif">T (Current Frame)</text>
+
+                            <!-- Rewind Arrow -->
+                            <path d="M 460 110 C 400 60, 280 60, 225 110" fill="none" stroke="#9ccfd8" stroke-width="2" stroke-dasharray="4 4"/>
+                            <polygon points="220,115 230,110 230,120" fill="#9ccfd8"/>
+                            <text x="340" y="55" text-anchor="middle" fill="#9ccfd8" font-size="9" font-family="'Urbanist', sans-serif">Server rewinds opponent to state at T-2</text>
+                        </svg>
+                    </div>
+
                     <h4>Raycasting & Ballistics System</h4>
                     <ul>
                         <li><strong>Dynamic Weapon Recoil:</strong> Uses procedural spring equations to simulate camera shake and recoil recovery based on rapid shot cadences.</li>

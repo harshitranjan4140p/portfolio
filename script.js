@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             _ts: ["Physics", "Movement", "Parkour"],
             _th: "assets/images/projects/project7.png",
             _v: "assets/videos/game7.mp4",
-            _l: "docs.html?id=7",
+            _l: "https://www.linkedin.com/posts/harshit-ranjan-874659375_i-have-made-a-parkour-system-in-unity-using-ugcPost-7464691263229829120-38P-/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFzSrpgBCVYP0H7eFktlbqBiynqHVOFfSx8",
             _h: true,
             _p: false
         },
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="project-actions">
                         <a href="${project.link}" class="btn btn-outline" target="_blank">Project Link ↗</a>
-                        <a href="docs.html?id=${project.id}" class="btn btn-outline btn-docs" target="_blank">Documentation 📖</a>
+                        <a href="docs.html?id=${project.id}" class="btn btn-outline btn-docs">Documentation 📖</a>
                     </div>
                 </div>
             </article>
