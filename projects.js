@@ -7,7 +7,7 @@ const _0x7a1b = [
     {
         id: 0x7,
         _t: "Parkour System",
-        _d: "A fluid physics-based parkour movement system featuring climbing, sliding, ledge hanging, and wall-running mechanics.",
+        _d: "Proprietary physics and locomotion architecture built for cross-platform scalability, featuring low-overhead dynamic climbing, dynamic wall-running, and modular ledge halting algorithms.",
         _ts: ["Physics", "Movement", "Parkour"],
         _th: "assets/images/projects/project7.png",
         _v: "assets/videos/game7.mp4",
@@ -18,7 +18,7 @@ const _0x7a1b = [
     {
         id: 0x1,
         _t: "Online FPS Multiplayer Shooter",
-        _d: "A competitive multiplayer experience powered by Photon Pun 2, featuring fast-paced combat and robust network synchronization.",
+        _d: "Proprietary multiplayer networking framework built for cross-platform scalability, implementing custom client-side prediction, lag compensation history rewinds, and low-latency state synchronization.",
         _ts: ["Photon Pun 2", "FPS", "Networking"],
         _th: "assets/images/projects/project1.png",
         _v: "assets/videos/game1.mp4",
@@ -29,7 +29,7 @@ const _0x7a1b = [
     {
         id: 0x2,
         _t: "Thief Long Hand Puzzle",
-        _d: "A clever physics-based puzzle game challenging your spatial logic. Available on Play Store.",
+        _d: "Shipped Commercial Product available on the Google Play Store with proprietary physics-based procedural arm animations and dynamic obstacle segment collision logic.",
         _ts: ["Puzzle", "Play Store", "Logic"],
         _th: "assets/images/projects/project2.png",
         _v: "assets/videos/game2.mp4",
@@ -40,7 +40,7 @@ const _0x7a1b = [
     {
         id: 0x3,
         _t: "Ashes: RPG Adventure",
-        _d: "A story-driven medieval action game featuring deep lore, character progression, and immersive environments.",
+        _d: "Proprietary animation state machine and combat physics architecture featuring frame-perfect active windows and predictive hitbox resolution.",
         _ts: ["Action RPG", "Medieval", "Story-driven"],
         _th: "assets/images/projects/project3.png",
         _v: "assets/videos/game3.mp4",
@@ -51,7 +51,7 @@ const _0x7a1b = [
     {
         id: 0x4,
         _t: "Ragdoll Ball Game",
-        _d: "Physics-based chaotic fun exploring ragdoll mechanics and dynamic object interactions.",
+        _d: "Proprietary joint-decoupling engine simulating dynamic structural limb stress and collision-induced skeletal partitioning.",
         _ts: ["Physics", "Casual"],
         _th: "assets/images/projects/project4.png",
         _v: "assets/videos/game4.mp4",
@@ -62,7 +62,7 @@ const _0x7a1b = [
     {
         id: 0x5,
         _t: "Cube Runner",
-        _d: "A fast-paced infinite runner testing your reflexes and spatial awareness.",
+        _d: "Procedurally generated environment engine featuring an exponential speed-scaling curve and high-performance physics-based obstacle layouts.",
         _ts: ["Arcade", "Runner"],
         _th: "assets/images/projects/project5.png",
         _v: "assets/videos/game5.mp4",
@@ -73,7 +73,7 @@ const _0x7a1b = [
     {
         id: 0x6,
         _t: "Wannabe GTA 6",
-        _d: "An ambitious open-world sandbox project exploring complex AI, vehicle physics, and large-scale environments.",
+        _d: "Proprietary real-time vehicle mesh deformation and collision impulse vector distribution model.",
         _ts: ["Open World", "Sandbox"],
         _th: "assets/images/projects/project6.png",
         _v: "assets/videos/game6.mp4",
