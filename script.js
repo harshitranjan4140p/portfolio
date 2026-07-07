@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 0x7,
             _t: "Parkour System",
-            _d: "Proprietary physics and locomotion architecture built for cross-platform scalability, featuring low-overhead dynamic climbing, dynamic wall-running, and modular ledge halting algorithms.",
+            _d: "A custom parkour system for Unity — handles climbing, wall-running, ledge grabs, and smooth halting. Built to drop into any project.",
             _ts: ["Physics", "Movement", "Parkour"],
             _th: "assets/images/projects/project7.png",
             _v: "assets/videos/game7.mp4",
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 0x1,
             _t: "Online FPS Multiplayer Shooter",
-            _d: "Proprietary multiplayer networking framework built for cross-platform scalability, implementing custom client-side prediction, lag compensation history rewinds, and low-latency state synchronization.",
+            _d: "Online FPS built on Photon PUN 2 with client-side prediction, lag compensation, and smooth state sync. Handles real multiplayer lag.",
             _ts: ["Photon Pun 2", "FPS", "Networking"],
             _th: "assets/images/projects/project1.png",
             _v: "assets/videos/game1.mp4",
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 0x2,
             _t: "Thief Long Hand Puzzle",
-            _d: "Shipped Commercial Product available on the Google Play Store with proprietary physics-based procedural arm animations and dynamic obstacle segment collision logic.",
+            _d: "Live on Google Play. A physics puzzle game with stretchy procedural arms and hand-crafted obstacle layouts.",
             _ts: ["Puzzle", "Play Store", "Logic"],
             _th: "assets/images/projects/project2.png",
             _v: "assets/videos/game2.mp4",
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 0x3,
             _t: "Ashes: RPG Adventure",
-            _d: "Proprietary animation state machine and combat physics architecture featuring frame-perfect active windows and predictive hitbox resolution.",
+            _d: "An action RPG with tight combat windows, hitbox-based damage, and a custom animation state machine.",
             _ts: ["Action RPG", "Medieval", "Story-driven"],
             _th: "assets/images/projects/project3.png",
             _v: "assets/videos/game3.mp4",
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 0x4,
             _t: "Ragdoll Ball Game",
-            _d: "Proprietary joint-decoupling engine simulating dynamic structural limb stress and collision-induced skeletal partitioning.",
+            _d: "A ragdoll physics game where limbs detach on impact. Custom joint stress and separation system.",
             _ts: ["Physics", "Casual"],
             _th: "assets/images/projects/project4.png",
             _v: "assets/videos/game4.mp4",
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 0x5,
             _t: "Cube Runner",
-            _d: "Procedurally generated environment engine featuring an exponential speed-scaling curve and high-performance physics-based obstacle layouts.",
+            _d: "An endless runner with procedural level generation, exponential speed ramp, and physics-based obstacle spawning.",
             _ts: ["Arcade", "Runner"],
             _th: "assets/images/projects/project5.png",
             _v: "assets/videos/game5.mp4",
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 0x6,
             _t: "Wannabe GTA 6",
-            _d: "Proprietary real-time vehicle mesh deformation and collision impulse vector distribution model.",
+            _d: "Open-world sandbox with real-time vehicle deformation on collision. Custom impulse and mesh damage system.",
             _ts: ["Open World", "Sandbox"],
             _th: "assets/images/projects/project6.png",
             _v: "assets/videos/game6.mp4",
@@ -1482,83 +1482,5 @@ ADVANCED SECURITY & INTEGRITY LAYER
 
     const _0x3a2b = "color: #ff0000; font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 0 #000;";
     _0x1b2e.call(_0x31a2, "%cSTOP!", _0x3a2b);
-})();
-
-/* 
-==========================================================================
-PITCH DECK MODAL CAROUSEL CONTROLLER
-==========================================================================
-*/
-(function () {
-    const modal = document.getElementById('pitchDeckModal');
-    const openBtn = document.getElementById('openPitchDeck');
-    const closeBtn = document.getElementById('pitchClose');
-    const prevBtn = document.getElementById('pitchPrev');
-    const nextBtn = document.getElementById('pitchNext');
-    const counter = document.getElementById('pitchCounter');
-    const track = document.getElementById('pitchTrack');
-
-    if (!modal || !track) return;
-
-    const slides = track.querySelectorAll('.pitch-slide');
-    const totalSlides = slides.length;
-    let currentSlide = 0;
-    let isOpen = false;
-
-    function updateSlide() {
-        slides.forEach((s, i) => {
-            s.classList.toggle('active', i === currentSlide);
-        });
-        if (counter) counter.textContent = `${currentSlide + 1} / ${totalSlides}`;
-        if (prevBtn) prevBtn.disabled = currentSlide === 0;
-        if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
-    }
-
-    function openModal() {
-        currentSlide = 0;
-        updateSlide();
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        isOpen = true;
-    }
-
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-        isOpen = false;
-    }
-
-    function goNext() {
-        if (currentSlide < totalSlides - 1) {
-            currentSlide++;
-            updateSlide();
-        }
-    }
-
-    function goPrev() {
-        if (currentSlide > 0) {
-            currentSlide--;
-            updateSlide();
-        }
-    }
-
-    if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (nextBtn) nextBtn.addEventListener('click', goNext);
-    if (prevBtn) prevBtn.addEventListener('click', goPrev);
-
-    // Close on overlay click (not on modal content)
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
-
-    // Keyboard navigation — only when modal is active
-    // Uses capture phase to fire before the security keydown blocker
-    window.addEventListener('keydown', (e) => {
-        if (!isOpen) return;
-        if (e.key === 'Escape') { closeModal(); e.preventDefault(); return; }
-        if (e.key === 'ArrowRight') { goNext(); e.preventDefault(); return; }
-        if (e.key === 'ArrowLeft') { goPrev(); e.preventDefault(); return; }
-    }, true);
 })();
 
