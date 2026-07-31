@@ -48,7 +48,7 @@ const PROJECT_DATA = [
     ],
     "thumbnail": "assets/images/projects/project2.png",
     "video": "assets/videos/game2.mp4",
-    "link": "https://play.google.com/store/apps/developer?id=Patliputra+Games",
+    "link": "https://play.google.com/store/apps/details?id=com.thief.puzzle.escape.game",
     "documentation": "docs.html?id=2",
     "isHighlight": true,
     "isPortrait": true,
