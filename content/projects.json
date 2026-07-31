@@ -1,5 +1,4 @@
-/* Generated from content/projects.json by the local Creator Dashboard. */
-const PROJECT_DATA = [
+[
   {
     "id": 7,
     "title": "Parkour System",
@@ -123,4 +122,4 @@ const PROJECT_DATA = [
     "isPortrait": false,
     "published": true
   }
-];
+]

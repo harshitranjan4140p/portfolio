@@ -1,0 +1,66 @@
+{
+  "profile": {
+    "name": "Harshit Ranjan",
+    "company": "Patliputra Games",
+    "email": "harshitranjan4140p@gmail.com",
+    "greeting": "Hi there!",
+    "summary": "I build games, physics engines, and multiplayer systems from India.",
+    "roles": [
+      "Founder",
+      "Game Developer",
+      "Software Developer",
+      "3D Artist"
+    ],
+    "avatar": "assets/images/avatar.png",
+    "resume": "assets/docs/resume.pdf"
+  },
+  "badges": [
+    "MSME UDYAM-GJ-09-0069684",
+    "5-yr MSc IT · Gujarat Uni"
+  ],
+  "socials": {
+    "LinkedIn": "https://www.linkedin.com/in/harshit-ranjan-874659375/",
+    "Instagram": "https://www.instagram.com/harshit_ranjan_0/",
+    "GitHub": "https://github.com/harshitranjan4140p",
+    "YouTube": "https://www.youtube.com/@ILIKEPC",
+    "Play Store": "https://play.google.com/store/apps/developer?id=Flip+Interactive"
+  },
+  "stats": [
+    {
+      "value": "30",
+      "suffix": "+",
+      "label": "Projects Shipped",
+      "animated": true
+    },
+    {
+      "value": "3",
+      "suffix": "+",
+      "label": "Years Experience",
+      "animated": true
+    },
+    {
+      "value": "1",
+      "suffix": "",
+      "label": "Published App",
+      "animated": true
+    },
+    {
+      "value": "Intl.",
+      "suffix": "",
+      "label": "Clients Served",
+      "animated": false
+    }
+  ],
+  "copy": {
+    "projectsTitle": "Selected Works",
+    "contactTitle": "Send a Message",
+    "contactText": "Have a project in mind? Drop me a line and I'll get back to you within 24 hours.",
+    "footerTitle": "Let's build something together."
+  },
+  "background": {
+    "desktopPerViewport": 22,
+    "tabletPerViewport": 14,
+    "mobilePerViewport": 9,
+    "maximum": 160
+  }
+}
