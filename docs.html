@@ -1089,7 +1089,12 @@ velocity.y += gravity * Time.deltaTime;
 
             // Render tags
             const tagsGrid = document.getElementById('game-tags');
-            tagsGrid.innerHTML = activeGame.tags.map(tag => `<span>${tag}</span>`).join('');
+            tagsGrid.replaceChildren();
+            activeGame.tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.textContent = tag;
+                tagsGrid.appendChild(tagElement);
+            });
 
             // Render tab panels
             const doc = DOCUMENTATION_DATA[gameId];

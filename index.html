@@ -47,22 +47,22 @@
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             <path d="m9 11 2 2 4-4"/>
                         </svg>
-                        <span>MSME UDYAM-GJ-09-0069684</span>
+                        <span data-site-badge="0">MSME UDYAM-GJ-09-0069684</span>
                     </div>
                     <div class="msme-badge">
                         <svg class="msme-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
                             <path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/>
                         </svg>
-                        <span>5-yr MSc IT · Gujarat Uni</span>
+                        <span data-site-badge="1">5-yr MSc IT · Gujarat Uni</span>
                     </div>
                 </div>
-                <h1>Hi there!<br>I'm <span class="highlight-name">Harshit Ranjan</span>.</h1>
+                <h1><span id="hero-greeting">Hi there!</span><br>I'm <span class="highlight-name" id="hero-name">Harshit Ranjan</span>.</h1>
                 <p class="subtitle">I'm the <span class="dynamic-role-container"><span id="dynamic-role"
-                            class="dynamic-role">Founder</span></span> of <strong>Patliputra Games</strong>.<br>I build games, physics engines, and multiplayer systems from India.</p>
+                            class="dynamic-role">Founder</span></span> of <strong id="hero-company">Patliputra Games</strong>.<br><span id="hero-summary">I build games, physics engines, and multiplayer systems from India.</span></p>
 
                 <div class="contact-links reveal">
-                    <a href="assets/docs/resume.pdf" class="btn btn-outline">Resume ↓</a>
+                    <a href="assets/docs/resume.pdf" class="btn btn-outline" id="resume-link">Resume ↓</a>
                 </div>
 
                 <div class="social-links reveal">
@@ -114,12 +114,12 @@
                 </div>
             </div>
             <div class="hero-image">
-                <img src="assets/images/avatar.png" alt="Harshit Ranjan, Founder of Patliputra Games" fetchpriority="high" decoding="async">
+                <img src="assets/images/avatar.png" alt="Harshit Ranjan, Founder of Patliputra Games" fetchpriority="high" decoding="async" id="hero-avatar">
             </div>
         </section>
 
         <!-- Stats Strip -->
-        <section class="stats-strip reveal">
+        <section class="stats-strip reveal" id="stats-strip">
             <div class="stat-item">
                 <div class="stat-number-wrap">
                     <span class="stat-number" data-target="30">0</span><span class="stat-plus">+</span>
@@ -154,7 +154,7 @@
 
         <!-- Projects Section -->
         <section id="projects" class="projects">
-            <h2 class="section-title reveal">Selected Works</h2>
+            <h2 class="section-title reveal" id="projects-title">Selected Works</h2>
 
             <div id="projects-grid">
                 <!-- Projects will be rendered here dynamically via script.js -->
@@ -174,8 +174,8 @@
 
         <!-- Contact Form -->
         <section class="contact-form-section reveal" id="contact-form">
-            <h2 class="section-title">Send a Message</h2>
-            <p class="contact-form-sub">Have a project in mind? Drop me a line and I'll get back to you within 24 hours.
+            <h2 class="section-title" id="contact-title">Send a Message</h2>
+            <p class="contact-form-sub" id="contact-text">Have a project in mind? Drop me a line and I'll get back to you within 24 hours.
             </p>
             <form class="contact-form" id="contactForm" novalidate>
                 <div class="form-row">
@@ -203,8 +203,8 @@
 
     <footer id="contact" class="footer">
         <div class="footer-content container">
-            <h2>Let's build something together.</h2>
-            <a href="mailto:harshitranjan4140p@gmail.com" class="hero-email">harshitranjan4140p@gmail.com</a>
+            <h2 id="footer-title">Let's build something together.</h2>
+            <a href="mailto:harshitranjan4140p@gmail.com" class="hero-email" id="footer-email">harshitranjan4140p@gmail.com</a>
             <div class="social-links footer-socials">
                 <a href="https://www.linkedin.com/in/harshit-ranjan-874659375/" class="social-btn" title="LinkedIn"
                     target="_blank" rel="noopener noreferrer">
@@ -234,7 +234,7 @@
                 </a>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Harshit Ranjan. Patliputra Games.</p>
+                <p id="footer-copyright">&copy; 2026 Harshit Ranjan. Patliputra Games.</p>
                 <p>MSME Registered in Gujarat: UDYAM-GJ-09-0069684</p>
             </div>
         </div>

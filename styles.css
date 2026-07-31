@@ -256,6 +256,7 @@ a, button {
     width: 260px;
     height: 330px;
     flex-shrink: 0;
+    position: relative;
     border-radius: 0;
     overflow: hidden;
     border: 4px solid var(--accent-color);
@@ -267,6 +268,7 @@ a, button {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
     filter: grayscale(15%) contrast(1.1);
     transition: transform 240ms ease, filter 240ms ease;
 }
@@ -2281,6 +2283,203 @@ body.screenshot-mode::after {
     background: rgba(246,193,119,0.2);
     color: var(--name-color);
     border: 1px solid rgba(246,193,119,0.3);
+}
+
+/* ===================== Interactive Project Previews ===================== */
+.project-media {
+    isolation: isolate;
+    outline: none;
+}
+
+.project-media:focus-visible {
+    box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px var(--accent-color);
+}
+
+.project-card.is-previewing .project-video {
+    opacity: 1;
+}
+
+.project-card.is-previewing .project-img {
+    opacity: 0;
+}
+
+.video-sound {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 6;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 50%;
+    background: rgba(14, 13, 20, 0.76);
+    color: #fff;
+    font-size: 1.05rem;
+    line-height: 1;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+    transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.video-sound:hover,
+.video-sound:focus-visible,
+.video-sound.is-audible {
+    transform: scale(1.06);
+    background: rgba(235,154,151,0.92);
+    border-color: var(--accent-color);
+}
+
+.preview-hint {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    z-index: 5;
+    padding: 5px 9px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 5px;
+    background: rgba(14,13,20,0.68);
+    color: rgba(255,255,255,0.82);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    transition: opacity 160ms ease;
+}
+
+.project-card.is-previewing .preview-hint {
+    opacity: 0;
+}
+
+.project-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-link-button::after {
+    content: " ↗";
+    margin-left: 0.35em;
+}
+
+.documentation-button::after {
+    content: " →";
+    margin-left: 0.35em;
+}
+
+.badge-linkedin {
+    background: rgba(49,116,143,0.22);
+    color: #9ccfd8;
+    border: 1px solid rgba(156,207,216,0.3);
+}
+
+/* ===================== Localized Hero Water Ripple ===================== */
+.hero-ripple-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    pointer-events: none;
+}
+
+.hero-image.is-rippling {
+    transform: scale(1.018);
+    box-shadow: 0 18px 42px rgba(0,0,0,0.38), 0 0 28px rgba(156,207,216,0.2);
+}
+
+.hero-image.is-rippling img {
+    filter: grayscale(0) contrast(1.06);
+}
+
+/* ===================== Local Creator Unlock ===================== */
+.creator-menu-item {
+    color: #9ccfd8;
+    font-weight: 750;
+}
+
+.creator-menu-item::before {
+    content: "◆";
+    color: var(--accent-color);
+    font-size: 0.72rem;
+}
+
+.creator-unlock {
+    width: min(420px, calc(100vw - 32px));
+    padding: 0;
+    border: 1px solid rgba(235,154,151,0.35);
+    border-radius: 14px;
+    background: rgba(31,29,46,0.98);
+    color: var(--text-primary);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.65);
+}
+
+.creator-unlock::backdrop {
+    background: rgba(8,7,12,0.72);
+    backdrop-filter: blur(8px);
+}
+
+.creator-unlock-card {
+    position: relative;
+    display: grid;
+    gap: 14px;
+    padding: 30px;
+}
+
+.creator-unlock-card h2,
+.creator-unlock-card p {
+    margin: 0;
+}
+
+.creator-unlock-card input {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    background: rgba(10,9,15,0.7);
+    color: var(--text-primary);
+    font: inherit;
+    outline: none;
+}
+
+.creator-unlock-card input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(235,154,151,0.14);
+}
+
+.creator-unlock-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+}
+
+.creator-unlock-eyebrow {
+    color: var(--accent-color);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.creator-unlock-status {
+    min-height: 1.4em;
+    color: #ebbcba;
+    font-size: 0.82rem;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .preview-hint {
+        opacity: 1;
+    }
 }
 
 /* ===================== Video / Media Shimmer ===================== */

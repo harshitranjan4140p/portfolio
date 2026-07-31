@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio Creator Dashboard</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="/__creator/dashboard.css">
+</head>
+<body>
+  <section class="login-shell" id="login-shell">
+    <div class="login-card">
+      <div class="brand-mark">4140</div>
+      <p class="eyebrow">LOCAL CREATOR MODE</p>
+      <h1>Portfolio control room</h1>
+      <p class="muted">This dashboard is available only on your computer.</p>
+      <form id="login-form">
+        <label for="creator-code">Creator code</label>
+        <input id="creator-code" name="code" type="password" autocomplete="current-password" required autofocus>
+        <button class="primary wide" type="submit">Unlock dashboard</button>
+        <p class="form-message" id="login-message" role="status"></p>
+      </form>
+      <a class="quiet-link" href="/">Return to portfolio preview</a>
+    </div>
+  </section>
+
+  <div class="dashboard" id="dashboard" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark small">4140</span>
+        <span>
+          <strong>Creator Dashboard</strong>
+          <small>Loopback-only workspace</small>
+        </span>
+      </div>
+      <div class="top-actions">
+        <a class="button secondary" href="/" target="_blank" rel="noopener">Preview portfolio</a>
+        <button class="button ghost" id="logout-button" type="button">Lock</button>
+      </div>
+    </header>
+
+    <aside class="sidebar" aria-label="Dashboard sections">
+      <button class="nav-item active" type="button" data-tab="overview">Overview</button>
+      <button class="nav-item" type="button" data-tab="site">Site content</button>
+      <button class="nav-item" type="button" data-tab="projects">Projects</button>
+      <button class="nav-item" type="button" data-tab="media">Media library</button>
+      <button class="nav-item" type="button" data-tab="history">Backups</button>
+      <button class="nav-item" type="button" data-tab="publish">Publish</button>
+      <button class="nav-item" type="button" data-tab="security">Security</button>
+    </aside>
+
+    <main class="main">
+      <section class="panel active" data-panel="overview">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">WORKSPACE</p>
+            <h1>Welcome back, creator.</h1>
+            <p class="muted">Edit locally, preview safely, and publish only when everything feels right.</p>
+          </div>
+        </div>
+        <div class="metric-grid">
+          <article class="metric">
+            <span>Projects</span>
+            <strong id="project-count">—</strong>
+          </article>
+          <article class="metric">
+            <span>Featured</span>
+            <strong id="featured-count">—</strong>
+          </article>
+          <article class="metric">
+            <span>Uploaded media</span>
+            <strong id="media-count">—</strong>
+          </article>
+        </div>
+        <article class="callout">
+          <div>
+            <h2>Safe editing flow</h2>
+            <p>Save changes locally first. Open the preview in another tab. Publish only after checking the result.</p>
+          </div>
+          <a class="button primary" href="/" target="_blank" rel="noopener">Open preview</a>
+        </article>
+        <article class="status-card">
+          <h2>Unpublished content changes</h2>
+          <pre id="overview-git-status">Checking…</pre>
+        </article>
+      </section>
+
+      <section class="panel" data-panel="site">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">PUBLIC PROFILE</p>
+            <h1>Site content</h1>
+            <p class="muted">Update your hero, links, statistics, labels, and background density.</p>
+          </div>
+          <button class="button primary" id="save-site" type="button">Save locally</button>
+        </div>
+
+        <div class="editor-grid">
+          <article class="editor-card">
+            <h2>Hero profile</h2>
+            <div class="form-grid two">
+              <label>Name<input id="site-name" type="text"></label>
+              <label>Company<input id="site-company" type="text"></label>
+              <label>Email<input id="site-email" type="email"></label>
+              <label>Greeting<input id="site-greeting" type="text"></label>
+            </div>
+            <label>Summary<textarea id="site-summary" rows="3"></textarea></label>
+            <label>Roles, one per line<textarea id="site-roles" rows="5"></textarea></label>
+            <div class="form-grid two">
+              <label>Avatar path<input id="site-avatar" type="text"></label>
+              <label>Resume path<input id="site-resume" type="text"></label>
+            </div>
+            <label>Badges, one per line<textarea id="site-badges" rows="3"></textarea></label>
+          </article>
+
+          <article class="editor-card">
+            <div class="card-heading">
+              <h2>Social links</h2>
+              <button class="small-button" id="add-social" type="button">Add link</button>
+            </div>
+            <div id="social-editor" class="repeat-list"></div>
+          </article>
+
+          <article class="editor-card">
+            <h2>Section copy</h2>
+            <label>Projects title<input id="copy-projects-title" type="text"></label>
+            <label>Contact title<input id="copy-contact-title" type="text"></label>
+            <label>Contact description<textarea id="copy-contact-text" rows="3"></textarea></label>
+            <label>Footer title<input id="copy-footer-title" type="text"></label>
+          </article>
+
+          <article class="editor-card">
+            <div class="card-heading">
+              <h2>Statistics</h2>
+              <button class="small-button" id="add-stat" type="button">Add statistic</button>
+            </div>
+            <div id="stats-editor" class="repeat-list"></div>
+          </article>
+
+          <article class="editor-card">
+            <h2>Floating background density</h2>
+            <div class="form-grid two">
+              <label>Desktop objects per screen<input id="bg-desktop" type="number" min="4" max="40"></label>
+              <label>Tablet objects per screen<input id="bg-tablet" type="number" min="4" max="30"></label>
+              <label>Phone objects per screen<input id="bg-mobile" type="number" min="2" max="20"></label>
+              <label>Maximum total objects<input id="bg-maximum" type="number" min="20" max="240"></label>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="projects">
+        <div class="panel-heading sticky-heading">
+          <div>
+            <p class="eyebrow">PORTFOLIO WORK</p>
+            <h1>Projects</h1>
+            <p class="muted">Reorder, feature, hide, duplicate, and edit every project card.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="button secondary" id="add-project" type="button">Add project</button>
+            <button class="button primary" id="save-projects" type="button">Save locally</button>
+          </div>
+        </div>
+        <div id="project-editor" class="project-editor"></div>
+      </section>
+
+      <section class="panel" data-panel="media">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">LOCAL ASSETS</p>
+            <h1>Media library</h1>
+            <p class="muted">Upload validated images, preview videos, and PDF documents into organized folders.</p>
+          </div>
+        </div>
+        <article class="editor-card upload-card">
+          <form id="upload-form">
+            <label>Media type
+              <select id="upload-kind" name="kind">
+                <option value="images">Image</option>
+                <option value="videos">Video</option>
+                <option value="docs">PDF document</option>
+              </select>
+            </label>
+            <label>Choose file<input id="upload-file" name="file" type="file" required></label>
+            <button class="button primary" type="submit">Upload locally</button>
+          </form>
+          <p class="muted">Allowed: PNG, JPG, WebP, GIF, MP4, WebM, and PDF. Maximum 100 MB.</p>
+        </article>
+        <div id="media-library" class="media-grid"></div>
+      </section>
+
+      <section class="panel" data-panel="history">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">RECOVERY</p>
+            <h1>Local backups</h1>
+            <p class="muted">A backup is created automatically before site or project data is overwritten.</p>
+          </div>
+          <button class="button secondary" id="refresh-backups" type="button">Refresh</button>
+        </div>
+        <div id="backup-list" class="backup-list"></div>
+      </section>
+
+      <section class="panel" data-panel="publish">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">GO LIVE</p>
+            <h1>Publish portfolio</h1>
+            <p class="muted">Only content, generated project data, and media assets are included.</p>
+          </div>
+        </div>
+        <article class="editor-card publish-card">
+          <label>Update message<input id="publish-message" type="text" value="Update portfolio content" maxlength="120"></label>
+          <div>
+            <h2>Pending content changes</h2>
+            <pre id="publish-git-status">Checking…</pre>
+          </div>
+          <div class="danger-note">
+            Publishing creates a version and uploads it to your current GitHub branch. Preview first.
+          </div>
+          <button class="button primary wide" id="publish-button" type="button">Publish now</button>
+          <p class="form-message" id="publish-result" role="status"></p>
+        </article>
+      </section>
+
+      <section class="panel" data-panel="security">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">LOCAL ACCESS</p>
+            <h1>Security</h1>
+            <p class="muted">The server accepts connections only from this computer and sessions expire after inactivity.</p>
+          </div>
+        </div>
+        <article class="editor-card security-card">
+          <h2>Change creator code</h2>
+          <form id="change-code-form">
+            <label>Current code<input id="current-code" type="password" autocomplete="current-password" required></label>
+            <label>New code<input id="new-code" type="password" autocomplete="new-password" minlength="5" required></label>
+            <label>Confirm new code<input id="confirm-code" type="password" autocomplete="new-password" minlength="5" required></label>
+            <button class="button primary" type="submit">Change code</button>
+          </form>
+          <p class="form-message" id="security-result" role="status"></p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/__creator/dashboard.js"></script>
+</body>
+</html>
+

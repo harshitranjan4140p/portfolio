@@ -1,0 +1,5 @@
+_creator/.secret.json
+_creator/backups/
+_creator/__pycache__/
+*.tmp
+tmp/
