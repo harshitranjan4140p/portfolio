@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const fallbackSite = {
         profile: {
             name: "Harshit Ranjan",
-            company: "Patliputra Games",
+            company: "Renvake",
             email: "harshitranjan4140p@gmail.com",
             greeting: "Hi there!",
             summary: "I build games, physics engines, and multiplayer systems from India.",
